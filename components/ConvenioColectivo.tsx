@@ -3,23 +3,23 @@ import { FileText, Download, CheckCircle2, ShieldAlert, Clock, Scale } from 'luc
 const highlightPoints = [
   {
     icon: Scale,
-    title: 'Tabulador Salarial y Aumentos',
-    description: 'Bases para las revisiones salariales anuales, garantizando incrementos por encima de la inflación para el personal operativo y de base.',
+    title: 'Incremento Salarial y Vigencia',
+    description: 'Acuerdo de revisión integral con incremento directo al salario y depósito ante el Tribunal de Conciliación y Arbitraje del Estado de Querétaro.',
   },
   {
     icon: Clock,
-    title: 'Jornada Laboral y Descansos',
-    description: 'Establecimiento de jornadas de trabajo reglamentadas, días de descanso obligatorio, primas dominicales y pago de horas extraordinarias.',
+    title: 'Jornada y Días de Descanso',
+    description: 'Regulación de guardias operativas, días de descanso obligatorio institucionales (como el 10 de mayo y 12 de diciembre) y primas dominicales.',
   },
   {
     icon: CheckCircle2,
-    title: 'Licencias y Permisos Especiales',
-    description: 'Derechos de permisos con goce de sueldo por maternidad, paternidad, matrimonio, duelo familiar y cuidados médicos.',
+    title: 'Prestaciones y Previsión Social',
+    description: 'Aguinaldo de 70 días, prima vacacional del 40%, vales de despensa, ayuda de transporte, quinquenios y fondo de ahorro.',
   },
   {
     icon: ShieldAlert,
-    title: 'Seguridad y Salud Ocupacional',
-    description: 'Obligatoriedad de entrega de herramientas, uniformes y equipo de protección personal (EPP) adecuado para cada área.',
+    title: 'Apoyos Escolares y Familiares',
+    description: 'Asignación de becas educativas, paquetes escolares anuales por nivel educativo, lentes graduados y apoyos por defunción.',
   },
 ];
 
@@ -28,7 +28,6 @@ export default function ConvenioColectivo() {
     <section id="transparencia" className="py-20 bg-white border-t border-slate-200">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         
-        {/* Encabezado de la sección */}
         <div className="text-center max-w-3xl mx-auto mb-16">
           <div className="inline-flex items-center gap-2 text-xs font-bold text-red-800 tracking-widest uppercase mb-2">
             <FileText className="h-4 w-4" />
@@ -38,37 +37,39 @@ export default function ConvenioColectivo() {
             Convenio Colectivo de Trabajo
           </h2>
           <p className="mt-4 text-base text-slate-600">
-            Documento oficial que rige las relaciones laborales entre el Municipio de Querétaro y el Sindicato de Trabajadores (STAMQ).
+            Documento oficial que rige las relaciones laborales y prestaciones adquiridas entre el Municipio de Querétaro y el STSMQ.
           </p>
         </div>
 
-        {/* Banner principal de descarga */}
+        {/* Banner principal con el enlace al PDF público actualizado */}
         <div className="mb-16 rounded-2xl bg-slate-900 text-white p-8 sm:p-10 shadow-xl relative overflow-hidden">
           <div className="relative z-10 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8">
             <div className="space-y-3 max-w-2xl">
               <span className="inline-block px-3 py-1 bg-red-800 text-xs font-bold rounded-full text-white">
-                Vigente 2026 - Documento Oficial
+                Documento Oficial Depositado
               </span>
               <h3 className="text-2xl sm:text-3xl font-bold">
-                Consulta el Convenio Colectivo Completo
+                Descarga el Convenio Colectivo Completo
               </h3>
               <p className="text-sm text-slate-300 leading-relaxed">
-                Descarga el documento en formato PDF registrado y depositado ante el Tribunal de Conciliación y Arbitraje del Estado de Querétaro.
+                Consulta el archivo PDF íntegro con todas las cláusulas, firmas del Comité Ejecutivo y autoridades municipales registrado ante el Tribunal.
               </p>
             </div>
 
             <a
-              href="#"
-              download
+              href="/convenio-stsmq-2017.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              download="Convenio_Colectivo_STSMQ_2017.pdf"
               className="w-full lg:w-auto inline-flex items-center justify-center gap-3 rounded-xl bg-red-800 px-8 py-4 text-base font-bold text-white shadow-lg hover:bg-red-700 transition-all shrink-0"
             >
               <Download className="h-5 w-5" />
-              Descargar PDF (CCT 2026)
+              Descargar PDF Oficial
             </a>
           </div>
         </div>
 
-        {/* Grilla de aspectos clave del convenio */}
+        {/* Grid de puntos clave */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {highlightPoints.map((point, index) => {
             const Icon = point.icon;

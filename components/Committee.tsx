@@ -2,32 +2,44 @@ import { Users, Mail, Phone, Shield } from 'lucide-react';
 
 const committeeMembers = [
   {
-    name: 'Lic. Celestino Morales Trejo',
+    name: 'Celestino Bermúdez Jiménez',
     role: 'Secretario General',
-    department: 'Dirección General de Gobierno',
-    email: 'secretaria@stamq.org.mx',
-    phone: '(442) 123-4567',
+    email: 'secretariageneral@stsmq.org.mx',
   },
   {
-    name: 'C. María de los Ángeles Pérez',
-    role: 'Secretaria de Conflictos y Escalafón',
-    department: 'Servicios Públicos Municipales',
-    email: 'conflictos@stamq.org.mx',
-    phone: '(442) 234-5678',
+    name: 'Luis Álvarez Álvarez',
+    role: 'Secretario del Interior',
+    email: 'interior@stsmq.org.mx',
   },
   {
-    name: 'Ing. Alejandro Domínguez R.',
-    role: 'Secretario de Finanzas y Caja de Ahorro',
-    department: 'Obras Públicas',
-    email: 'finanzas@stamq.org.mx',
-    phone: '(442) 345-6789',
+    name: 'José Pueblito Olvera Espinosa',
+    role: 'Secretario de Trabajo y Conflictos',
+    email: 'conflictos@stsmq.org.mx',
   },
   {
-    name: 'Lic. Sofía Hernández Vega',
-    role: 'Secretaria de Prestaciones y Previsión Social',
-    department: 'Administración y Finanzas',
-    email: 'prestaciones@stamq.org.mx',
-    phone: '(442) 456-7890',
+    name: 'Sotero Álvarez Álvarez',
+    role: 'Secretario de Hacienda',
+    email: 'hacienda@stsmq.org.mx',
+  },
+  {
+    name: 'Ma. Ángeles Ramírez González',
+    role: 'Secretaria de Actas',
+    email: 'actas@stsmq.org.mx',
+  },
+  {
+    name: 'Ma. Pueblito Ruiz Álvarez',
+    role: 'Secretaria del Exterior',
+    email: 'exterior@stsmq.org.mx',
+  },
+  {
+    name: 'José Guadalupe Reséndiz Zamorano',
+    role: 'Secretario de Organización',
+    email: 'organizacion@stsmq.org.mx',
+  },
+  {
+    name: 'Nicolás Barrios Vega',
+    role: 'Secretario de Acción Deportiva',
+    email: 'deportes@stsmq.org.mx',
   },
 ];
 
@@ -39,39 +51,34 @@ export default function Committee() {
         <div className="text-center max-w-3xl mx-auto mb-16">
           <div className="inline-flex items-center gap-2 text-xs font-bold text-red-800 tracking-widest uppercase mb-2">
             <Shield className="h-4 w-4" />
-            Liderazgo Gremial
+            Liderazgo y Representación
           </div>
           <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
-            Comité Ejecutivo
+            Comité Directivo
           </h2>
           <p className="mt-4 text-base text-slate-600">
-            Conoce a los representantes sindicales encargados de velar por los derechos laborales y la atención directa de los agremiados.
+            Representantes sindicales encargados de velar por los derechos de los trabajadores al servicio del Municipio de Querétaro.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {committeeMembers.map((member, index) => (
             <div
               key={index}
-              className="flex flex-col justify-between rounded-2xl bg-white p-6 shadow-sm border border-slate-200 hover:shadow-md transition-all"
+              className="flex flex-col justify-between rounded-2xl bg-white p-6 shadow-sm border border-slate-200 hover:shadow-md hover:border-red-200 transition-all"
             >
               <div>
                 <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-red-800 text-white font-bold mb-4 shadow-sm">
                   <Users className="h-6 w-6" />
                 </div>
-                <h3 className="text-lg font-bold text-slate-900 leading-snug">{member.name}</h3>
+                <h3 className="text-base font-bold text-slate-900 leading-snug">{member.name}</h3>
                 <p className="text-xs font-semibold text-red-800 mt-1">{member.role}</p>
-                <p className="text-xs text-slate-500 mt-2">Adscripción: {member.department}</p>
               </div>
 
-              <div className="pt-6 mt-6 border-t border-slate-100 space-y-2 text-xs text-slate-600">
+              <div className="pt-4 mt-4 border-t border-slate-100 space-y-2 text-xs text-slate-500">
                 <div className="flex items-center gap-2">
                   <Mail className="h-3.5 w-3.5 text-slate-400 shrink-0" />
                   <span className="truncate">{member.email}</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Phone className="h-3.5 w-3.5 text-slate-400 shrink-0" />
-                  <span>{member.phone}</span>
                 </div>
               </div>
             </div>

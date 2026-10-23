@@ -1,81 +1,93 @@
+import { Shield, MapPin, Phone, Mail, ExternalLink } from 'lucide-react';
 import Link from 'next/link';
-import { MapPin, Phone, Mail, FileText, ExternalLink } from 'lucide-react';
 
 export default function Footer() {
   return (
-    <footer id="contacto" className="bg-slate-950 text-slate-300 pt-16 pb-8 border-t border-slate-800">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 pb-12 border-b border-slate-800">
+    <footer className="w-full bg-[#0F2D59] text-white border-t border-blue-900/50">
+      <div className="w-full px-6 sm:px-12 lg:px-16 py-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
           
+          {/* Columna 1: Identidad */}
           <div className="space-y-4">
             <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-red-800 text-white font-black text-lg">
-                ST
+              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-white/10 text-white border border-white/20">
+                <Shield className="h-5 w-5 text-white" />
               </div>
-              <span className="font-bold text-white text-lg">STAMQ</span>
+              <span className="text-xl font-black text-white tracking-tight">STSMQ</span>
             </div>
-            <p className="text-xs text-slate-400 leading-relaxed">
-              Sindicato de Trabajadores al Servicio del Municipio de Querétaro. Organización gremial comprometida con la dignidad laboral y la justicia social.
+            <p className="text-xs text-blue-100/80 leading-relaxed">
+              Defendiendo los derechos laborales, la justicia y las prestaciones de nuestra base trabajadora.
             </p>
           </div>
 
-          <div>
-            <h3 className="text-sm font-bold text-white mb-4 uppercase tracking-wider">Secciones</h3>
-            <ul className="space-y-2.5 text-xs">
-              <li><Link href="#inicio" className="hover:text-white transition-colors">Inicio</Link></li>
-              <li><Link href="#prestaciones" className="hover:text-white transition-colors">Prestaciones Colectivas</Link></li>
-              <li><Link href="#noticias" className="hover:text-white transition-colors">Boletines Oficiales</Link></li>
-              <li><Link href="#transparencia" className="hover:text-white transition-colors">Convenio Colectivo PDF</Link></li>
-              <li><Link href="#portal" className="hover:text-white transition-colors">Acceso a Agremiados</Link></li>
+          {/* Columna 2: Enlaces Rápidos */}
+          <div className="space-y-3">
+            <h4 className="text-sm font-bold text-white uppercase tracking-wider">Enlaces Institucionales</h4>
+            <ul className="space-y-2 text-xs">
+              <li><Link href="#inicio" className="text-blue-100/80 hover:text-white transition-colors">Inicio</Link></li>
+              <li><Link href="#prestaciones" className="text-blue-100/80 hover:text-white transition-colors">Prestaciones y Tabulador</Link></li>
+              <li><Link href="/convenio-stsmq-2017.pdf" target="_blank" className="text-blue-100/80 hover:text-white transition-colors">Convenio Colectivo PDF</Link></li>
+              <li><Link href="#noticias" className="text-blue-100/80 hover:text-white transition-colors">Comunicados Oficiales</Link></li>
             </ul>
           </div>
 
-          <div id="transparencia">
-            <h3 className="text-sm font-bold text-white mb-4 uppercase tracking-wider">Transparencia</h3>
-            <ul className="space-y-2.5 text-xs">
-              <li className="flex items-center gap-2">
-                <FileText className="h-4 w-4 text-red-500" />
-                <a href="#" className="hover:text-white transition-colors">Estatutos Sindicales</a>
-              </li>
-              <li className="flex items-center gap-2">
-                <FileText className="h-4 w-4 text-red-500" />
-                <a href="#" className="hover:text-white transition-colors">Convenio de Trabajo 2026</a>
-              </li>
-              <li className="flex items-center gap-2">
-                <ExternalLink className="h-4 w-4 text-slate-500" />
-                <a href="#" className="hover:text-white transition-colors">Tribunal de Conciliación Qro.</a>
-              </li>
-            </ul>
+          {/* Columna 3: Ubicación y Contacto (Íconos Blancos) */}
+          <div className="space-y-3">
+            <h4 className="text-sm font-bold text-white uppercase tracking-wider">Oficinas y Contacto</h4>
+            <div className="space-y-2 text-xs text-blue-100/80">
+              <p className="flex items-start gap-2">
+                <MapPin className="h-4 w-4 text-white shrink-0 mt-0.5" />
+                <span>Independencia 210, La Santa Cruz, Santiago de Querétaro, Qro.</span>
+              </p>
+              <p className="flex items-center gap-2">
+                <Phone className="h-4 w-4 text-white shrink-0" />
+                <span>Atención Ciudadana: (442) 213-7119</span>
+              </p>
+              <p className="flex items-center gap-2">
+                <Mail className="h-4 w-4 text-white shrink-0" />
+                <span>contacto@stsmq.org.mx</span>
+              </p>
+            </div>
           </div>
 
-          <div>
-            <h3 className="text-sm font-bold text-white mb-4 uppercase tracking-wider">Sede Sindical</h3>
-            <ul className="space-y-3 text-xs">
-              <li className="flex items-start gap-2.5">
-                <MapPin className="h-4 w-4 text-red-500 shrink-0 mt-0.5" />
-                <span>Querétaro, Qro., México.</span>
+          {/* Columna 4: Sitios de Interés */}
+          <div className="space-y-3">
+            <h4 className="text-sm font-bold text-white uppercase tracking-wider">Sitios de Interés</h4>
+            <ul className="space-y-2 text-xs">
+              <li>
+                <a
+                  href="https://municipiodequeretaro.gob.mx/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 text-blue-100/80 hover:text-white transition-colors"
+                >
+                  Municipio de Querétaro <ExternalLink className="h-3 w-3 text-white" />
+                </a>
               </li>
-              <li className="flex items-center gap-2.5">
-                <Phone className="h-4 w-4 text-red-500 shrink-0" />
-                <span>(442) 000-0000</span>
-              </li>
-              <li className="flex items-center gap-2.5">
-                <Mail className="h-4 w-4 text-red-500 shrink-0" />
-                <span>contacto@stamq.org.mx</span>
+              <li>
+                <a
+                  href="https://sindicatos.gob.mx"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 text-blue-100/80 hover:text-white transition-colors"
+                >
+                  Tribunal de Conciliación <ExternalLink className="h-3 w-3 text-white" />
+                </a>
               </li>
             </ul>
           </div>
 
         </div>
 
-        <div className="pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-4">
-          <p>© {new Date().getFullYear()} STAMQ - Todos los derechos reservados.</p>
+        {/* Copyright y avisos */}
+        <div className="pt-8 border-t border-white/10 text-center text-xs text-blue-200/70 flex flex-col sm:flex-row justify-between items-center gap-4">
+          <p>© 2026 Sindicato de Trabajadores al Servicio del Municipio de Querétaro (STSMQ). Todos los derechos reservados.</p>
           <div className="flex gap-4">
-            <Link href="#" className="hover:text-slate-400">Aviso de Privacidad</Link>
-            <span>•</span>
-            <Link href="#" className="hover:text-slate-400">Términos de Uso</Link>
+            <Link href="#" className="hover:text-white transition-colors">Aviso de Privacidad</Link>
+            <Link href="#" className="hover:text-white transition-colors">Términos de Uso</Link>
           </div>
         </div>
+
       </div>
     </footer>
   );

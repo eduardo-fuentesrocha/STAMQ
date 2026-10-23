@@ -1,11 +1,11 @@
-# STAMQ - Sitio Web Oficial
+# STSMQ - Sitio Web Oficial
 
 Proyecto en **Next.js 14 (App Router)**, **TypeScript** y **Tailwind CSS** para el Sindicato de Trabajadores al Servicio del Municipio de Querétaro.
 
 ## 🚀 Cómo ejecutar en local
 
 1. Extrae el contenido del ZIP.
-2. Abre la terminal en la carpeta `STAMQ`.
+2. Abre la terminal en la carpeta `STSMQ`.
 3. Instala las dependencias:
    ```bash
    npm install
