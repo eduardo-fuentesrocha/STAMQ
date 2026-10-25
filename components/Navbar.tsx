@@ -16,11 +16,6 @@ export default function Navbar() {
             <span className="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
             Sindicato Registrado ante el Tribunal de Conciliación y Arbitraje del Estado de Querétaro
           </div>
-          <div className="flex items-center gap-4 text-slate-200">
-            <Link href="#transparencia" className="hover:text-white transition-colors">Transparencia</Link>
-            <span>|</span>
-            <Link href="#contacto" className="hover:text-white transition-colors">Atención y Contacto</Link>
-          </div>
         </div>
       </div>
 
