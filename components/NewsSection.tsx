@@ -32,7 +32,7 @@ export default function NewsSection() {
         
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12">
           <div>
-            <div className="inline-flex items-center gap-2 text-xs font-bold text-red-800 tracking-widest uppercase mb-2">
+            <div className="inline-flex items-center gap-2 text-xs font-bold text-[#2A9EDA] tracking-widest uppercase mb-2">
               <Megaphone className="h-4 w-4" />
               Acción Sindical y Transparencia
             </div>
@@ -42,7 +42,7 @@ export default function NewsSection() {
           </div>
           <Link
             href="#todas-las-noticias"
-            className="mt-4 md:mt-0 inline-flex items-center gap-1 text-sm font-bold text-red-800 hover:text-red-900"
+            className="mt-4 md:mt-0 inline-flex items-center gap-1 text-sm font-bold text-[#2A9EDA] hover:text-[#1e7fb2] transition-colors"
           >
             Ver todos los comunicados <ArrowUpRight className="h-4 w-4" />
           </Link>
@@ -52,17 +52,17 @@ export default function NewsSection() {
           {newsItems.map((item, index) => (
             <article
               key={index}
-              className="flex flex-col justify-between rounded-xl border border-slate-200 bg-white p-6 shadow-sm hover:border-slate-300 transition-all"
+              className="flex flex-col justify-between rounded-xl border border-slate-200 bg-white p-6 shadow-sm hover:border-[#2A9EDA]/40 transition-all"
             >
               <div>
                 <div className="flex items-center justify-between text-xs text-slate-500 mb-3">
-                  <span className="font-semibold text-red-800">{item.category}</span>
+                  <span className="font-semibold text-[#2A9EDA]">{item.category}</span>
                   <span className="flex items-center gap-1">
                     <Calendar className="h-3.5 w-3.5" />
                     {item.date}
                   </span>
                 </div>
-                <h3 className="text-lg font-bold text-slate-900 mb-2 leading-snug hover:text-red-800 transition-colors">
+                <h3 className="text-lg font-bold text-slate-900 mb-2 leading-snug hover:text-[#2A9EDA] transition-colors">
                   <Link href={item.link}>{item.title}</Link>
                 </h3>
                 <p className="text-sm text-slate-600 line-clamp-3">{item.summary}</p>
@@ -71,7 +71,7 @@ export default function NewsSection() {
               <div className="pt-6 mt-6 border-t border-slate-100">
                 <Link
                   href={item.link}
-                  className="inline-flex items-center gap-1 text-xs font-bold text-slate-900 hover:text-red-800 transition-colors"
+                  className="inline-flex items-center gap-1 text-xs font-bold text-slate-900 hover:text-[#2A9EDA] transition-colors"
                 >
                   Leer comunicado completo <ArrowUpRight className="h-3.5 w-3.5" />
                 </Link>

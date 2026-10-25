@@ -29,7 +29,7 @@ export default function ConvenioColectivo() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <div className="inline-flex items-center gap-2 text-xs font-bold text-red-800 tracking-widest uppercase mb-2">
+          <div className="inline-flex items-center gap-2 text-xs font-bold text-[#2A9EDA] tracking-widest uppercase mb-2">
             <FileText className="h-4 w-4" />
             Marco Jurídico y Certeza Laboral
           </div>
@@ -45,7 +45,7 @@ export default function ConvenioColectivo() {
         <div className="mb-16 rounded-2xl bg-slate-900 text-white p-8 sm:p-10 shadow-xl relative overflow-hidden">
           <div className="relative z-10 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8">
             <div className="space-y-3 max-w-2xl">
-              <span className="inline-block px-3 py-1 bg-red-800 text-xs font-bold rounded-full text-white">
+              <span className="inline-block px-3 py-1 bg-[#2A9EDA] text-xs font-bold rounded-full text-white">
                 Documento Oficial Depositado
               </span>
               <h3 className="text-2xl sm:text-3xl font-bold">
@@ -61,7 +61,7 @@ export default function ConvenioColectivo() {
               target="_blank"
               rel="noopener noreferrer"
               download="Convenio_Colectivo_STSMQ_2017.pdf"
-              className="w-full lg:w-auto inline-flex items-center justify-center gap-3 rounded-xl bg-red-800 px-8 py-4 text-base font-bold text-white shadow-lg hover:bg-red-700 transition-all shrink-0"
+              className="w-full lg:w-auto inline-flex items-center justify-center gap-3 rounded-xl bg-[#2A9EDA] px-8 py-4 text-base font-bold text-white shadow-lg hover:bg-[#2381b2] transition-all shrink-0"
             >
               <Download className="h-5 w-5" />
               Descargar PDF Oficial
@@ -78,7 +78,7 @@ export default function ConvenioColectivo() {
                 key={index}
                 className="flex items-start gap-4 p-6 rounded-xl border border-slate-200 bg-slate-50/50 hover:bg-slate-50 transition-colors"
               >
-                <div className="rounded-lg bg-red-100 p-3 text-red-800 shrink-0">
+                <div className="rounded-lg bg-[#2A9EDA]/10 p-3 text-[#2A9EDA] shrink-0">
                   <Icon className="h-6 w-6" />
                 </div>
                 <div>
