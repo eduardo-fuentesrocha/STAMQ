@@ -37,7 +37,7 @@ export default function NewsSection() {
               Acción Sindical y Transparencia
             </div>
             <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900">
-              Avisos y Noticias
+              Avisos
             </h2>
           </div>
           <Link

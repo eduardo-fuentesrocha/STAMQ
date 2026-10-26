@@ -75,7 +75,7 @@ export default function Hero() {
           </h1>
 
           <p className="text-sm sm:text-base text-slate-300 font-normal leading-relaxed">
-            Revisa de forma clara tus derechos, trámites para apoyo escolar, préstamos y los últimos avisos importantes del sindicato.
+            Revisa de forma clara tus derechos, nuestros servicios y los últimos avisos importantes del sindicato.
           </p>
 
           {/* Accesos rápidos */}
@@ -85,7 +85,7 @@ export default function Hero() {
               className="flex items-center gap-3 p-3.5 rounded-xl bg-[#E07A2B] hover:bg-[#c46522] text-white font-bold text-sm shadow-md transition-colors"
             >
               <FileText className="h-5 w-5 shrink-0" />
-              <span>Ver Prestaciones y Apoyos</span>
+              <span>Ver Servicios y Prestaciones</span>
             </Link>
 
             <Link

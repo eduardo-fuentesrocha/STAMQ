@@ -4,10 +4,11 @@ import { useState } from 'react';
 import { 
   GraduationCap, 
   Award, 
-  Wallet, 
+  BookOpen, 
   HeartPulse, 
   Shield, 
-  CalendarCheck, 
+  CreditCard, 
+  Glasses,
   X, 
   CheckCircle2, 
   FileText,
@@ -62,19 +63,20 @@ const benefits: Benefit[] = [
     ]
   },
   {
-    id: 'caja-ahorro',
-    icon: Wallet,
-    title: 'Caja de Ahorro y Despensa',
-    description: 'Acceso al fondo de ahorro con rendimientos preferenciales y bonos en vales de despensa mensuales.',
-    tag: 'Financiero',
+    id: 'utiles-escolares',
+    icon: BookOpen,
+    title: 'Entrega de Útiles Escolares',
+    description: 'Paquetes de útiles y apoyos escolares para los hijos de trabajadores inscritos en preescolar, primaria, secundaria o preparatoria.',
+    tag: 'Educación',
     requirements: [
-      'Mínimo 6 meses de afiliación continua al STSMQ.',
-      'Formato de descuento vía nómina firmado por el trabajador.'
+      'Ser trabajador activo sindicalizado del STSMQ.',
+      'Hijos inscritos en el ciclo escolar activo en institución oficial reconocida por la SEP.'
     ],
     documents: [
-      'Formato de solicitud de aportación a la Caja de Ahorro.',
-      'Copia de identificación oficial (INE).',
-      'Comprobante de domicilio reciente (no mayor a 3 meses).'
+      'Acta de nacimiento del hijo(a).',
+      'Constancia de estudios oficial o boleta del ciclo anterior.',
+      'Copia de la última comanda o recibo de nómina.',
+      'Copia de identificación oficial (INE) del trabajador.'
     ]
   },
   {
@@ -107,16 +109,19 @@ const benefits: Benefit[] = [
     ]
   },
   {
-    id: 'puntualidad',
-    icon: CalendarCheck,
-    title: 'Incentivo por Puntualidad',
-    description: 'Recompensas anuales para trabajadores de servicios públicos y administrativos con récord perfecto de asistencia.',
-    tag: 'Reconocimiento',
+    id: 'credencial',
+    icon: CreditCard,
+    title: 'Trámite de Credencial Sindical',
+    description: 'Solicita tu credencial oficial para identificarte como agremiado y acceder a convenios y descuentos especiales en anteojos.',
+    tag: 'Identificación',
     requirements: [
-      '100% de asistencias y registros de entrada/salida a tiempo durante el periodo evaluado.'
+      'Ser trabajador activo sindicalizado del STSMQ.',
+      'Estar al corriente con las cuotas sindicales ordinarias.'
     ],
     documents: [
-      'Tarjeta o reporte digital de checado validado por la jefatura inmediata.'
+      'Copia de la última comanda o recibo de nómina.',
+      'Copia de credencial de elector (INE) vigente.',
+      '1 fotografía tamaño infantil a color (o toma de fotografía en oficinas).'
     ]
   }
 ];
@@ -134,7 +139,7 @@ export default function BenefitsGrid() {
             Bienvenido
           </h2>
           <p className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
-            Prestaciones Sociales y Laborales
+            Servicios y Prestaciones Laborales
           </p>
           <p className="mt-4 text-base text-slate-600">
             Haz clic en cualquier opción para consultar los requisitos y documentos necesarios.
@@ -154,11 +159,18 @@ export default function BenefitsGrid() {
                 <div>
                   <div className="flex items-center justify-between mb-4">
                     <div className="inline-flex rounded-xl bg-[#E07A2B]/10 p-3 text-[#E07A2B] group-hover:bg-[#E07A2B] group-hover:text-white transition-colors">
-                      <Icon className="h-6 w-6" />
+                      {Icon && <Icon className="h-6 w-6" />}
                     </div>
-                    <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-slate-100 text-slate-600">
-                      {benefit.tag}
-                    </span>
+                    <div className="flex items-center gap-1.5">
+                      {benefit.id === 'credencial' && (
+                        <span className="inline-flex items-center gap-1 text-[10px] font-bold text-[#E07A2B] bg-[#E07A2B]/10 px-2 py-0.5 rounded-full border border-[#E07A2B]/20">
+                          <Glasses className="h-3 w-3" /> Óptica
+                        </span>
+                      )}
+                      <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-slate-100 text-slate-600">
+                        {benefit.tag}
+                      </span>
+                    </div>
                   </div>
 
                   <h3 className="text-xl font-bold text-slate-900 mb-2 group-hover:text-[#E07A2B] transition-colors">
@@ -199,7 +211,7 @@ export default function BenefitsGrid() {
             {/* Cabecera del Modal */}
             <div className="flex items-center gap-3 mb-6">
               <div className="p-3 rounded-xl bg-[#E07A2B]/10 text-[#E07A2B]">
-                <selectedBenefit.icon className="h-7 w-7" />
+                {selectedBenefit.icon && <selectedBenefit.icon className="h-7 w-7" />}
               </div>
               <div>
                 <span className="text-xs font-bold text-[#E07A2B] uppercase tracking-wider block">
@@ -214,6 +226,16 @@ export default function BenefitsGrid() {
             <p className="text-sm text-slate-600 mb-6 bg-slate-50 p-4 rounded-xl border border-slate-200/60 leading-relaxed">
               {selectedBenefit.description}
             </p>
+
+            {/* Aviso especial si es la credencial */}
+            {selectedBenefit.id === 'credencial' && (
+              <div className="mb-6 p-3.5 rounded-xl bg-amber-50 border border-amber-200 flex items-start gap-2.5">
+                <Glasses className="h-5 w-5 text-[#E07A2B] shrink-0 mt-0.5" />
+                <p className="text-xs font-semibold text-amber-900 leading-snug">
+                  Beneficio especial: Tu nueva credencial incluye acceso directo a descuentos en anteojos y exámenes de la vista en ópticas con convenio sindical.
+                </p>
+              </div>
+            )}
 
             {/* Sección 1: Requisitos */}
             <div className="mb-6 space-y-3">
