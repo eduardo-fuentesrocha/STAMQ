@@ -7,11 +7,11 @@ import { ChevronLeft, ChevronRight, FileText, Megaphone } from 'lucide-react';
 
 const heroImages = [
   {
-    src: '/hero-trabajadores-qro-3.png',
+    src: '/hero.jpg',
     alt: 'Personal operativo de recolección y limpieza del Municipio de Querétaro',
   },
   {
-    src: '/TRABAJADORES-MUNICIPIO.jpeg',
+    src: '/hero2.jpg',
     alt: 'Trabajadores del Municipio de Querétaro',
   },
 ];
@@ -43,7 +43,7 @@ export default function Hero() {
           <div
             key={index}
             className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
-              index === currentSlide ? 'opacity-40' : 'opacity-0 pointer-events-none'
+              index === currentSlide ? 'opacity-75' : 'opacity-0 pointer-events-none'
             }`}
           >
             <Image
@@ -93,7 +93,7 @@ export default function Hero() {
               className="flex items-center gap-3 p-3.5 rounded-xl bg-slate-800/90 hover:bg-slate-800 text-white font-bold text-sm border border-slate-700 backdrop-blur-md transition-colors"
             >
               <Megaphone className="h-5 w-5 text-[#E07A2B] shrink-0" />
-              <span>Avisos Urgentes</span>
+              <span>Avisos</span>
             </Link>
           </div>
 
