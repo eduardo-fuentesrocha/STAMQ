@@ -3,24 +3,24 @@ import { Calendar, ArrowUpRight, Megaphone } from 'lucide-react';
 
 const newsItems = [
   {
+    date: '25 Octubre, 2026',
+    category: 'Prestaciones y Eventos',
+    title: 'Registro para el Evento del 12 de Diciembre',
+    summary: 'Si aún no has registrado a tus hijas e hijos para este tradicional festejo, por favor infórmanos a través del correo: sindicato.municipio.qro@gmail.com.',
+    link: 'mailto:sindicato.municipio.qro@gmail.com',
+  },
+  {
+    date: '22 Octubre, 2026',
+    category: 'Acción Deportiva',
+    title: 'Próximos Torneos Deportivos Inter-dependencias',
+    summary: 'Prepárate para participar en las disciplinas de fútbol, básquetbol y atletismo. Consulta las convocatorias y fechas de inscripción con tu delegado.',
+    link: '#',
+  },
+  {
     date: '20 Octubre, 2026',
     category: 'Comunicado Oficial',
     title: 'Acuerdo de incremento salarial para el personal operativo del Municipio',
     summary: 'Se concluyó exitosamente la revisión salarial con la administración municipal, logrando un ajuste beneficioso para el tabulador general.',
-    link: '#',
-  },
-  {
-    date: '15 Octubre, 2026',
-    category: 'Asamblea General',
-    title: 'Convocatoria a la Asamblea Ordinaria de Afiliados',
-    summary: 'Se cita a todos los delegados y trabajadores sindicalizados al auditorio sindical para la rendición de cuentas trimestral.',
-    link: '#',
-  },
-  {
-    date: '02 Octubre, 2026',
-    category: 'Prestaciones',
-    title: 'Apertura del registro para Becas Escolares Ciclo 2026-2027',
-    summary: 'Consulta la documentación requerida para ingresar la solicitud de beca de tus hijas e hijos.',
     link: '#',
   },
 ];
@@ -32,17 +32,17 @@ export default function NewsSection() {
         
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12">
           <div>
-            <div className="inline-flex items-center gap-2 text-xs font-bold text-[#2A9EDA] tracking-widest uppercase mb-2">
+            <div className="inline-flex items-center gap-2 text-xs font-bold text-[#E07A2B] tracking-widest uppercase mb-2">
               <Megaphone className="h-4 w-4" />
               Acción Sindical y Transparencia
             </div>
             <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900">
-              Boletines e Información Reciente
+              Avisos y Noticias
             </h2>
           </div>
           <Link
             href="#todas-las-noticias"
-            className="mt-4 md:mt-0 inline-flex items-center gap-1 text-sm font-bold text-[#2A9EDA] hover:text-[#1e7fb2] transition-colors"
+            className="mt-4 md:mt-0 inline-flex items-center gap-1 text-sm font-bold text-[#E07A2B] hover:text-[#c46522] transition-colors"
           >
             Ver todos los comunicados <ArrowUpRight className="h-4 w-4" />
           </Link>
@@ -52,17 +52,17 @@ export default function NewsSection() {
           {newsItems.map((item, index) => (
             <article
               key={index}
-              className="flex flex-col justify-between rounded-xl border border-slate-200 bg-white p-6 shadow-sm hover:border-[#2A9EDA]/40 transition-all"
+              className="flex flex-col justify-between rounded-xl border border-slate-200 bg-white p-6 shadow-sm hover:border-[#E07A2B]/40 transition-all"
             >
               <div>
                 <div className="flex items-center justify-between text-xs text-slate-500 mb-3">
-                  <span className="font-semibold text-[#2A9EDA]">{item.category}</span>
+                  <span className="font-semibold text-[#E07A2B]">{item.category}</span>
                   <span className="flex items-center gap-1">
                     <Calendar className="h-3.5 w-3.5" />
                     {item.date}
                   </span>
                 </div>
-                <h3 className="text-lg font-bold text-slate-900 mb-2 leading-snug hover:text-[#2A9EDA] transition-colors">
+                <h3 className="text-lg font-bold text-slate-900 mb-2 leading-snug hover:text-[#E07A2B] transition-colors">
                   <Link href={item.link}>{item.title}</Link>
                 </h3>
                 <p className="text-sm text-slate-600 line-clamp-3">{item.summary}</p>
@@ -71,7 +71,7 @@ export default function NewsSection() {
               <div className="pt-6 mt-6 border-t border-slate-100">
                 <Link
                   href={item.link}
-                  className="inline-flex items-center gap-1 text-xs font-bold text-slate-900 hover:text-[#2A9EDA] transition-colors"
+                  className="inline-flex items-center gap-1 text-xs font-bold text-slate-900 hover:text-[#E07A2B] transition-colors"
                 >
                   Leer comunicado completo <ArrowUpRight className="h-3.5 w-3.5" />
                 </Link>
