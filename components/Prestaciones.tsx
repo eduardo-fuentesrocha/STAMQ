@@ -61,8 +61,8 @@ export default function Hero() {
         <div className="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-950/80 to-transparent z-10"></div>
       </div>
 
-      {/* Header Institucional Superior */}
-      <div className="relative z-30 w-full flex items-center max-w-7xl mx-auto">
+      {/* Header Institucional Superior Fijo */}
+      <div className="relative z-30 w-full flex items-center max-w-7xl mx-auto shrink-0">
         <div className="flex items-center gap-3 sm:gap-4 w-full">
           {/* Logo oficial en blanco */}
           <div className="relative h-12 w-12 sm:h-16 sm:w-16 lg:h-20 lg:w-20 shrink-0 flex items-center justify-center -ml-2 sm:-ml-3">
@@ -86,9 +86,9 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* Contenido Principal Centrado Verticalmente con margen superior adaptado para móvil */}
-      <div className="relative z-20 w-full max-w-7xl mx-auto my-auto flex flex-col justify-center pt-6 sm:pt-0">
-        <div className="max-w-2xl space-y-4 sm:space-y-5 text-left">
+      {/* Contenido Principal Centrado Verticalmente con precisión matemática en el espacio libre */}
+      <div className="relative z-20 w-full max-w-7xl mx-auto my-auto flex flex-col justify-center items-start py-2">
+        <div className="max-w-2xl space-y-4 sm:space-y-5 text-left w-full">
           
           <h1 className="text-2xl sm:text-4xl lg:text-5xl font-black text-white leading-tight tracking-tight">
             Portal para los <br />
@@ -96,11 +96,11 @@ export default function Hero() {
           </h1>
 
           {/* 4 Accesos rápidos uniformes */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-xl">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-xl w-full">
             {/* Prestaciones */}
             <Link
               href="#prestaciones"
-              className="group flex items-center gap-3 p-3.5 rounded-xl bg-slate-900/80 hover:bg-slate-900 text-white font-bold text-sm border border-slate-700/80 hover:border-[#E07A2B] backdrop-blur-md shadow-lg transition-all transform hover:-translate-y-0.5"
+              className="group flex items-center gap-3 p-3.5 rounded-xl bg-slate-900/85 hover:bg-slate-900 text-white font-bold text-sm border border-slate-700/80 hover:border-[#E07A2B] backdrop-blur-md shadow-lg transition-all transform hover:-translate-y-0.5"
             >
               <div className="p-2 rounded-lg bg-[#E07A2B]/10 text-[#E07A2B] group-hover:bg-[#E07A2B] group-hover:text-white transition-colors shrink-0">
                 <FileText className="h-5 w-5" />
@@ -111,7 +111,7 @@ export default function Hero() {
             {/* Servicios */}
             <Link
               href="#servicios"
-              className="group flex items-center gap-3 p-3.5 rounded-xl bg-slate-900/80 hover:bg-slate-900 text-white font-bold text-sm border border-slate-700/80 hover:border-[#E07A2B] backdrop-blur-md shadow-lg transition-all transform hover:-translate-y-0.5"
+              className="group flex items-center gap-3 p-3.5 rounded-xl bg-slate-900/85 hover:bg-slate-900 text-white font-bold text-sm border border-slate-700/80 hover:border-[#E07A2B] backdrop-blur-md shadow-lg transition-all transform hover:-translate-y-0.5"
             >
               <div className="p-2 rounded-lg bg-[#E07A2B]/10 text-[#E07A2B] group-hover:bg-[#E07A2B] group-hover:text-white transition-colors shrink-0">
                 <Megaphone className="h-5 w-5" />
@@ -122,7 +122,7 @@ export default function Hero() {
             {/* Eventos */}
             <Link
               href="#eventos"
-              className="group flex items-center gap-3 p-3.5 rounded-xl bg-slate-900/80 hover:bg-slate-900 text-white font-bold text-sm border border-slate-700/80 hover:border-[#E07A2B] backdrop-blur-md shadow-lg transition-all transform hover:-translate-y-0.5"
+              className="group flex items-center gap-3 p-3.5 rounded-xl bg-slate-900/85 hover:bg-slate-900 text-white font-bold text-sm border border-slate-700/80 hover:border-[#E07A2B] backdrop-blur-md shadow-lg transition-all transform hover:-translate-y-0.5"
             >
               <div className="p-2 rounded-lg bg-[#E07A2B]/10 text-[#E07A2B] group-hover:bg-[#E07A2B] group-hover:text-white transition-colors shrink-0">
                 <Calendar className="h-5 w-5" />
@@ -133,7 +133,7 @@ export default function Hero() {
             {/* Circulares */}
             <Link
               href="#circulares"
-              className="group flex items-center gap-3 p-3.5 rounded-xl bg-slate-900/80 hover:bg-slate-900 text-white font-bold text-sm border border-slate-700/80 hover:border-[#E07A2B] backdrop-blur-md shadow-lg transition-all transform hover:-translate-y-0.5"
+              className="group flex items-center gap-3 p-3.5 rounded-xl bg-slate-900/85 hover:bg-slate-900 text-white font-bold text-sm border border-slate-700/80 hover:border-[#E07A2B] backdrop-blur-md shadow-lg transition-all transform hover:-translate-y-0.5"
             >
               <div className="p-2 rounded-lg bg-[#E07A2B]/10 text-[#E07A2B] group-hover:bg-[#E07A2B] group-hover:text-white transition-colors shrink-0">
                 <Bell className="h-5 w-5" />
@@ -145,7 +145,7 @@ export default function Hero() {
           {/* 🌟 Banner Flotante Dinámico: Aviso Destacado */}
           <div 
             onClick={() => setIsModalOpen(true)}
-            className="group cursor-pointer relative overflow-hidden flex items-center justify-between gap-4 p-3.5 rounded-xl bg-slate-900/85 border-2 border-[#E07A2B] hover:border-orange-400 backdrop-blur-md shadow-2xl transition-all transform hover:-translate-y-0.5 max-w-xl"
+            className="group cursor-pointer relative overflow-hidden flex items-center justify-between gap-4 p-3.5 rounded-xl bg-slate-900/90 border-2 border-[#E07A2B] hover:border-orange-400 backdrop-blur-md shadow-2xl transition-all transform hover:-translate-y-0.5 max-w-xl w-full"
           >
             <div className="absolute inset-0 bg-gradient-to-r from-[#E07A2B]/15 via-transparent to-transparent opacity-75 group-hover:opacity-100 transition-opacity animate-pulse"></div>
 
@@ -171,8 +171,8 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* Espaciador inferior */}
-      <div className="hidden sm:block h-4"></div>
+      {/* Espaciador inferior flexible para asegurar simetría visual exacta */}
+      <div className="shrink-0 h-2"></div>
 
       {/* 📋 Modal de Detalle del Aviso Destacado */}
       {isModalOpen && (
