@@ -11,8 +11,8 @@ const montserrat = Montserrat({
 });
 
 export const metadata: Metadata = {
-  title: "STSMQ | Sindicato de Trabajadores al Servicio del Municipio de Querétaro",
-  description: "Portal oficial del Sindicato de Trabajadores al Servicio del Municipio de Querétaro.",
+  title: "SINDICATO DE TRABAJADORES AL SERVICIO DEL MUNICIPIO DE QUERÉTARO",
+  description: "Portal para los Trabajadores Sindicalizados del Municipio de Querétaro",
 };
 
 export default function RootLayout({

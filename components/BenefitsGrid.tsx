@@ -139,10 +139,10 @@ export default function BenefitsGrid() {
             Bienvenido
           </h2>
           <p className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
-            Servicios y Prestaciones Laborales
+            Prestaciones
           </p>
           <p className="mt-4 text-base text-slate-600">
-            Haz clic en cualquier opción para consultar los requisitos y documentos necesarios.
+            Haz clic en cualquier opción para consultar.
           </p>
         </div>
 
