@@ -86,85 +86,89 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* Contenido Principal con separación equilibrada para ocupar el espacio inferior */}
-      <div className="relative z-20 w-full max-w-7xl mx-auto my-auto flex flex-col justify-end pb-4 pt-4">
-        <div className="max-w-2xl space-y-4 sm:space-y-5 text-left w-full">
+      {/* Contenido Principal */}
+      <div className="relative z-20 w-full max-w-7xl mx-auto my-auto flex flex-col justify-end pb-2 pt-2">
+        <div className="max-w-2xl text-left w-full">
           
-          <h1 className="text-2xl sm:text-4xl lg:text-5xl font-black text-white leading-tight tracking-tight">
+          {/* Título: Elevado suavemente en dispositivos móviles */}
+          <h1 className="-mt-4 sm:mt-0 mb-4 sm:mb-5 text-2xl sm:text-4xl lg:text-5xl font-black text-white leading-tight tracking-tight">
             Portal para los <br />
             <span className="text-[#E07A2B]">Trabajadores Sindicalizados del Municipio de Querétaro</span>
           </h1>
 
-          {/* 4 Accesos rápidos uniformes */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-xl w-full pt-1">
-            {/* Prestaciones */}
-            <Link
-              href="#prestaciones"
-              className="group flex items-center gap-3 p-3.5 rounded-xl bg-slate-900/85 hover:bg-slate-900 text-white font-bold text-sm border border-slate-700/80 hover:border-[#E07A2B] backdrop-blur-md shadow-lg transition-all transform hover:-translate-y-0.5"
-            >
-              <div className="p-2 rounded-lg bg-[#E07A2B]/10 text-[#E07A2B] group-hover:bg-[#E07A2B] group-hover:text-white transition-colors shrink-0">
-                <FileText className="h-5 w-5" />
-              </div>
-              <span>Prestaciones</span>
-            </Link>
+          {/* Bloque de botones: Bajado ligeramente en dispositivos móviles */}
+          <div className="mt-3 sm:mt-0 space-y-3.5 sm:space-y-5">
+            {/* 4 Accesos rápidos uniformes */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-xl w-full">
+              {/* Prestaciones */}
+              <Link
+                href="#prestaciones"
+                className="group flex items-center gap-3 p-3.5 rounded-xl bg-slate-900/85 hover:bg-slate-900 text-white font-bold text-sm border border-slate-700/80 hover:border-[#E07A2B] backdrop-blur-md shadow-lg transition-all transform hover:-translate-y-0.5"
+              >
+                <div className="p-2 rounded-lg bg-[#E07A2B]/10 text-[#E07A2B] group-hover:bg-[#E07A2B] group-hover:text-white transition-colors shrink-0">
+                  <FileText className="h-5 w-5" />
+                </div>
+                <span>Prestaciones</span>
+              </Link>
 
-            {/* Servicios */}
-            <Link
-              href="#servicios"
-              className="group flex items-center gap-3 p-3.5 rounded-xl bg-slate-900/85 hover:bg-slate-900 text-white font-bold text-sm border border-slate-700/80 hover:border-[#E07A2B] backdrop-blur-md shadow-lg transition-all transform hover:-translate-y-0.5"
-            >
-              <div className="p-2 rounded-lg bg-[#E07A2B]/10 text-[#E07A2B] group-hover:bg-[#E07A2B] group-hover:text-white transition-colors shrink-0">
-                <Megaphone className="h-5 w-5" />
-              </div>
-              <span>Servicios</span>
-            </Link>
-            
-            {/* Eventos */}
-            <Link
-              href="#eventos"
-              className="group flex items-center gap-3 p-3.5 rounded-xl bg-slate-900/85 hover:bg-slate-900 text-white font-bold text-sm border border-slate-700/80 hover:border-[#E07A2B] backdrop-blur-md shadow-lg transition-all transform hover:-translate-y-0.5"
-            >
-              <div className="p-2 rounded-lg bg-[#E07A2B]/10 text-[#E07A2B] group-hover:bg-[#E07A2B] group-hover:text-white transition-colors shrink-0">
-                <Calendar className="h-5 w-5" />
-              </div>
-              <span>Eventos</span>
-            </Link>
+              {/* Servicios */}
+              <Link
+                href="#servicios"
+                className="group flex items-center gap-3 p-3.5 rounded-xl bg-slate-900/85 hover:bg-slate-900 text-white font-bold text-sm border border-slate-700/80 hover:border-[#E07A2B] backdrop-blur-md shadow-lg transition-all transform hover:-translate-y-0.5"
+              >
+                <div className="p-2 rounded-lg bg-[#E07A2B]/10 text-[#E07A2B] group-hover:bg-[#E07A2B] group-hover:text-white transition-colors shrink-0">
+                  <Megaphone className="h-5 w-5" />
+                </div>
+                <span>Servicios</span>
+              </Link>
+              
+              {/* Eventos */}
+              <Link
+                href="#eventos"
+                className="group flex items-center gap-3 p-3.5 rounded-xl bg-slate-900/85 hover:bg-slate-900 text-white font-bold text-sm border border-slate-700/80 hover:border-[#E07A2B] backdrop-blur-md shadow-lg transition-all transform hover:-translate-y-0.5"
+              >
+                <div className="p-2 rounded-lg bg-[#E07A2B]/10 text-[#E07A2B] group-hover:bg-[#E07A2B] group-hover:text-white transition-colors shrink-0">
+                  <Calendar className="h-5 w-5" />
+                </div>
+                <span>Eventos</span>
+              </Link>
 
-            {/* Circulares */}
-            <Link
-              href="#circulares"
-              className="group flex items-center gap-3 p-3.5 rounded-xl bg-slate-900/85 hover:bg-slate-900 text-white font-bold text-sm border border-slate-700/80 hover:border-[#E07A2B] backdrop-blur-md shadow-lg transition-all transform hover:-translate-y-0.5"
-            >
-              <div className="p-2 rounded-lg bg-[#E07A2B]/10 text-[#E07A2B] group-hover:bg-[#E07A2B] group-hover:text-white transition-colors shrink-0">
-                <Bell className="h-5 w-5" />
-              </div>
-              <span>Circulares</span>
-            </Link>
-          </div>
-
-          {/* 🌟 Banner Flotante Dinámico: Aviso Destacado */}
-          <div 
-            onClick={() => setIsModalOpen(true)}
-            className="group cursor-pointer relative overflow-hidden flex items-center justify-between gap-4 p-3.5 rounded-xl bg-slate-900/90 border-2 border-[#E07A2B] hover:border-orange-400 backdrop-blur-md shadow-2xl transition-all transform hover:-translate-y-0.5 max-w-xl w-full"
-          >
-            <div className="absolute inset-0 bg-gradient-to-r from-[#E07A2B]/15 via-transparent to-transparent opacity-75 group-hover:opacity-100 transition-opacity animate-pulse"></div>
-
-            <div className="relative z-10 flex items-center gap-3">
-              <div className="p-2 rounded-xl bg-[#E07A2B] text-white shadow-md shrink-0">
-                <Bell className="h-5 w-5 animate-bounce" />
-              </div>
-              <div>
-                <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-[#E07A2B] block">
-                  AVISO DESTACADO
-                </span>
-                <h3 className="text-sm sm:text-base font-bold text-white group-hover:text-[#E07A2B] transition-colors leading-tight">
-                  {relevantCircular.title}
-                </h3>
-              </div>
+              {/* Circulares */}
+              <Link
+                href="#circulares"
+                className="group flex items-center gap-3 p-3.5 rounded-xl bg-slate-900/85 hover:bg-slate-900 text-white font-bold text-sm border border-slate-700/80 hover:border-[#E07A2B] backdrop-blur-md shadow-lg transition-all transform hover:-translate-y-0.5"
+              >
+                <div className="p-2 rounded-lg bg-[#E07A2B]/10 text-[#E07A2B] group-hover:bg-[#E07A2B] group-hover:text-white transition-colors shrink-0">
+                  <Bell className="h-5 w-5" />
+                </div>
+                <span>Circulares</span>
+              </Link>
             </div>
 
-            <div className="relative z-10 shrink-0 text-slate-300 group-hover:text-white transition-colors p-2 bg-slate-800/80 rounded-lg">
-              <ExternalLink className="h-4 w-4" />
+            {/* 🌟 Banner Flotante Dinámico: Aviso Destacado */}
+            <div 
+              onClick={() => setIsModalOpen(true)}
+              className="group cursor-pointer relative overflow-hidden flex items-center justify-between gap-4 p-3.5 rounded-xl bg-slate-900/90 border-2 border-[#E07A2B] hover:border-orange-400 backdrop-blur-md shadow-2xl transition-all transform hover:-translate-y-0.5 max-w-xl w-full"
+            >
+              <div className="absolute inset-0 bg-gradient-to-r from-[#E07A2B]/15 via-transparent to-transparent opacity-75 group-hover:opacity-100 transition-opacity animate-pulse"></div>
+
+              <div className="relative z-10 flex items-center gap-3">
+                <div className="p-2 rounded-xl bg-[#E07A2B] text-white shadow-md shrink-0">
+                  <Bell className="h-5 w-5 animate-bounce" />
+                </div>
+                <div>
+                  <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-[#E07A2B] block">
+                    AVISO DESTACADO
+                  </span>
+                  <h3 className="text-sm sm:text-base font-bold text-white group-hover:text-[#E07A2B] transition-colors leading-tight">
+                    {relevantCircular.title}
+                  </h3>
+                </div>
+              </div>
+
+              <div className="relative z-10 shrink-0 text-slate-300 group-hover:text-white transition-colors p-2 bg-slate-800/80 rounded-lg">
+                <ExternalLink className="h-4 w-4" />
+              </div>
             </div>
           </div>
 
