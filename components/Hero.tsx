@@ -86,21 +86,17 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* Contenedor Principal Separado: Título Arriba / Botones y Aviso Abajo */}
-      <div className="relative z-25 w-full max-w-7xl mx-auto flex-1 flex flex-col justify-between pt-4 pb-2">
-        
-        {/* Título principal colocado hacia la parte superior */}
-        <div className="max-w-2xl text-left pt-2">
+      {/* Contenido Principal con separación equilibrada para ocupar el espacio inferior */}
+      <div className="relative z-20 w-full max-w-7xl mx-auto my-auto flex flex-col justify-end pb-4 pt-4">
+        <div className="max-w-2xl space-y-4 sm:space-y-5 text-left w-full">
+          
           <h1 className="text-2xl sm:text-4xl lg:text-5xl font-black text-white leading-tight tracking-tight">
             Portal para los <br />
             <span className="text-[#E07A2B]">Trabajadores Sindicalizados del Municipio de Querétaro</span>
           </h1>
-        </div>
 
-        {/* Bloque de Accesos Rápidos y Aviso Destacado colocados hacia la parte inferior */}
-        <div className="max-w-2xl space-y-3 pb-2 w-full">
           {/* 4 Accesos rápidos uniformes */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-xl w-full">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-xl w-full pt-1">
             {/* Prestaciones */}
             <Link
               href="#prestaciones"
@@ -171,9 +167,12 @@ export default function Hero() {
               <ExternalLink className="h-4 w-4" />
             </div>
           </div>
-        </div>
 
+        </div>
       </div>
+
+      {/* Espaciador inferior mínimo para cerrar el layout */}
+      <div className="shrink-0 h-1"></div>
 
       {/* 📋 Modal de Detalle del Aviso Destacado */}
       {isModalOpen && (
