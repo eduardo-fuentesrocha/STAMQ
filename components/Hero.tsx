@@ -86,11 +86,11 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* Contenido Principal con separación responsiva independiente */}
-      <div className="relative z-20 w-full max-w-7xl mx-auto flex-1 flex flex-col justify-between sm:justify-center py-2 sm:py-0">
+      {/* Contenido Principal con distribución equilibrada */}
+      <div className="relative z-20 w-full max-w-7xl mx-auto flex-1 flex flex-col justify-around py-2 sm:py-0">
         
-        {/* Título principal: Margen superior negativo exclusivo para móviles (-mt-4), limpio en escritorio (mt-0) */}
-        <div className="max-w-2xl text-left w-full -mt-4 sm:mt-0 mb-4 sm:mb-6">
+        {/* Título principal: Ubicado de forma armónica entre el header y los botones */}
+        <div className="max-w-2xl text-left w-full mt-2 sm:mt-0">
           <h1 className="text-xl sm:text-4xl lg:text-5xl font-black text-white leading-tight tracking-tight">
             Portal para los <br />
             <span className="text-[#E07A2B]">Trabajadores Sindicalizados del Municipio de Querétaro</span>
@@ -98,7 +98,7 @@ export default function Hero() {
         </div>
 
         {/* Bloque de Accesos Rápidos y Aviso Destacado */}
-        <div className="max-w-2xl space-y-2.5 sm:space-y-4 w-full pb-2 sm:pb-0">
+        <div className="max-w-2xl space-y-2 sm:space-y-4 w-full mb-2 sm:mb-0">
           
           {/* 4 Accesos rápidos uniformes */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3 max-w-xl w-full">
