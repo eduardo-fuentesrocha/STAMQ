@@ -17,79 +17,80 @@ import {
   X,
   ChevronRight,
   FileText,
-  CheckCircle2
+  CheckCircle2,
+  Undo2
 } from 'lucide-react';
 
 const prestaciones = [
   {
     id: 'jubilaciones-pensiones',
-    titulo: 'Pensiones y Jubilaciones',
+    titulo: 'Jubilaciones y Pensiones',
     descripcion: 'Acompañamiento y gestión integral de trámites para el retiro digno de nuestros trabajadores.',
     icono: ShieldCheck,
     esDoble: true,
     jubilacion: {
       titulo: 'Jubilaciones',
-      descripcion: 'Bolsa de apoyos económicos mensuales y trámites de jubilación por años de servicio para trabajadores sindicalizados y sus familias.',
+      descripcion: 'Derecho a solicitar la jubilación al cumplir 28 años de servicio, independientemente de la edad, conforme a la Ley de los Trabajadores del Estado de Querétaro.',
       requisitos: [
-        'Tener un mínimo de años de servicio ininterrumpido en el Municipio (Jubilación) conforme a la ley.',
-        'Estar registrado en el padrón activo de sindicalizados del STSMQ.',
-        'Contar con solicitud formal de trámite ingresada ante la instancia correspondiente.',
+        'Cumplir con un mínimo de 28 años de servicio ininterrumpido en el Municipio.',
+        'Estar registrado en el padrón activo del Sindicato.',
+        'Presentar solicitud formal de jubilación ante la Oficialía Mayor o instancia equivalente del Municipio.',
         'No contar con adeudos administrativos vigentes en el Sindicato.'
       ],
       documentos: [
+        'Solicitud por escrito de jubilación dirigida a la Oficialía Mayor del Municipio.',
         'Identificación oficial vigente (INE o Pasaporte).',
-        'Último recibo de nómina timbrado.',
-        'Constancia de semanas/años cotizados emitida por la Dirección de RH del Municipio.',
-        'Acta de nacimiento del trabajador.'
+        'Constancia de años de servicio y antigüedad emitida por la Dirección de Recursos Humanos.',
+        'Último recibo de nómina timbrado y acta de nacimiento del trabajador.'
       ]
     },
     pension: {
       titulo: 'Pensiones',
-      descripcion: 'Gestión de pensiones por invalidez, vejez o viudez conforme a la normatividad vigente y el dictamen médico oficial.',
+      descripcion: 'Gestión de pensión por vejez al cumplir 60 años de edad y al menos 18 años de servicio, o bien por invalidez conforme a la normatividad estatal.',
       requisitos: [
-        'Cumplir con el dictamen médico oficial o los supuestos de ley establecidos para pensión por invalidez o vejez.',
-        'Estar registrado en el padrón activo de sindicalizados del STSMQ.',
-        'Acreditar la dependencia económica en caso de beneficiarios (viudez u orfandad).',
+        'Haber cumplido 60 años de edad y contar con un mínimo de 18 años de servicio para pensión por vejez, o bien contar con el dictamen médico oficial en caso de invalidez.',
+        'Estar registrado en el padrón activo del Sindicato.',
+        'Acreditar fehacientemente la dependencia económica en caso de beneficiarios por viudez u orfandad.',
         'No contar con adeudos administrativos vigentes en el Sindicato.'
       ],
       documentos: [
+        'Solicitud formal de pensión ante la instancia municipal correspondiente.',
         'Identificación oficial vigente (INE o Pasaporte).',
-        'Dictamen médico oficial o resolución de invalidez/vejez.',
-        'Acta de matrimonio o nacimiento de beneficiarios según corresponda.',
-        'Comprobante de domicilio reciente y constancia de percepciones.'
+        'Dictamen médico oficial (para pensión por invalidez) o actas de estado civil (para pensión por viudez/orfandad).',
+        'Comprobante de domicilio reciente y constancia de percepciones salariales.'
       ]
     }
   },
   {
     id: 'estimulos',
     titulo: 'Estímulos por Años de Servicio',
-    descripcion: 'Reconocimiento a la lealtad, trayectoria y dedicación continua en el Municipio de Querétaro.',
+    descripcion: 'Reconocimiento anual por aniversario laboral a los trabajadores que cumplen años de servicio.',
     icono: Award,
     esDoble: false,
-    descripcionDetallada: 'Entrega de reconocimientos económicos y conmemorativos por cumplir quinquenios (5, 10, 15, 20 años o más) de servicio ininterrumpido en favor de la ciudadanía queretana.',
+    descripcionDetallada: 'Incentivo entregado anualmente en la segunda quincena de agosto para reconocer la trayectoria y antigüedad del personal conforme al tabulador institucional.',
     requisitos: [
-      'Cumplir 5, 10, 15, 20 o más años de servicio ininterrumpido.',
-      'Dictamen favorable de expediente por parte de Recursos Humanos.'
+      'Cumplir con los periodos de servicio ininterrumpido establecidos en el Municipio.',
+      'Dictamen favorable de expediente laboral por parte de Recursos Humanos y el Sindicato.'
     ],
     documentos: [
       'Copia del nombramiento base o primer contrato.',
-      'Último recibo de nómina.',
+      'Último recibo de nómina timbrado.',
       'Identificación oficial vigente.'
     ]
   },
   {
     id: 'puntualidad',
     titulo: 'Incentivos por Puntualidad',
-    descripcion: 'Bonificación y reconocimientos al compromiso y constancia del personal operativo y administrativo.',
+    descripcion: 'Reconocimiento anual a trabajadores operativos con destacada asistencia y puntualidad.',
     icono: Clock,
     esDoble: false,
-    descripcionDetallada: 'Estímulo periódico dirigido a premiar la asistencia regular y el cumplimiento puntual en las jornadas laborales asignadas en las diferentes áreas operativas del municipio.',
+    descripcionDetallada: 'Otorgado a quienes observen la mejor asistencia al trabajo y antigüedad. Calificado conjuntamente por la Dirección de Recursos Humanos y el Sindicato para su entrega anual.',
     requisitos: [
-      'Mantener asistencia regular sin faltas ni retardos injustificados en el periodo evaluado.',
-      'Estar registrado en el padrón activo de sindicalizados del STSMQ.'
+      'Ser trabajador operativo con registro en el padrón activo del Sindicato.',
+      'Mantener un expediente destacado en asistencia, puntualidad y antigüedad.'
     ],
     documentos: [
-      'Reporte de asistencia emitido por el área correspondiente.',
+      'Reporte de incidencias y asistencia emitido por el área correspondiente.',
       'Último recibo de nómina timbrado.',
       'Credencial de sindicalizado vigente.'
     ]
@@ -97,29 +98,29 @@ const prestaciones = [
   {
     id: 'lentes',
     titulo: 'Apoyo para Lentes Graduados',
-    descripcion: 'Subsidio directo para la adquisición y renovación de anteojos para ti y tus dependientes.',
+    descripcion: 'Suministro anual de lentes graduados para el trabajador, cónyuge e hijos que estudian.',
     icono: Glasses,
     esDoble: false,
-    descripcionDetallada: 'Reembolso o apoyo económico parcial/total en ópticas afiliadas presentando tu receta médica y credencial de sindicalizado vigente. Aplica para el trabajador y beneficiarios directos.',
+    descripcionDetallada: 'Prestación anual que cubre la valoración médica y la entrega de lentes graduados para el trabajador, cónyuge y dependientes acreditados que estudian, en la óptica designada por el Municipio.',
     requisitos: [
-      'Presentar receta médica original con graduación reciente.',
-      'Estar al corriente con las cuotas sindicales ordinarias.'
+      'Estar al corriente con las cuotas sindicales ordinarias.',
+      'Hijos acreditados estudiando conforme a los límites de edad establecidos.'
     ],
     documentos: [
-      'Receta médica original de óptica habilitada.',
+      'Valoración médica emitida por la óptica designada por el Municipio.',
       'Credencial de sindicalizado vigente.',
-      'Copia de la última comanda o recibo de nómina.'
+      'Constancia de estudios de los beneficiarios y actas correspondientes.'
     ]
   },
   {
     id: 'fallecimiento',
     titulo: 'Apoyos por Fallecimiento',
-    descripcion: 'Respaldo económico y orientación solidaria para las familias en momentos difíciles.',
+    descripcion: 'Apoyo económico institucional y respaldo solidario en momentos difíciles para la familia.',
     icono: HeartHandshake,
     esDoble: false,
-    descripcionDetallada: 'Gestión inmediata de gastos funerarios y entrega de subsidio de solidaridad institucional para los deudos del trabajador sindicalizado, brindando acompañamiento humano y legal.',
+    descripcionDetallada: 'Gestión de apoyo económico en caso de fallecimiento del trabajador, su cónyuge o hijos, así como el otorgamiento de respaldo institucional para gastos de marcha a los beneficiarios.',
     requisitos: [
-      'Ser familiar directo designado o beneficiario registrado del trabajador sindicalizado fallecido.'
+      'Ser familiar directo designado o beneficiario registrado del trabajador sindicalizado.'
     ],
     documentos: [
       'Acta de defunción oficial en copia certificada.',
@@ -130,13 +131,13 @@ const prestaciones = [
   {
     id: 'becas',
     titulo: 'Becas',
-    descripcion: 'Apoyos económicos para continuar tus estudios o respaldar la formación académica de tus hijos.',
+    descripcion: 'Fondo de apoyo para becas académicas, para capacidades diferentes y becas de excelencia.',
     icono: GraduationCap,
     esDoble: false,
-    descripcionDetallada: 'Convocatorias semestrales o anuales para el otorgamiento de becas de excelencia académica y de apoyo general dirigidas a los hijos de los agremiados en niveles básico, medio superior y superior.',
+    descripcionDetallada: 'Aportaciones periódicas administradas por el Sindicato para impulsar la formación académica de los hijos de los agremiados, incluyendo apoyos especiales y de excelencia académica.',
     requisitos: [
-      'Hijos inscritos en ciclo escolar activo en institución oficial reconocida por la SEP.',
-      'Acreditar promedio mínimo general requerido en la convocatoria.'
+      'Hijos inscritos en ciclo escolar activo en institución oficial reconocida.',
+      'Cumplir con los procedimientos internos de asignación del Sindicato.'
     ],
     documentos: [
       'Constancia de estudios oficial o boleta de calificaciones sellada.',
@@ -147,12 +148,12 @@ const prestaciones = [
   {
     id: 'paquetes',
     titulo: 'Paquetes Escolares',
-    descripcion: 'Entrega anual de útiles e insumos escolares al inicio de cada ciclo académico.',
+    descripcion: 'Dotación anual de paquetes escolares y apoyos para el inicio de clases.',
     icono: PackageCheck,
     esDoble: false,
-    descripcionDetallada: 'Dotación de mochilas y kits de útiles escolares de calidad, ajustados a las listas oficiales de la Secretaría de Educación, entregados directamente a los trabajadores previo al inicio de clases.',
+    descripcionDetallada: 'Entrega de mochilas, útiles escolares ajustados a las listas oficiales y apoyos complementarios para los hijos de los agremiados en los diferentes niveles educativos.',
     requisitos: [
-      'Ser trabajador activo sindicalizado del STSMQ.',
+      'Ser trabajador activo sindicalizado.',
       'Contar con hijos cursando educación básica o media superior.'
     ],
     documentos: [
@@ -164,28 +165,28 @@ const prestaciones = [
   {
     id: 'permisos',
     titulo: 'Permisos',
-    descripcion: 'Gestión y trámite de licencias conforme a las condiciones generales de trabajo.',
+    descripcion: 'Licencias y permisos con goce de sueldo por matrimonio, paternidad y defunción.',
     icono: FileCheck2,
     esDoble: false,
-    descripcionDetallada: 'Asesoría y facilitación de permisos económicos, por paternidad, por matrimonio o por situaciones de fuerza mayor, respetando los derechos laborales establecidos en el tabulador.',
+    descripcionDetallada: 'Asesoría y facilitación de permisos por matrimonio civil, licencias por nacimiento de hijos y permisos por fallecimiento de familiares directos, respetando los derechos laborales.',
     requisitos: [
       'Presentar solicitud con anticipación conforme a las condiciones generales de trabajo.'
     ],
     documentos: [
-      'Oficio de solicitud de licencia o permiso firmado.',
-      'Comprobante o justificante del motivo del permiso (en caso de fuerza mayor).'
+      'Oficio de solicitud de licencia firmado.',
+      'Acta de matrimonio, certificado de nacimiento o acta de defunción según corresponda.'
     ]
   },
   {
     id: 'construccion',
     titulo: 'Ayuda para Materiales de Construcción',
-    descripcion: 'Apoyo enfocado en la mejora, ampliación y acondicionamiento de tu vivienda familiar.',
+    descripcion: 'Apoyos e infraestructura para el mejoramiento del patrimonio familiar del trabajador.',
     icono: Hammer,
     esDoble: false,
-    descripcionDetallada: 'Subsidios o convenios especiales para la obtención a bajo costo de cemento, varilla, impermeabilizante y otros materiales indispensables para el mejoramiento del patrimonio familiar del trabajador.',
+    descripcionDetallada: 'Subsidios institucionales y programas de apoyo para obra, mantenimiento y mejoras al patrimonio y condiciones de bienestar del agremiado.',
     requisitos: [
       'Ser trabajador de base sindicalizado con antigüedad mínima requerida.',
-      'Demostrar propiedad o posesión legal del inmueble a mejorar.'
+      'Demostrar posesión legal del inmueble o cumplir con las bases de la convocatoria.'
     ],
     documentos: [
       'Comprobante de domicilio reciente.',
@@ -197,26 +198,23 @@ const prestaciones = [
 
 export default function Prestaciones() {
   const [prestacionSeleccionada, setPrestacionSeleccionada] = useState<typeof prestaciones[0] | null>(null);
-  const [tabSeleccionada, setTabSeleccionada] = useState<'jubilacion' | 'pension'>('jubilacion');
+  const [tipoIndependiente, setTipoIndependiente] = useState<'jubilacion' | 'pension' | null>(null);
 
   return (
-    <section id="prestaciones" className="bg-white text-slate-900 py-20 px-6 sm:px-12 lg:px-16 border-t border-slate-200">
+    <section id="prestaciones" className="bg-white text-zinc-900 py-20 px-6 sm:px-12 lg:px-16 border-t border-zinc-200">
       <div className="max-w-7xl mx-auto space-y-12">
         
         {/* Encabezado de la Sección */}
         <div className="max-w-3xl space-y-4">
-          <span className="text-[#E07A2B] text-xs font-black uppercase tracking-widest">
-            Bienvenido
-          </span>
-          <h2 className="text-3xl sm:text-4xl font-black text-slate-950 tracking-tight">
+          <h2 className="text-3xl sm:text-4xl font-black text-zinc-950 tracking-tight">
             Prestaciones
           </h2>
-          <p className="text-slate-600 text-base leading-relaxed">
-            Haz clic en cualquier opción para consultar. 
+          <p className="text-zinc-600 text-base leading-relaxed">
+            Haz clic en cualquier opción para consultar los requisitos y la documentación necesaria. 
           </p>
         </div>
 
-        {/* Cuadrícula de Prestaciones en Fondo Blanco */}
+        {/* Cuadrícula de Prestaciones en Fondo Blanco con Tarjetas Suaves */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {prestaciones.map((item) => {
             const Icono = item.icono;
@@ -224,39 +222,76 @@ export default function Prestaciones() {
               <div
                 key={item.id}
                 onClick={() => {
-                  setPrestacionSeleccionada(item);
-                  setTabSeleccionada('jubilacion');
+                  if (!item.esDoble) {
+                    setPrestacionSeleccionada(item);
+                    setTipoIndependiente(null);
+                  }
                 }}
-                className="group p-6 rounded-2xl bg-white border border-slate-200 hover:border-[#E07A2B] shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between cursor-pointer"
+                className={`group p-6 rounded-2xl bg-white border border-zinc-200 shadow-sm transition-all duration-300 flex flex-col justify-between ${
+                  item.esDoble ? 'cursor-default' : 'hover:border-[#E07A2B] hover:shadow-md cursor-pointer'
+                }`}
               >
                 <div className="space-y-4">
                   <div className="p-3 w-fit rounded-xl bg-[#E07A2B]/10 text-[#E07A2B] group-hover:bg-[#E07A2B] group-hover:text-white transition-colors duration-300">
                     <Icono className="h-6 w-6" />
                   </div>
-                  <h3 className="text-lg font-bold text-slate-900 group-hover:text-[#E07A2B] transition-colors">
+                  <h3 className="text-lg font-bold text-zinc-900 group-hover:text-[#E07A2B] transition-colors">
                     {item.titulo}
                   </h3>
-                  <p className="text-sm text-slate-600 leading-relaxed">
+                  <p className="text-sm text-zinc-600 leading-relaxed">
                     {item.descripcion}
                   </p>
                 </div>
 
-                <div className="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-[#E07A2B]">
-                  <span>Ver requisitos y documentos</span>
-                  <ChevronRight className="h-4 w-4 transform group-hover:translate-x-1 transition-transform" />
-                </div>
+                {/* Comportamiento independiente para Jubilaciones y Pensiones */}
+                {item.esDoble ? (
+                  <div className="mt-6 pt-4 border-t border-zinc-100 space-y-2.5">
+                    <span className="text-xs font-semibold text-zinc-500 block">
+                      Selecciona la opción deseada:
+                    </span>
+                    <div className="grid grid-cols-2 gap-2">
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setPrestacionSeleccionada(item);
+                          setTipoIndependiente('jubilacion');
+                        }}
+                        className="py-2 px-3 rounded-lg bg-[#E07A2B]/10 hover:bg-[#E07A2B] text-[#E07A2B] hover:text-white text-xs font-bold transition-all flex items-center justify-center gap-1.5"
+                      >
+                        <GraduationCap className="h-3.5 w-3.5" />
+                        <span>Jubilaciones</span>
+                      </button>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setPrestacionSeleccionada(item);
+                          setTipoIndependiente('pension');
+                        }}
+                        className="py-2 px-3 rounded-lg bg-[#E07A2B]/10 hover:bg-[#E07A2B] text-[#E07A2B] hover:text-white text-xs font-bold transition-all flex items-center justify-center gap-1.5"
+                      >
+                        <ShieldCheck className="h-3.5 w-3.5" />
+                        <span>Pensiones</span>
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="mt-6 pt-4 border-t border-zinc-100 flex items-center justify-between text-xs font-bold text-[#E07A2B]">
+                    <span>Requisitos y documentos</span>
+                    <ChevronRight className="h-4 w-4 transform group-hover:translate-x-1 transition-transform" />
+                  </div>
+                )}
               </div>
             );
           })}
         </div>
 
         {/* Banner General de Atención e Informes */}
-        <div className="mt-12 p-8 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col lg:flex-row items-center justify-between gap-6 shadow-sm">
+        <div className="mt-12 p-8 rounded-2xl bg-zinc-50 border border-zinc-200 flex flex-col lg:flex-row items-center justify-between gap-6 shadow-sm">
           <div className="space-y-2 text-center lg:text-left">
-            <h4 className="text-xl font-bold text-slate-950">
+            <h4 className="text-xl font-bold text-zinc-950">
               ¿Requieres orientación sobre tus trámites?
             </h4>
-            <p className="text-sm text-slate-600">
+            <p className="text-sm text-zinc-600">
               Comunícate directamente al teléfono o por correo electrónico para mayor información.
             </p>
           </div>
@@ -264,7 +299,7 @@ export default function Prestaciones() {
           <div className="flex flex-col sm:flex-row items-center gap-4 shrink-0">
             <Link
               href="tel:4422137119"
-              className="flex items-center gap-2 px-5 py-3 rounded-xl bg-white hover:bg-slate-100 text-slate-900 font-bold text-sm border border-slate-300 shadow-sm transition-colors w-full sm:w-auto justify-center"
+              className="flex items-center gap-2 px-5 py-3 rounded-xl bg-white hover:bg-zinc-100 text-zinc-900 font-bold text-sm border border-zinc-300 shadow-sm transition-colors w-full sm:w-auto justify-center"
             >
               <Phone className="h-4 w-4 text-[#E07A2B]" />
               <span>(442) 213 7119</span>
@@ -284,16 +319,16 @@ export default function Prestaciones() {
 
       {/* Modal / Panel Desplegable */}
       {prestacionSeleccionada && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm animate-in fade-in duration-200">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-zinc-950/60 backdrop-blur-sm animate-in fade-in duration-200">
           <div 
-            className="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-slate-200 p-6 sm:p-8 relative"
+            className="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-zinc-200 p-6 sm:p-8 relative text-zinc-900"
             onClick={(e) => e.stopPropagation()}
           >
             
             {/* Botón de Cerrar */}
             <button
               onClick={() => setPrestacionSeleccionada(null)}
-              className="absolute top-4 right-4 p-2 rounded-xl text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors"
+              className="absolute top-4 right-4 p-2 rounded-xl text-zinc-400 hover:text-zinc-700 hover:bg-zinc-100 transition-colors"
               aria-label="Cerrar modal"
             >
               <X className="h-6 w-6" />
@@ -305,60 +340,31 @@ export default function Prestaciones() {
                 {prestacionSeleccionada.icono && <prestacionSeleccionada.icono className="h-7 w-7" />}
               </div>
               <div>
-                <h3 className="text-2xl font-black text-slate-900 leading-tight">
+                <h3 className="text-2xl font-black text-zinc-900 leading-tight">
                   {prestacionSeleccionada.esDoble 
-                    ? (tabSeleccionada === 'jubilacion' ? prestacionSeleccionada.jubilacion?.titulo : prestacionSeleccionada.pension?.titulo)
+                    ? (tipoIndependiente === 'jubilacion' ? prestacionSeleccionada.jubilacion?.titulo : prestacionSeleccionada.pension?.titulo)
                     : prestacionSeleccionada.titulo}
                 </h3>
               </div>
             </div>
 
-            {/* SELECTOR DE PESTAÑAS: Solo para Jubilaciones y Pensiones */}
-            {prestacionSeleccionada.esDoble && (
-              <div className="mb-6 grid grid-cols-2 gap-2 p-1.5 rounded-xl bg-slate-100 border border-slate-200/80">
-                <button
-                  onClick={() => setTabSeleccionada('jubilacion')}
-                  className={`py-2 px-3 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-2 ${
-                    tabSeleccionada === 'jubilacion'
-                      ? 'bg-[#E07A2B] text-white shadow-sm'
-                      : 'text-slate-600 hover:text-slate-900'
-                  }`}
-                >
-                  <GraduationCap className="h-4 w-4" />
-                  <span>Jubilaciones</span>
-                </button>
-
-                <button
-                  onClick={() => setTabSeleccionada('pension')}
-                  className={`py-2 px-3 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-2 ${
-                    tabSeleccionada === 'pension'
-                      ? 'bg-[#E07A2B] text-white shadow-sm'
-                      : 'text-slate-600 hover:text-slate-900'
-                  }`}
-                >
-                  <ShieldCheck className="h-4 w-4" />
-                  <span>Pensiones</span>
-                </button>
-              </div>
-            )}
-
-            <p className="text-sm text-slate-600 mb-6 bg-slate-50 p-4 rounded-xl border border-slate-200/60 leading-relaxed">
+            <p className="text-sm text-zinc-600 mb-6 bg-zinc-50 p-4 rounded-xl border border-zinc-200/60 leading-relaxed">
               {prestacionSeleccionada.esDoble 
-                ? (tabSeleccionada === 'jubilacion' ? prestacionSeleccionada.jubilacion?.descripcion : prestacionSeleccionada.pension?.descripcion)
+                ? (tipoIndependiente === 'jubilacion' ? prestacionSeleccionada.jubilacion?.descripcion : prestacionSeleccionada.pension?.descripcion)
                 : prestacionSeleccionada.descripcionDetallada}
             </p>
 
             {/* Sección 1: Requisitos */}
             <div className="mb-6 space-y-3">
-              <h4 className="text-sm font-bold text-slate-900 uppercase tracking-wider flex items-center gap-2">
+              <h4 className="text-sm font-bold text-zinc-900 uppercase tracking-wider flex items-center gap-2">
                 <CheckCircle2 className="h-4 w-4 text-[#E07A2B]" />
-                Requisitos para acceder al beneficio
+                Requisitos
               </h4>
               <ul className="space-y-2">
                 {(prestacionSeleccionada.esDoble 
-                  ? (tabSeleccionada === 'jubilacion' ? prestacionSeleccionada.jubilacion?.requisitos : prestacionSeleccionada.pension?.requisitos)
+                  ? (tipoIndependiente === 'jubilacion' ? prestacionSeleccionada.jubilacion?.requisitos : prestacionSeleccionada.pension?.requisitos)
                   : prestacionSeleccionada.requisitos)?.map((req, idx) => (
-                  <li key={idx} className="flex items-start gap-2.5 text-xs text-slate-700 leading-relaxed">
+                  <li key={idx} className="flex items-start gap-2.5 text-xs text-zinc-700 leading-relaxed">
                     <span className="h-1.5 w-1.5 rounded-full bg-[#E07A2B] shrink-0 mt-1.5" />
                     <span>{req}</span>
                   </li>
@@ -368,15 +374,15 @@ export default function Prestaciones() {
 
             {/* Sección 2: Documentación requerida */}
             <div className="mb-8 space-y-3">
-              <h4 className="text-sm font-bold text-slate-900 uppercase tracking-wider flex items-center gap-2">
+              <h4 className="text-sm font-bold text-zinc-900 uppercase tracking-wider flex items-center gap-2">
                 <FileText className="h-4 w-4 text-[#E07A2B]" />
-                Documentación requerida
+                Documentos para solicitar el trámite
               </h4>
               <ul className="space-y-2">
                 {(prestacionSeleccionada.esDoble 
-                  ? (tabSeleccionada === 'jubilacion' ? prestacionSeleccionada.jubilacion?.documentos : prestacionSeleccionada.pension?.documentos)
+                  ? (tipoIndependiente === 'jubilacion' ? prestacionSeleccionada.jubilacion?.documentos : prestacionSeleccionada.pension?.documentos)
                   : prestacionSeleccionada.documentos)?.map((doc, idx) => (
-                  <li key={idx} className="flex items-start gap-2.5 text-xs text-slate-700 leading-relaxed bg-slate-50 p-2.5 rounded-lg border border-slate-200/50">
+                  <li key={idx} className="flex items-start gap-2.5 text-xs text-zinc-700 leading-relaxed bg-zinc-50 p-2.5 rounded-lg border border-zinc-200/50">
                     <span className="font-bold text-[#E07A2B] shrink-0">{idx + 1}.</span>
                     <span>{doc}</span>
                   </li>
@@ -384,16 +390,18 @@ export default function Prestaciones() {
               </ul>
             </div>
 
-            {/* Pie del Modal con el texto actualizado y botón Entendido en color Naranja */}
-            <div className="pt-4 border-t border-slate-100 flex flex-col sm:flex-row justify-between items-center gap-4">
-              <p className="text-xs text-slate-500 text-center sm:text-left leading-relaxed">
-                Para entregar tus documentos acude a las oficinas del Sindicato de Trabajadores al Servicio del Municipio de Querétaro en Calle Independencia No. 210, Colonia Centro.
+            {/* Pie del Modal con botón Regresar */}
+            <div className="pt-4 border-t border-zinc-100 flex flex-col sm:flex-row justify-between items-center gap-4">
+              <p className="text-xs text-zinc-500 text-center sm:text-left leading-relaxed">
+                Una vez reunidos los documentos deberás entregarlos en las oficinas del Sindicato.
+                Si requieres alguna orientación, comunícate con nosotros al <strong className="text-zinc-800">(442) 213 7119</strong> o envíanos un correo electrónico.
               </p>
               <button
                 onClick={() => setPrestacionSeleccionada(null)}
-                className="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-[#E07A2B] hover:bg-[#c46522] text-white text-xs font-bold transition-colors shrink-0 shadow-md"
+                className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-[#E07A2B] hover:bg-[#c46522] text-white text-sm font-semibold transition-all shrink-0 shadow-md flex items-center justify-center gap-2 group"
               >
-                Entendido
+                <Undo2 className="h-4 w-4 transition-transform group-hover:-translate-x-0.5" />
+                <span>Regresar</span>
               </button>
             </div>
 
