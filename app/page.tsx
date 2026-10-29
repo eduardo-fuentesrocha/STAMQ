@@ -1,6 +1,4 @@
-import Navbar from '../components/Navbar';
 import Hero from '../components/Hero';
-import BenefitsGrid from '../components/BenefitsGrid';
 import Prestaciones from '../components/Prestaciones';
 import Servicios from '../components/Servicios';
 import Eventos from '../components/Eventos';
