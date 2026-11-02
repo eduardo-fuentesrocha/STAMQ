@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { FileText, Megaphone, Calendar, Bell, ExternalLink, X, Undo2 } from 'lucide-react';
+import { FileText, Megaphone, Calendar, Bell, ExternalLink, X, Undo2, UserCheck } from 'lucide-react';
 
 const heroImages = [
   {
@@ -62,8 +62,8 @@ export default function Hero() {
       </div>
 
       {/* Header Institucional Superior */}
-      <div className="relative z-30 w-full flex items-center max-w-7xl mx-auto shrink-0">
-        <div className="flex items-center gap-2 sm:gap-3 w-full">
+      <div className="relative z-30 w-full flex items-center justify-between max-w-7xl mx-auto shrink-0 gap-4">
+        <div className="flex items-center gap-2 sm:gap-3">
           
           {/* Logo oficial a color prominente */}
           <div className="relative h-20 w-20 sm:h-24 sm:w-24 lg:h-28 lg:w-28 shrink-0 flex items-center justify-center -ml-2 sm:-ml-4">
@@ -77,7 +77,7 @@ export default function Hero() {
           </div>
 
           {/* Texto institucional completo */}
-          <div className="w-full">
+          <div>
             <span 
               style={{ fontFamily: 'Arial, Helvetica, sans-serif', fontWeight: 500 }}
               className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-medium tracking-normal text-[#E07A2B] uppercase leading-tight drop-shadow-md block"
@@ -86,17 +86,37 @@ export default function Hero() {
             </span>
           </div>
         </div>
+
+        {/* 🔑 Botón de Trámites en Línea en el Header (Pantallas Medianas y Grandes) */}
+        <Link
+          href="/login"
+          className="hidden md:flex items-center gap-2.5 px-5 py-3 rounded-2xl bg-[#E07A2B] hover:bg-[#c46522] text-white font-bold text-xs lg:text-sm transition-all shadow-lg shadow-[#E07A2B]/20 shrink-0 transform hover:-translate-y-0.5 border border-amber-500/30"
+        >
+          <UserCheck className="h-4 w-4 lg:h-5 lg:w-5" />
+          <span>Trámites en Línea</span>
+        </Link>
       </div>
 
       {/* Contenido Principal con escala equilibrada */}
       <div className="relative z-20 w-full max-w-7xl mx-auto flex-1 flex flex-col justify-center gap-3 sm:gap-4 my-auto">
         
         {/* Título principal con mayor presencia */}
-        <div className="max-w-3xl text-left w-full">
+        <div className="max-w-3xl text-left w-full space-y-3">
           <h1 className="text-xl sm:text-3xl lg:text-4xl font-black text-white leading-tight tracking-tight">
-            Portal para los <br />
+            Portal de los <br />
             <span className="text-[#E07A2B]">Trabajadores Sindicalizados del Municipio de Querétaro</span>
           </h1>
+
+          {/* 🔑 Botón de Trámites en Línea Prominente en Móvil */}
+          <div className="block md:hidden pt-1">
+            <Link
+              href="/login"
+              className="flex items-center justify-center gap-2.5 px-5 py-3.5 rounded-xl bg-[#E07A2B] hover:bg-[#c46522] text-white font-bold text-sm transition-all shadow-lg shadow-[#E07A2B]/30 border border-amber-500/30 w-full max-w-sm"
+            >
+              <UserCheck className="h-5 w-5" />
+              <span>Trámites en Línea</span>
+            </Link>
+          </div>
         </div>
 
         {/* Bloque de Accesos Rápidos y Aviso Destacado */}

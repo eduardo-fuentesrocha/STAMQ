@@ -25,7 +25,7 @@ const prestaciones = [
   {
     id: 'jubilaciones-pensiones',
     titulo: 'Jubilaciones y Pensiones',
-    descripcion: 'Acompañamiento y gestión integral de trámites para el retiro digno de nuestros trabajadores.',
+    descripcion: '',
     icono: ShieldCheck,
     esDoble: true,
     jubilacion: {
@@ -137,7 +137,7 @@ const prestaciones = [
     descripcionDetallada: 'Aportaciones periódicas administradas por el Sindicato para impulsar la formación académica de los hijos de los agremiados, incluyendo apoyos especiales y de excelencia académica.',
     requisitos: [
       'Hijos inscritos en ciclo escolar activo en institución oficial reconocida.',
-      'Cumplir con los procedimientos internos de asignación del Sindicato.'
+      'Cumplirกับ los procedimientos internos de asignación del Sindicato.'
     ],
     documentos: [
       'Constancia de estudios oficial o boleta de calificaciones sellada.',
@@ -179,7 +179,7 @@ const prestaciones = [
   },
   {
     id: 'construccion',
-    titulo: 'Ayuda para Materiales de Construcción',
+    titulo: 'Ayuda de Materiales para Construcción',
     descripcion: 'Apoyos e infraestructura para el mejoramiento del patrimonio familiar del trabajador.',
     icono: Hammer,
     esDoble: false,
@@ -238,28 +238,30 @@ export default function Prestaciones() {
                   <h3 className="text-lg font-bold text-zinc-900 group-hover:text-[#E07A2B] transition-colors">
                     {item.titulo}
                   </h3>
-                  <p className="text-sm text-zinc-600 leading-relaxed">
-                    {item.descripcion}
-                  </p>
+                  {item.descripcion && (
+                    <p className="text-sm text-zinc-600 leading-relaxed">
+                      {item.descripcion}
+                    </p>
+                  )}
                 </div>
 
-                {/* Comportamiento independiente para Jubilaciones y Pensiones */}
+                {/* Comportamiento independiente con línea divisoria y opciones apiladas */}
                 {item.esDoble ? (
-                  <div className="mt-6 pt-4 border-t border-zinc-100 space-y-2.5">
+                  <div className="mt-4 pt-4 border-t border-zinc-100 space-y-2.5">
                     <span className="text-xs font-semibold text-zinc-500 block">
                       Selecciona la opción deseada:
                     </span>
-                    <div className="grid grid-cols-2 gap-2">
+                    <div className="grid grid-cols-1 gap-2">
                       <button
                         onClick={(e) => {
                           e.stopPropagation();
                           setPrestacionSeleccionada(item);
                           setTipoIndependiente('jubilacion');
                         }}
-                        className="py-2 px-3 rounded-lg bg-[#E07A2B]/10 hover:bg-[#E07A2B] text-[#E07A2B] hover:text-white text-xs font-bold transition-all flex items-center justify-center gap-1.5"
+                        className="py-2 px-3 rounded-lg bg-[#E07A2B]/10 hover:bg-[#E07A2B] text-[#E07A2B] hover:text-white text-xs font-bold transition-all flex items-center justify-between cursor-pointer"
                       >
-                        <GraduationCap className="h-3.5 w-3.5" />
-                        <span>Jubilaciones</span>
+                        <span className="truncate">Jubilaciones</span>
+                        <GraduationCap className="h-3.5 w-3.5 shrink-0" />
                       </button>
                       <button
                         onClick={(e) => {
@@ -267,10 +269,10 @@ export default function Prestaciones() {
                           setPrestacionSeleccionada(item);
                           setTipoIndependiente('pension');
                         }}
-                        className="py-2 px-3 rounded-lg bg-[#E07A2B]/10 hover:bg-[#E07A2B] text-[#E07A2B] hover:text-white text-xs font-bold transition-all flex items-center justify-center gap-1.5"
+                        className="py-2 px-3 rounded-lg bg-[#E07A2B]/10 hover:bg-[#E07A2B] text-[#E07A2B] hover:text-white text-xs font-bold transition-all flex items-center justify-between cursor-pointer"
                       >
-                        <ShieldCheck className="h-3.5 w-3.5" />
-                        <span>Pensiones</span>
+                        <span className="truncate">Pensiones</span>
+                        <ShieldCheck className="h-3.5 w-3.5 shrink-0" />
                       </button>
                     </div>
                   </div>
@@ -328,7 +330,7 @@ export default function Prestaciones() {
             {/* Botón de Cerrar */}
             <button
               onClick={() => setPrestacionSeleccionada(null)}
-              className="absolute top-4 right-4 p-2 rounded-xl text-zinc-400 hover:text-zinc-700 hover:bg-zinc-100 transition-colors"
+              className="absolute top-4 right-4 p-2 rounded-xl text-zinc-400 hover:text-zinc-700 hover:bg-zinc-100 transition-colors cursor-pointer"
               aria-label="Cerrar modal"
             >
               <X className="h-6 w-6" />
@@ -398,7 +400,7 @@ export default function Prestaciones() {
               </p>
               <button
                 onClick={() => setPrestacionSeleccionada(null)}
-                className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-[#E07A2B] hover:bg-[#c46522] text-white text-sm font-semibold transition-all shrink-0 shadow-md flex items-center justify-center gap-2 group"
+                className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-[#E07A2B] hover:bg-[#c46522] text-white text-sm font-semibold transition-all shrink-0 shadow-md flex items-center justify-center gap-2 group cursor-pointer"
               >
                 <Undo2 className="h-4 w-4 transition-transform group-hover:-translate-x-0.5" />
                 <span>Regresar</span>

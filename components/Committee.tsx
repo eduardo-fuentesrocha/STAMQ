@@ -1,91 +1,143 @@
-import { Users, Mail, Phone, Shield } from 'lucide-react';
+'use client';
 
-const committeeMembers = [
-  {
-    name: 'Celestino Bermúdez Jiménez',
-    role: 'Secretario General',
-    email: 'secretariageneral@stsmq.org.mx',
-  },
-  {
-    name: 'Luis Álvarez Álvarez',
-    role: 'Secretario del Interior',
-    email: 'interior@stsmq.org.mx',
-  },
-  {
-    name: 'José Pueblito Olvera Espinosa',
-    role: 'Secretario de Trabajo y Conflictos',
-    email: 'conflictos@stsmq.org.mx',
-  },
-  {
-    name: 'Sotero Álvarez Álvarez',
-    role: 'Secretario de Hacienda',
-    email: 'hacienda@stsmq.org.mx',
-  },
-  {
-    name: 'Ma. Ángeles Ramírez González',
-    role: 'Secretaria de Actas',
-    email: 'actas@stsmq.org.mx',
-  },
-  {
-    name: 'Ma. Pueblito Ruiz Álvarez',
-    role: 'Secretaria del Exterior',
-    email: 'exterior@stsmq.org.mx',
-  },
-  {
-    name: 'José Guadalupe Reséndiz Zamorano',
-    role: 'Secretario de Organización',
-    email: 'organizacion@stsmq.org.mx',
-  },
-  {
-    name: 'Nicolás Barrios Vega',
-    role: 'Secretario de Acción Deportiva',
-    email: 'deportes@stsmq.org.mx',
-  },
-];
+import { Mail, Target, Eye, User } from 'lucide-react';
+
+interface MiembroComite {
+  puesto: string;
+  nombre: string;
+  correo: string;
+}
 
 export default function Committee() {
+  const miembros: MiembroComite[] = [
+    {
+      puesto: 'Secretario General',
+      nombre: 'Celestino Bermúdez Jiménez',
+      correo: 'celestino.bermudez@stsmq.org',
+    },
+    {
+      puesto: 'Secretario del Interior',
+      nombre: 'Secretaría del Interior',
+      correo: 'interior@stsmq.org',
+    },
+    {
+      puesto: 'Secretario del Exterior',
+      nombre: 'María Josefina Matehuala Ortiz',
+      correo: 'josefina.matehuala@stsmq.org',
+    },
+    {
+      puesto: 'Secretario de Trabajo y Conflictos',
+      nombre: 'Víctor Hugo Servín López',
+      correo: 'victor.servin@stsmq.org',
+    },
+    {
+      puesto: 'Secretario de Hacienda',
+      nombre: 'José Remedios Mendoza Espinoza',
+      correo: 'remedios.mendoza@stsmq.org',
+    },
+    {
+      puesto: 'Secretario de Organización',
+      nombre: 'Juan Manuel Nava Arriaga',
+      correo: 'juan.nava@stsmq.org',
+    },
+    {
+      puesto: 'Secretario de Acción Deportiva',
+      nombre: 'Francisco Rubén Espino Díaz',
+      correo: 'francisco.espino@stsmq.org',
+    },
+    {
+      puesto: 'Secretario de Actas',
+      nombre: 'Claudia Sánchez Garnica',
+      correo: 'claudia.sanchez@stsmq.org',
+    },
+    {
+      puesto: 'Vigilancia',
+      nombre: 'Roberto Salinas Martínez',
+      correo: 'roberto.salinas@stsmq.org',
+    },
+  ];
+
   return (
-    <section id="contacto" className="py-20 bg-slate-50 border-t border-slate-200">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <section className="py-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-12">
+      
+      {/* Cabecera Institucional */}
+      <div className="text-center space-y-4">
+        <h2 className="text-3xl sm:text-4xl font-black text-zinc-900 tracking-tight">
+          Comité Ejecutivo
+        </h2>
+        <div className="w-20 h-1 bg-[#E07A2B] mx-auto rounded-full" />
+      </div>
+
+      {/* Mini Misión y Visión */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <div className="inline-flex items-center gap-2 text-xs font-bold text-[#2A9EDA] tracking-widest uppercase mb-2">
-            <Shield className="h-4 w-4" />
-            Liderazgo y Representación
+        {/* Misión */}
+        <div className="p-6 rounded-3xl bg-zinc-50 border border-zinc-200/80 shadow-sm space-y-3 relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-[#E07A2B]/5 rounded-bl-full pointer-events-none" />
+          <div className="flex items-center gap-3">
+            <div className="p-2.5 rounded-xl bg-[#E07A2B]/10 text-[#E07A2B]">
+              <Target className="h-5 w-5" />
+            </div>
+            <h3 className="text-base font-bold text-zinc-900">Nuestra Misión</h3>
           </div>
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
-            Comité Directivo
-          </h2>
-          <p className="mt-4 text-base text-slate-600">
-            Representantes sindicales encargados de velar por los derechos de los trabajadores al servicio del Municipio de Querétaro.
+          <p className="text-xs text-zinc-600 leading-relaxed font-medium">
+            Defender con firmeza los derechos laborales, económicos y sociales de los trabajadores sindicalizados, promoviendo la justicia, el respeto y el bienestar integral de cada agremiado y sus familias.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {committeeMembers.map((member, index) => (
-            <div
-              key={index}
-              className="flex flex-col justify-between rounded-2xl bg-white p-6 shadow-sm border border-slate-200 hover:shadow-md hover:border-[#2A9EDA]/40 transition-all"
+        {/* Visión */}
+        <div className="p-6 rounded-3xl bg-zinc-50 border border-zinc-200/80 shadow-sm space-y-3 relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-[#E07A2B]/5 rounded-bl-full pointer-events-none" />
+          <div className="flex items-center gap-3">
+            <div className="p-2.5 rounded-xl bg-[#E07A2B]/10 text-[#E07A2B]">
+              <Eye className="h-5 w-5" />
+            </div>
+            <h3 className="text-base font-bold text-zinc-900">Nuestra Visión</h3>
+          </div>
+          <p className="text-xs text-zinc-600 leading-relaxed font-medium">
+            Ser un sindicato transparente, moderno y sólido, consolidado mediante el diálogo constructivo y la unidad, garantizando estabilidad laboral y un desarrollo digno al servicio de Querétaro.
+          </p>
+        </div>
+
+      </div>
+
+      {/* Listado de Miembros del Comité */}
+      <div className="space-y-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {miembros.map((miembro, index) => (
+            <div 
+              key={index} 
+              className="bg-white border border-zinc-200/80 rounded-3xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col items-center text-center space-y-4 group"
             >
-              <div>
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#2A9EDA] text-white font-bold mb-4 shadow-sm">
-                  <Users className="h-6 w-6" />
+              {/* Avatar por Defecto */}
+              <div className="relative w-24 h-24 rounded-2xl overflow-hidden bg-zinc-100 border-2 border-zinc-200 group-hover:border-[#E07A2B] transition-colors shadow-inner flex items-center justify-center">
+                <div className="w-full h-full bg-zinc-100 flex items-center justify-center text-zinc-400 group-hover:bg-[#E07A2B]/5 transition-colors">
+                  <User className="h-10 w-10 text-zinc-400 group-hover:text-[#E07A2B] transition-colors" />
                 </div>
-                <h3 className="text-base font-bold text-slate-900 leading-snug">{member.name}</h3>
-                <p className="text-xs font-semibold text-[#2A9EDA] mt-1">{member.role}</p>
               </div>
 
-              <div className="pt-4 mt-4 border-t border-slate-100 space-y-2 text-xs text-slate-500">
-                <div className="flex items-center gap-2">
-                  <Mail className="h-3.5 w-3.5 text-slate-400 shrink-0" />
-                  <span className="truncate">{member.email}</span>
-                </div>
+              {/* Información del Miembro */}
+              <div className="space-y-1 w-full">
+                <span className="text-[11px] font-bold text-[#E07A2B] uppercase tracking-wider block">
+                  {miembro.puesto}
+                </span>
+                <h4 className="text-sm font-bold text-zinc-900 leading-snug">
+                  {miembro.nombre}
+                </h4>
+              </div>
+
+              {/* Correo Electrónico */}
+              <div className="w-full pt-3 border-t border-zinc-100 flex items-center justify-center gap-2 text-xs text-zinc-500 font-medium">
+                <Mail className="h-3.5 w-3.5 text-[#E07A2B] shrink-0" />
+                <a href={`mailto:${miembro.correo}`} className="hover:text-[#E07A2B] transition-colors truncate">
+                  {miembro.correo}
+                </a>
               </div>
             </div>
           ))}
         </div>
-
       </div>
+
     </section>
   );
 }

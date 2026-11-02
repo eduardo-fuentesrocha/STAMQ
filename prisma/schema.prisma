@@ -1,0 +1,97 @@
+datasource db {
+  provider = "postgresql"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Usuario {
+  id                  String                @id @default(uuid())
+  numeroEmpleado      String                @unique
+  nombreCompleto      String
+  password            String
+  rol                 String                @default("agremiado") // "agremiado" o "admin"
+  createdAt           DateTime              @default(now())
+
+  // Relaciones anidadas
+  familiares          Familiar[]
+  solicitudesBecas    SolicitudBeca[]
+  solicitudesMaterial SolicitudMaterial[]
+  solicitudesMatr     SolicitudMatrimonio[]
+  solicitudesNac      SolicitudNacimiento[]
+}
+
+model Familiar {
+  id             String   @id @default(uuid())
+  numeroEmpleado String
+  nombreCompleto String
+  parentesco     String   // "Cónyuge" o "Hijo(a)"
+  estatus        String   @default("Aprobado")
+  createdAt      DateTime @default(now())
+
+  usuario        Usuario  @relation(fields: [numeroEmpleado], references: [numeroEmpleado], onDelete: Cascade)
+}
+
+model SolicitudNacimiento {
+  id             String   @id @default(uuid())
+  numeroEmpleado String
+  nombreHijo     String
+  actaUrl        String
+  estatus        String   @default("En Revisión")
+  createdAt      DateTime @default(now())
+
+  usuario        Usuario  @relation(fields: [numeroEmpleado], references: [numeroEmpleado], onDelete: Cascade)
+}
+
+model SolicitudMatrimonio {
+  id             String   @id @default(uuid())
+  numeroEmpleado String
+  nombreConyuge  String
+  tipoUnion      String   // "Matrimonio" o "Concubinato"
+  actaUrl        String   
+  estatus        String   @default("En Revisión")
+  createdAt      DateTime @default(now())
+
+  usuario        Usuario  @relation(fields: [numeroEmpleado], references: [numeroEmpleado], onDelete: Cascade)
+}
+
+model SolicitudBeca {
+  id             String   @id @default(uuid())
+  numeroEmpleado String
+  nombreHijo     String
+  nivelEducativo String
+  actaUrl        String   
+  boletaUrl      String   
+  estatus        String   @default("En Revisión")
+  createdAt      DateTime @default(now())
+
+  usuario        Usuario  @relation(fields: [numeroEmpleado], references: [numeroEmpleado], onDelete: Cascade)
+}
+
+model SolicitudMaterial {
+  id                  String   @id @default(uuid())
+  domicilioInmueble   String
+  cantidadTepetate    Int      @default(0)
+  cantidadArena       Int      @default(0)
+  cantidadGrava       Int      @default(0)
+  cantidadPiedraNegra Int      @default(0)
+  cantidadCantera     Int      @default(0)
+  numeroEmpleado      String
+  estatus             String   @default("En Revisión")
+  createdAt           DateTime @default(now())
+
+  usuario             Usuario  @relation(fields: [numeroEmpleado], references: [numeroEmpleado], onDelete: Cascade)
+}
+
+model SolicitudUtiles {
+  id             String   @id @default(cuid())
+  numeroEmpleado String
+  nombreHijo     String
+  nivelEducativo String   // Primaria, Secundaria, Preparatoria
+  boletaUrl      String   // Boleta del ciclo que termina
+  inscripcionUrl String   // Recibo de inscripción al nuevo ciclo
+  estatus        String   @default("En Revisión") // En Revisión, Aprobada, Rechazada
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}

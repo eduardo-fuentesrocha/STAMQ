@@ -17,7 +17,8 @@ import {
   Heart,
   UserCheck,
   Award,
-  Sparkles
+  Sparkles,
+  MapPin
 } from 'lucide-react';
 
 type SubEvento = {
@@ -59,21 +60,38 @@ const subEventosFestejos: Record<string, SubEvento> = {
   },
 };
 
+const subEventosPeregrinaciones: Record<string, SubEvento> = {
+  congregacion: {
+    titulo: 'Peregrinación a la Congregación',
+    detalles: 'Acompañamiento tradicional de los agremiados en la ruta hacia la Iglesia de la Congregación en el Centro Histórico de Querétaro. Demostración de fe, unión y devoción organizada por el sindicato.',
+    icono: MapPin,
+  },
+  colon: {
+    titulo: 'Peregrinación a Colón',
+    detalles: 'Participación en el recorrido histórico hacia el municipio de Colón. El Sindicato coordina los puntos de hidratación, transporte de apoyo y logística para garantizar la seguridad de los contingentes.',
+    icono: MapPin,
+  },
+  pueblito: {
+    titulo: 'Peregrinación a El Pueblito',
+    detalles: 'Tradicional peregrinación hacia el Santuario de Nuestra Señora del Pueblito, en nuestro municipio de Corregidora. Una muestra de arraigo, tradición y hermandad entre los trabajadores sindicalizados.',
+    icono: MapPin,
+  },
+};
+
 const eventos = [
   {
     id: 'festejos',
     titulo: 'Festejos Tradicionales',
-    descripcion: 'Convivios y fechas especiales.',
+    descripcion: '',
     icono: PartyPopper,
     esSubdividido: true,
   },
   {
     id: 'peregrinaciones',
     titulo: 'Peregrinaciones',
-    descripcion: 'Acompañamiento en las tradicionales peregrinaciones anuales de fe y tradición.',
+    descripcion: '',
     icono: Footprints,
-    esSubdividido: false,
-    detalles: 'Participación activa y organizada de los agremiados en las rutas tradicionales hacia la Congregación, Colón y El Pueblito. El sindicato apoya con logística, puntos de hidratación y organización general para los contingentes.'
+    esSubdividido: true, // Cambiado a true para soportar opciones desplegables
   },
   {
     id: 'deportivos',
@@ -132,16 +150,18 @@ export default function Eventos() {
                   <h3 className="text-lg font-bold text-zinc-900 group-hover:text-[#E07A2B] transition-colors">
                     {item.titulo}
                   </h3>
-                  <p className="text-sm text-zinc-600 leading-relaxed">
-                    {item.descripcion}
-                  </p>
+                  {item.descripcion && (
+                    <p className="text-sm text-zinc-600 leading-relaxed">
+                      {item.descripcion}
+                    </p>
+                  )}
                 </div>
 
-                {/* Si es Festejos Tradicionales, mostramos la lista de botones de eventos */}
-                {item.esSubdividido ? (
-                  <div className="mt-6 pt-4 border-t border-zinc-100 space-y-2.5">
+                {/* Si es Festejos Tradicionales */}
+                {item.id === 'festejos' ? (
+                  <div className="mt-4 pt-4 border-t border-zinc-100 space-y-2.5">
                     <span className="text-xs font-semibold text-zinc-500 block">
-                      Selecciona la celebración:
+                      Selecciona el festejo:
                     </span>
                     <div className="grid grid-cols-2 gap-2">
                       <button
@@ -196,7 +216,7 @@ export default function Eventos() {
                         className="py-2 px-2.5 rounded-lg bg-[#E07A2B]/10 hover:bg-[#E07A2B] text-[#E07A2B] hover:text-white text-xs font-bold transition-all flex items-center justify-center gap-1.5 col-span-2 sm:col-span-1"
                       >
                         <Award className="h-3.5 w-3.5 shrink-0" />
-                        <span className="truncate">Aniversario</span>
+                        <span className="truncate">Aniversario del Sindicato</span>
                       </button>
 
                       <button
@@ -208,6 +228,47 @@ export default function Eventos() {
                       >
                         <Sparkles className="h-3.5 w-3.5 shrink-0" />
                         <span className="truncate">12 de Diciembre</span>
+                      </button>
+                    </div>
+                  </div>
+                ) : item.id === 'peregrinaciones' ? (
+                  /* Si es Peregrinaciones */
+                  <div className="mt-4 pt-4 border-t border-zinc-100 space-y-2.5">
+                    <span className="text-xs font-semibold text-zinc-500 block">
+                      Selecciona la peregrinación:
+                    </span>
+                    <div className="grid grid-cols-1 gap-2">
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setSubEventoActivo(subEventosPeregrinaciones.congregacion);
+                        }}
+                        className="py-2 px-3 rounded-lg bg-[#E07A2B]/10 hover:bg-[#E07A2B] text-[#E07A2B] hover:text-white text-xs font-bold transition-all flex items-center justify-between"
+                      >
+                        <span className="truncate">Congregación</span>
+                        <MapPin className="h-3.5 w-3.5 shrink-0" />
+                      </button>
+
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setSubEventoActivo(subEventosPeregrinaciones.colon);
+                        }}
+                        className="py-2 px-3 rounded-lg bg-[#E07A2B]/10 hover:bg-[#E07A2B] text-[#E07A2B] hover:text-white text-xs font-bold transition-all flex items-center justify-between"
+                      >
+                        <span className="truncate">Colón</span>
+                        <MapPin className="h-3.5 w-3.5 shrink-0" />
+                      </button>
+
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setSubEventoActivo(subEventosPeregrinaciones.pueblito);
+                        }}
+                        className="py-2 px-3 rounded-lg bg-[#E07A2B]/10 hover:bg-[#E07A2B] text-[#E07A2B] hover:text-white text-xs font-bold transition-all flex items-center justify-between"
+                      >
+                        <span className="truncate">El Pueblito</span>
+                        <MapPin className="h-3.5 w-3.5 shrink-0" />
                       </button>
                     </div>
                   </div>
@@ -224,7 +285,7 @@ export default function Eventos() {
 
       </div>
 
-      {/* Modal / Panel Desplegable (Soporta Evento Estándar o SubEvento Independiente) */}
+      {/* Modal / Panel Desplegable */}
       {(eventoSeleccionado || subEventoActivo) && (
         <div 
           className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-zinc-950/60 backdrop-blur-sm animate-in fade-in duration-200"

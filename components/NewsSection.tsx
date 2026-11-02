@@ -1,14 +1,12 @@
 'use client';
 
 import { useState } from 'react';
-import Link from 'next/link';
 import { 
   Calendar, 
   X, 
   ChevronRight,
   FileText,
-  Undo2,
-  LayoutGrid
+  Undo2
 } from 'lucide-react';
 
 const circulares = [
@@ -37,54 +35,11 @@ const circulares = [
 
 export default function Circulares() {
   const [circularSeleccionada, setCircularSeleccionada] = useState<typeof circulares[0] | null>(null);
-  
-  // Estado para alternar entre las 3 alternativas (1, 2 o 3)
-  const [alternativaActiva, setAlternativaActiva] = useState<1 | 2 | 3>(2);
 
   return (
     <section id="circulares" className="bg-zinc-100/80 text-zinc-900 py-20 px-6 sm:px-12 lg:px-16 border-t border-zinc-200">
       <div className="max-w-7xl mx-auto space-y-12">
         
-        {/* Selector de Alternativas (Panel de Prueba Visual) */}
-        <div className="p-4 rounded-2xl bg-white border border-zinc-200 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-2 text-xs font-bold text-zinc-700 uppercase tracking-wider">
-            <LayoutGrid className="h-4 w-4 text-[#E07A2B]" />
-            <span>Diseño:</span>
-          </div>
-          <div className="flex items-center gap-2 w-full sm:w-auto">
-            <button
-              onClick={() => setAlternativaActiva(1)}
-              className={`flex-1 sm:flex-none px-4 py-2 rounded-xl text-xs font-bold transition-all ${
-                alternativaActiva === 1 
-                  ? 'bg-[#E07A2B] text-white shadow-md' 
-                  : 'bg-zinc-100 text-zinc-600 hover:bg-zinc-200'
-              }`}
-            >
-              Alt 1: Bloque Naranja
-            </button>
-            <button
-              onClick={() => setAlternativaActiva(2)}
-              className={`flex-1 sm:flex-none px-4 py-2 rounded-xl text-xs font-bold transition-all ${
-                alternativaActiva === 2 
-                  ? 'bg-[#E07A2B] text-white shadow-md' 
-                  : 'bg-zinc-100 text-zinc-600 hover:bg-zinc-200'
-              }`}
-            >
-              Alt 2: Header Naranja
-            </button>
-            <button
-              onClick={() => setAlternativaActiva(3)}
-              className={`flex-1 sm:flex-none px-4 py-2 rounded-xl text-xs font-bold transition-all ${
-                alternativaActiva === 3 
-                  ? 'bg-[#E07A2B] text-white shadow-md' 
-                  : 'bg-zinc-100 text-zinc-600 hover:bg-zinc-200'
-              }`}
-            >
-              Alt 3: Línea Lateral
-            </button>
-          </div>
-        </div>
-
         {/* Encabezado de la Sección */}
         <div className="max-w-3xl space-y-4">
           <h2 className="text-3xl sm:text-4xl font-black text-zinc-950 tracking-tight">
@@ -95,99 +50,37 @@ export default function Circulares() {
           </p>
         </div>
 
-        {/* --- RENDER CONDICIONAL DE LAS 3 ALTERNATIVAS --- */}
-
-        {/* ALTERNATIVA 1: Tarjetas Bloque Naranja Sólido */}
-        {alternativaActiva === 1 && (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {circulares.map((item) => (
-              <div
-                key={item.id}
-                onClick={() => setCircularSeleccionada(item)}
-                className="group p-6 rounded-2xl bg-[#E07A2B] text-white hover:bg-[#c46522] shadow-sm hover:shadow-lg transition-all duration-300 flex flex-col justify-between cursor-pointer border border-[#E07A2B]"
-              >
-                <div className="space-y-4">
-                  <div className="flex items-center gap-1.5 text-xs text-orange-100 font-semibold uppercase tracking-wider">
+        {/* Rejilla de Circulares con Diseño de Header Naranja (Opción 2 Definitiva) */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {circulares.map((item) => (
+            <div
+              key={item.id}
+              onClick={() => setCircularSeleccionada(item)}
+              className="group rounded-2xl bg-white border border-zinc-200 hover:border-[#E07A2B] shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between overflow-hidden cursor-pointer"
+            >
+              <div>
+                <div className="bg-[#E07A2B] px-5 py-3 flex items-center justify-between text-white text-xs font-semibold">
+                  <span className="flex items-center gap-1.5">
                     <Calendar className="h-3.5 w-3.5" />
-                    <span>{item.date}</span>
-                  </div>
-
-                  <h3 className="text-lg font-black leading-snug">
-                    {item.titulo}
-                  </h3>
+                    {item.date}
+                  </span>
+                  <FileText className="h-4 w-4 opacity-80" />
                 </div>
 
-                <div className="mt-8 pt-4 border-t border-orange-400/40 flex items-center justify-between text-xs font-bold text-white">
-                  <span>Leer comunicado completo</span>
-                  <ChevronRight className="h-4 w-4 transform group-hover:translate-x-1 transition-transform" />
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-
-        {/* ALTERNATIVA 2: Header Naranja Superior + Cuerpo Blanco */}
-        {alternativaActiva === 2 && (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {circulares.map((item) => (
-              <div
-                key={item.id}
-                onClick={() => setCircularSeleccionada(item)}
-                className="group rounded-2xl bg-white border border-zinc-200 hover:border-[#E07A2B] shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between overflow-hidden cursor-pointer"
-              >
-                <div>
-                  <div className="bg-[#E07A2B] px-5 py-3 flex items-center justify-between text-white text-xs font-semibold">
-                    <span className="flex items-center gap-1.5">
-                      <Calendar className="h-3.5 w-3.5" />
-                      {item.date}
-                    </span>
-                    <FileText className="h-4 w-4 opacity-80" />
-                  </div>
-
-                  <div className="p-6">
-                    <h3 className="text-base font-bold text-zinc-900 group-hover:text-[#E07A2B] transition-colors leading-snug">
-                      {item.titulo}
-                    </h3>
-                  </div>
-                </div>
-
-                <div className="px-6 pb-5 pt-3 border-t border-zinc-100 flex items-center justify-between text-xs font-bold text-[#E07A2B]">
-                  <span>Leer comunicado completo</span>
-                  <ChevronRight className="h-4 w-4 transform group-hover:translate-x-1 transition-transform" />
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-
-        {/* ALTERNATIVA 3: Línea Lateral Naranja Estilo Corporativo */}
-        {alternativaActiva === 3 && (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {circulares.map((item) => (
-              <div
-                key={item.id}
-                onClick={() => setCircularSeleccionada(item)}
-                className="group p-6 rounded-2xl bg-white border-l-4 border-l-[#E07A2B] border-y border-r border-zinc-200 hover:border-r-[#E07A2B] hover:border-y-[#E07A2B] shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between cursor-pointer"
-              >
-                <div className="space-y-3">
-                  <div className="flex items-center gap-1.5 text-xs text-zinc-500 font-medium">
-                    <Calendar className="h-3.5 w-3.5 text-[#E07A2B]" />
-                    <span>{item.date}</span>
-                  </div>
-
+                <div className="p-6">
                   <h3 className="text-base font-bold text-zinc-900 group-hover:text-[#E07A2B] transition-colors leading-snug">
                     {item.titulo}
                   </h3>
                 </div>
-
-                <div className="mt-6 pt-4 border-t border-zinc-100 flex items-center justify-between text-xs font-bold text-[#E07A2B]">
-                  <span>Leer comunicado completo</span>
-                  <ChevronRight className="h-4 w-4 transform group-hover:translate-x-1 transition-transform" />
-                </div>
               </div>
-            ))}
-          </div>
-        )}
+
+              <div className="px-6 pb-5 pt-3 border-t border-zinc-100 flex items-center justify-between text-xs font-bold text-[#E07A2B]">
+                <span>Leer comunicado completo</span>
+                <ChevronRight className="h-4 w-4 transform group-hover:translate-x-1 transition-transform" />
+              </div>
+            </div>
+          ))}
+        </div>
 
       </div>
 
@@ -201,37 +94,25 @@ export default function Circulares() {
             className="bg-white w-full max-w-lg rounded-2xl shadow-2xl border border-zinc-200 p-6 sm:p-8 relative space-y-6 text-zinc-900 overflow-hidden"
             onClick={(e) => e.stopPropagation()}
           >
+            {/* Botón de Cerrar */}
             <button
               onClick={() => setCircularSeleccionada(null)}
-              className="absolute top-5 right-5 p-2 rounded-xl text-zinc-400 hover:text-zinc-700 hover:bg-zinc-100 transition-colors z-10"
+              className="absolute top-5 right-5 p-2 rounded-xl text-[#E07A2B] hover:text-white hover:bg-[#c46522] transition-colors z-10 cursor-pointer"
               aria-label="Cerrar modal"
             >
               <X className="h-5 w-5" />
             </button>
 
-            {/* Cabecera Adaptable del Modal */}
-            {alternativaActiva === 1 || alternativaActiva === 2 ? (
-              <div className="-mx-6 -mt-6 sm:-mx-8 sm:-mt-8 bg-[#E07A2B] text-white p-6 sm:p-8 mb-4">
-                <span className="text-xs flex items-center gap-1.5 font-medium text-orange-100 mb-2">
-                  <Calendar className="h-3.5 w-3.5" />
-                  {circularSeleccionada.date}
-                </span>
-                <h3 className="text-xl sm:text-2xl font-black leading-tight pr-8">
-                  {circularSeleccionada.titulo}
-                </h3>
-              </div>
-            ) : (
-              <div className="space-y-3 pt-2">
-                <span className="text-xs text-zinc-500 flex items-center gap-1.5 font-medium bg-zinc-100 px-2.5 py-1 rounded-md w-fit">
-                  <Calendar className="h-3.5 w-3.5 text-[#E07A2B]" />
-                  {circularSeleccionada.date}
-                </span>
-                
-                <h3 className="text-2xl font-black text-zinc-950 leading-tight">
-                  {circularSeleccionada.titulo}
-                </h3>
-              </div>
-            )}
+            {/* Cabecera del Modal con Estilo Naranja Coherente */}
+            <div className="-mx-6 -mt-6 sm:-mx-8 sm:-mt-8 bg-[#E07A2B] text-white p-6 sm:p-8 mb-4">
+              <span className="text-xs flex items-center gap-1.5 font-medium text-orange-100 mb-2">
+                <Calendar className="h-3.5 w-3.5" />
+                {circularSeleccionada.date}
+              </span>
+              <h3 className="text-xl sm:text-2xl font-black leading-tight pr-8">
+                {circularSeleccionada.titulo}
+              </h3>
+            </div>
 
             {/* Contenido / Detalles */}
             <div className="space-y-4 text-zinc-600 text-sm leading-relaxed">
@@ -253,7 +134,7 @@ export default function Circulares() {
             <div className="pt-4 border-t border-zinc-100 flex justify-end">
               <button
                 onClick={() => setCircularSeleccionada(null)}
-                className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-[#E07A2B] hover:bg-[#c46522] text-white text-sm font-semibold transition-all shrink-0 shadow-md flex items-center justify-center gap-2 group"
+                className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-[#E07A2B] hover:bg-[#c46522] text-white text-sm font-semibold transition-all shrink-0 shadow-md flex items-center justify-center gap-2 group cursor-pointer"
               >
                 <Undo2 className="h-4 w-4 transition-transform group-hover:-translate-x-0.5" />
                 <span>Regresar</span>
