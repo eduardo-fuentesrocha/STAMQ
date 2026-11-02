@@ -4,8 +4,22 @@ import { PrismaClient } from '@prisma/client'
 import { PrismaPg } from '@prisma/adapter-pg'
 import { Pool } from 'pg'
 import { cookies } from 'next/headers'
-import { revalidatePath } from 'next/cache' // 👈 1. Importar revalidatePath para sincronizar el dashboard
+import { revalidatePath } from 'next/cache'
 import { enviarNotificacionAdmin } from '../lib/mailer'
+
+// 🔑 Definir y exportar el tipo para corregir la compilación en Vercel
+export interface SolicitudMaterial {
+  id: string
+  folio: string
+  domicilio: string
+  cantidadTepetate: number
+  cantidadArena: number
+  cantidadGrava: number
+  cantidadPiedraNegra: number
+  cantidadCantera: number
+  estatus: string
+  fecha: string
+}
 
 const connectionString = process.env.DATABASE_URL
 const pool = new Pool({ connectionString })
@@ -77,23 +91,25 @@ export async function registrarSolicitudMateriales(formData: FormData) {
       console.error('Error no bloqueante al enviar correo de materiales:', mailErr)
     }
 
-    // 🔑 2. Revalidar la ruta del dashboard para mantener los datos sincronizados al recargar
+    // Revalidar la ruta del dashboard para mantener los datos sincronizados
     revalidatePath('/dashboard')
+
+    const data: SolicitudMaterial = {
+      id: nuevaSolicitud.id,
+      folio: folioCorto,
+      domicilio: nuevaSolicitud.domicilioInmueble,
+      cantidadTepetate: nuevaSolicitud.cantidadTepetate,
+      cantidadArena: nuevaSolicitud.cantidadArena,
+      cantidadGrava: nuevaSolicitud.cantidadGrava,
+      cantidadPiedraNegra: nuevaSolicitud.cantidadPiedraNegra,
+      cantidadCantera: nuevaSolicitud.cantidadCantera,
+      estatus: nuevaSolicitud.estatus,
+      fecha: new Date(nuevaSolicitud.createdAt || Date.now()).toISOString().split('T')[0],
+    }
 
     return {
       success: true,
-      data: {
-        id: nuevaSolicitud.id,
-        folio: folioCorto,
-        domicilio: nuevaSolicitud.domicilioInmueble,
-        cantidadTepetate: nuevaSolicitud.cantidadTepetate,
-        cantidadArena: nuevaSolicitud.cantidadArena,
-        cantidadGrava: nuevaSolicitud.cantidadGrava,
-        cantidadPiedraNegra: nuevaSolicitud.cantidadPiedraNegra,
-        cantidadCantera: nuevaSolicitud.cantidadCantera,
-        estatus: nuevaSolicitud.estatus,
-        fecha: new Date(nuevaSolicitud.createdAt || Date.now()).toISOString().split('T')[0],
-      },
+      data,
     }
   } catch (error) {
     console.error('Error al procesar la solicitud de materiales:', error)
