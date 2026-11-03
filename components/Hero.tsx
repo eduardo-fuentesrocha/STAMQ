@@ -97,10 +97,10 @@ export default function Hero() {
         </Link>
       </div>
 
-      {/* Contenido Principal con escala equilibrada */}
-      <div className="relative z-20 w-full max-w-7xl mx-auto flex-1 flex flex-col justify-center gap-3 sm:gap-4 my-auto">
+      {/* Contenido Principal Alineado Hacia Arriba */}
+      <div className="relative z-20 w-full max-w-7xl mx-auto flex-1 flex flex-col justify-start pt-6 sm:pt-10 lg:pt-12 gap-5 sm:gap-6">
         
-        {/* Título principal con mayor presencia */}
+        {/* Título principal elevado */}
         <div className="max-w-3xl text-left w-full space-y-3">
           <h1 className="text-xl sm:text-3xl lg:text-4xl font-black text-white leading-tight tracking-tight">
             Portal del <br />
