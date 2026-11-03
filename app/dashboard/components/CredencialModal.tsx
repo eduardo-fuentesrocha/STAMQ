@@ -58,7 +58,13 @@ export default function CredencialModal({
                   )}
                 </div>
                 <div className="text-center sm:text-left space-y-1">
-                  <span className="text-xs font-extrabold text-[#E07A2B] uppercase tracking-wider">Sindicato de Trabajadores al Servicio del Municipio de Querétaro</span>
+                  {/* Membrete con la tipografía Arial y peso 500 unificado */}
+                  <span 
+                    style={{ fontFamily: 'Arial, Helvetica, sans-serif', fontWeight: 500 }}
+                    className="text-[11px] uppercase tracking-normal text-[#E07A2B] leading-tight block"
+                  >
+                    Sindicato de Trabajadores al Servicio del Municipio de Querétaro
+                  </span>
                   <h2 className="text-xl sm:text-2xl font-black text-zinc-900 leading-tight uppercase">
                     {usuario.nombreCompleto}
                   </h2>

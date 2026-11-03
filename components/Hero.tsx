@@ -80,7 +80,7 @@ export default function Hero() {
           <div>
             <span 
               style={{ fontFamily: 'Arial, Helvetica, sans-serif', fontWeight: 500 }}
-              className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-medium tracking-normal text-[#E07A2B] uppercase leading-tight drop-shadow-md block"
+              className="text-xl sm:text-2xl md:text-3xl lg:text-4xl tracking-normal text-[#E07A2B] uppercase leading-tight block"
             >
               SINDICATO DE TRABAJADORES AL SERVICIO DEL MUNICIPIO DE QUERÉTARO
             </span>
@@ -103,8 +103,8 @@ export default function Hero() {
         {/* Título principal con mayor presencia */}
         <div className="max-w-3xl text-left w-full space-y-3">
           <h1 className="text-xl sm:text-3xl lg:text-4xl font-black text-white leading-tight tracking-tight">
-            Portal de los <br />
-            <span className="text-[#E07A2B]">Trabajadores Sindicalizados del Municipio de Querétaro</span>
+            Portal del <br />
+            <span className="text-[#E07A2B]">Trabajador Sindicalizado </span>
           </h1>
 
           {/* 🔑 Botón de Trámites en Línea Prominente en Móvil */}

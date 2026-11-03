@@ -102,7 +102,13 @@ export default function DashboardClient({
         <div className="flex items-center gap-3.5">
           <img src="/STSMQ2.svg" alt="Logo STSMQ" className="h-12 w-auto object-contain" />
           <div>
-            <h1 className="text-base font-bold text-[#E07A2B]">SINDICATO DE TRABAJADORES AL SERVICIO DEL MUNICIPIO DE QUERÉTARO</h1>
+            {/* Texto del Sindicato estandarizado con tipografía Arial y peso 500 */}
+            <span 
+              style={{ fontFamily: 'Arial, Helvetica, sans-serif', fontWeight: 500 }}
+              className="text-xs sm:text-sm tracking-normal text-[#E07A2B] uppercase leading-tight block"
+            >
+              SINDICATO DE TRABAJADORES AL SERVICIO DEL MUNICIPIO DE QUERÉTARO
+            </span>
             <p className="text-sm text-black font-medium">Portal del Trabajador Sindicalizado</p>
           </div>
         </div>
