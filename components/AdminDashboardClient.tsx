@@ -152,7 +152,7 @@ export default function AdminDashboardClient({
           <p className="text-xs text-zinc-500 font-medium">Sesión de Administrador: {adminNombre}</p>
         </div>
         <button
-          onClick={async () => { await cerrarSesion(); window.location.href = '/login'; }}
+          onClick={async () => { await cerrarSesion(); window.location.href = '/'; }}
           className="flex items-center gap-2 px-4 py-2 rounded-xl bg-zinc-100 hover:bg-zinc-200 text-zinc-700 hover:text-zinc-900 text-xs font-bold transition-all border border-zinc-200 cursor-pointer shadow-sm"
         >
           <LogOut className="h-4 w-4 text-[#E07A2B]" />

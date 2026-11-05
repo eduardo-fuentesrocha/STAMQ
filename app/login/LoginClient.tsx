@@ -125,12 +125,18 @@ export default function LoginClient() {
 
           <div className="text-center space-y-1">
             <h2 className="text-lg font-black text-zinc-900 tracking-tight">
-              {isRegistering ? 'Activación de Cuenta' : 'Trámites en Línea'}
+              {isRegistering ? 'Crear Cuenta' : 'Trámites en Línea'}
             </h2>
-            <p className="text-xs text-zinc-600 font-medium">
+            <p className="text-sm text-black font-medium">
               {isRegistering 
-                ? (pasoRegistro === 1 ? 'Paso 1: Consulta tu número de empleado' : 'Paso 2: Confirma tus datos y crea tu contraseña')
-                : 'Ingresa tu número de empleado y contraseña'}
+                ? (pasoRegistro === 1 
+                    ? 'Paso 1: Consulta tu número de empleado' 
+                    : 'Paso 2: Confirma tus datos y crea tu contraseña')
+                : (
+                  <>
+                    Si ya estás registrado, ingresa tu número de empleado y contraseña.{' '}
+                  </>
+                )}
             </p>
           </div>
         </div>
@@ -243,7 +249,7 @@ export default function LoginClient() {
                   {isRegistering ? 'Crea tu Contraseña' : 'Contraseña'}
                 </label>
                 {isRegistering && (
-                  <span className="text-[11px] text-zinc-500 font-medium leading-tight mt-0.5">
+                  <span className="text-[12px] text-black font-medium leading-tight mt-0.5">
                     Mínimo 8 caracteres (se aceptan números y letras, mayúsculas y minúsculas).
                   </span>
                 )}
@@ -312,11 +318,11 @@ export default function LoginClient() {
           <button
             type="button"
             onClick={() => resetModo(!isRegistering)}
-            className="text-sm text-black hover:text-[#E07A2B] transition-colors font-semibold cursor-pointer"
+            className="text-sm text-zinc-800 hover:text-[#E07A2B] transition-colors font-semibold cursor-pointer"
           >
             {isRegistering 
-              ? '¿Ya tienes cuenta? Inicia sesión aquí' 
-              : '¿Aún no estás registrado? Activa tu cuenta aquí'}
+              ? 'Si ya tienes cuenta inicia sesión aquí' 
+              : 'Si no estás registrado haz clic aquí'}
           </button>
         </div>
 

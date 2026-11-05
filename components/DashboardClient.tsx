@@ -82,7 +82,7 @@ export default function DashboardClient({
 
   const handleCerrarSesion = async () => {
     await cerrarSesion();
-    window.location.href = '/login';
+    window.location.href = '/';
   };
 
   const handleSeleccionarTab = (id: string) => {
@@ -132,7 +132,8 @@ export default function DashboardClient({
               <span className="text-xs font-bold uppercase tracking-wider text-[#E07A2B]">Bienvenido(a)</span>
               <h2 className="text-2xl sm:text-3xl font-black text-zinc-900">{usuario.nombreCompleto}</h2>
               <p className="text-sm text-zinc-500 font-medium">
-                Número de Empleado: <strong className="text-zinc-800">{usuario.numeroEmpleado}</strong> | Puesto: Base Operativa
+                Número de Empleado: <strong className="text-zinc-800">{usuario.numeroEmpleado}</strong>
+                <br/> Puesto: Base Operativa
               </p>
             </div>
             
@@ -163,11 +164,6 @@ export default function DashboardClient({
                 <span>Consulta aquí tus Datos Familiares ({familiares.length})</span>
                 {mostrarFamiliares ? <ChevronUp className="h-4 w-4 text-white/80" /> : <ChevronDown className="h-4 w-4 text-zinc-400" />}
               </button>
-
-              <div className="px-4 py-2 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-bold flex items-center gap-2 shadow-sm">
-                <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
-                Trabajador Sindicalizado Activo
-              </div>
             </div>
           </div>
 
@@ -176,14 +172,11 @@ export default function DashboardClient({
             <div className="border-t border-zinc-200 bg-white p-6 space-y-4 animate-in fade-in duration-200">
               <div className="flex items-center justify-between">
                 <h3 className="text-sm font-bold text-zinc-900">Familiares Registrados (Cónyuge e Hijos)</h3>
-                <span className="text-[11px] text-zinc-500 font-medium">
-                  Los datos se actualizan automáticamente al aprobar trámites de Nacimiento o Matrimonio.
-                </span>
               </div>
 
               {familiares.length === 0 ? (
-                <div className="p-4 rounded-2xl bg-zinc-50 border border-zinc-200/80 text-center text-xs text-zinc-500 font-medium">
-                  No hay familiares registrados actualmente. Inicia un trámite de Nacimiento o Matrimonio para darlos de alta.
+                <div className="p-4 rounded-2xl bg-zinc-50 border border-zinc-200/80 text-center text-xs text-black font-medium leading-relaxed">
+                  No hay familiares registrados actualmente. Da clic en el trámite de <strong className="text-zinc-800">Nacimiento de Hijos</strong> o <strong className="text-zinc-800">Matrimonio o Concubinato</strong> en el menú de abajo para dar de alta a tus familiares.
                 </div>
               ) : (
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
@@ -221,12 +214,10 @@ export default function DashboardClient({
               { id: 'fallecimiento', label: 'Apoyos por Fallecimiento', icon: HeartHandshake },
               { id: 'becas', label: 'Becas', icon: GraduationCap },
               { id: 'utiles', label: 'Útiles Escolares', icon: BookOpen },
-              { id: 'nacimiento', label: 'Registro de Nacimiento', icon: Users },
+              { id: 'nacimiento', label: 'Nacimiento de Hijos', icon: Users },
               { id: 'matrimonio', label: 'Matrimonio o Concubinato', icon: Users },
               { id: 'salon', label: 'Renta del Salón', icon: Calendar },
               { id: 'materiales', label: 'Materiales para Construcción', icon: Building2 },
-              { id: 'albanil', label: 'Apoyo día del Albañil', icon: Briefcase },
-              { id: 'guardias', label: 'Guardias 12 de Diciembre', icon: Clock },
             ].map(({ id, label, icon: Icon }) => (
               <button
                 key={id}
@@ -277,7 +268,7 @@ export default function DashboardClient({
               onIrANacimiento={() => handleSeleccionarTab('nacimiento')}
             />
           )}
-          {['jubilaciones', 'pensiones', 'fallecimiento', 'salon', 'albanil', 'guardias'].includes(tabActiva || '') && (
+          {['jubilaciones', 'pensiones', 'fallecimiento', 'salon'].includes(tabActiva || '') && (
             <TramiteGenericoTab tipo={tabActiva!} />
           )}
         </div>

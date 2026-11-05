@@ -74,7 +74,7 @@ export default function MatrimonioTab({
           <div className="p-3 w-fit rounded-xl bg-[#E07A2B]/10 text-[#E07A2B]">
             <HeartHandshake className="h-6 w-6" />
           </div>
-          <h3 className="text-lg font-bold text-zinc-900">Registro de Matrimonio o Concubinato</h3>
+          <h3 className="text-lg font-bold text-zinc-900">Registrar Matrimonio o Concubinato</h3>
           <p className="text-xs text-zinc-500 leading-relaxed font-medium">
             Ingresa el nombre completo de tu cónyuge o pareja, selecciona el tipo de unión y adjunta el acta o constancia oficial en formato PDF.
           </p>
@@ -106,7 +106,7 @@ export default function MatrimonioTab({
           </div>
 
           <div className="space-y-1.5">
-            <label className="text-xs font-bold text-zinc-700">Acta o Constancia (Solo PDF)</label>
+            <label className="text-xs font-bold text-zinc-700">Subir Acta de Matrimonio o Constancia de Concubinato (Solo PDF)</label>
             <div className="border-2 border-dashed border-zinc-200 hover:border-[#E07A2B] bg-white rounded-xl p-3 text-center cursor-pointer transition-colors relative group shadow-sm">
               <input
                 type="file"
@@ -203,7 +203,7 @@ export default function MatrimonioTab({
 
         <div className="p-4 rounded-2xl bg-white border border-zinc-200/80 flex items-center gap-3 text-xs text-zinc-500 shadow-sm font-medium">
           <AlertCircle className="h-5 w-5 text-[#E07A2B] shrink-0" />
-          <span>La validación documental se realiza conforme a los estatutos del sindicato.</span>
+          <span>La validación de los documentos se realiza en las oficinas del Sindicato.</span>
         </div>
       </div>
 

@@ -4,7 +4,6 @@ import Servicios from '../components/Servicios';
 import Eventos from '../components/Eventos';
 import NewsSection from '../components/NewsSection';
 import Footer from '../components/Footer';
-import Committee from '../components/Committee';
 
 export default function Home() {
   return (
@@ -15,7 +14,6 @@ export default function Home() {
         <Servicios />
         <Eventos />
         <NewsSection />
-        <Committee />
       </main>
       <Footer />
     </div>

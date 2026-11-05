@@ -162,9 +162,10 @@ export async function obtenerRedireccionTramites() {
   return '/dashboard'
 }
 
-// Función para Cerrar Sesión
+// Función para Cerrar Sesión (Borra cookies y permite redirección a /)
 export async function cerrarSesion() {
   const cookieStore = await cookies()
-  cookieStore.delete('usuario_num')
-  cookieStore.delete('usuario_rol')
+  cookieStore.delete({ name: 'usuario_num', path: '/' })
+  cookieStore.delete({ name: 'usuario_rol', path: '/' })
+  return { success: true }
 }

@@ -73,7 +73,7 @@ export default function NacimientoTab({
           <div className="p-3 w-fit rounded-xl bg-[#E07A2B]/10 text-[#E07A2B]">
             <Users className="h-6 w-6" />
           </div>
-          <h3 className="text-lg font-bold text-zinc-900">Registro de Nacimiento de Hijos</h3>
+          <h3 className="text-lg font-bold text-zinc-900">Registrar Nacimiento de Hijos</h3>
           <p className="text-xs text-zinc-500 leading-relaxed font-medium">
             Ingresa el nombre completo del hijo(a) y adjunta su acta de nacimiento en formato PDF para iniciar el trámite de alta en el padrón familiar.
           </p>

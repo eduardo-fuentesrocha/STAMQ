@@ -43,7 +43,7 @@ export default function Hero() {
           <div
             key={index}
             className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
-              index === currentSlide ? 'opacity-85' : 'opacity-0 pointer-events-none'
+              index === currentSlide ? 'opacity-95' : 'opacity-0 pointer-events-none'
             }`}
           >
             <Image
@@ -169,27 +169,44 @@ export default function Hero() {
             </Link>
           </div>
 
-          {/* 🌟 Banner Flotante Dinámico: Aviso Destacado */}
+          {/* 🌟 Banner Flotante Dinámico: Aviso Destacado con Texto Deslizante Continuo */}
           <div 
             onClick={() => setIsModalOpen(true)}
             className="group cursor-pointer relative overflow-hidden flex items-center justify-between gap-3 p-3 sm:p-3.5 rounded-xl bg-zinc-900/90 border-2 border-[#E07A2B] hover:border-orange-400 backdrop-blur-md shadow-2xl transition-all transform hover:-translate-y-0.5 max-w-xl w-full"
           >
             <div className="absolute inset-0 bg-gradient-to-r from-[#E07A2B]/15 via-transparent to-transparent opacity-75 group-hover:opacity-100 transition-opacity animate-pulse"></div>
 
-            <div className="relative z-10 flex items-center gap-3">
+            <div className="relative z-10 flex items-center gap-3 min-w-0 flex-1">
               <div className="p-2 rounded-xl bg-[#E07A2B] text-white shadow-md shrink-0">
                 <Bell className="h-4 w-4 sm:h-5 sm:w-5 animate-bounce" />
               </div>
-              <div>
+              
+              <div className="min-w-0 flex-1">
                 <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-[#E07A2B] block">
                   LO MÁS NUEVO
                 </span>
-                {/* Título tabulado e indexado con una bolita */}
-                <div className="flex items-center gap-2 pl-2 sm:pl-3 mt-0.5">
-                  <span className="w-2 h-2 rounded-full bg-[#E07A2B] shrink-0 animate-pulse" />
-                  <h3 className="text-xs sm:text-base font-bold text-white group-hover:text-[#E07A2B] transition-colors leading-tight">
-                    {relevantCircular.title}
-                  </h3>
+
+                {/* Contenedor Marquesina Continuo */}
+                <div className="relative w-full overflow-hidden whitespace-nowrap mt-0.5">
+                  <div className="inline-flex animate-[marqueeContinuous_10s_linear_infinite] hover:[animation-play-state:paused]">
+                    
+                    {/* Bloque 1 */}
+                    <div className="inline-flex items-center gap-2 pl-2 sm:pl-3 pr-8 shrink-0">
+                      <span className="w-2 h-2 rounded-full bg-[#E07A2B] shrink-0 animate-pulse" />
+                      <h3 className="text-xs sm:text-base font-bold text-white group-hover:text-[#E07A2B] transition-colors leading-tight">
+                        {relevantCircular.title}
+                      </h3>
+                    </div>
+
+                    {/* Bloque 2 (Duplicado para eliminar tiempo de espera en blanco) */}
+                    <div className="inline-flex items-center gap-2 pl-2 sm:pl-3 pr-8 shrink-0">
+                      <span className="w-2 h-2 rounded-full bg-[#E07A2B] shrink-0 animate-pulse" />
+                      <h3 className="text-xs sm:text-base font-bold text-white group-hover:text-[#E07A2B] transition-colors leading-tight">
+                        {relevantCircular.title}
+                      </h3>
+                    </div>
+
+                  </div>
                 </div>
               </div>
             </div>
@@ -232,7 +249,7 @@ export default function Hero() {
             <div className="flex justify-end gap-3">
               <button
                 onClick={() => setIsModalOpen(false)}
-                className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-[#E07A2B] hover:bg-orange-600 text-white text-sm font-semibold transition-all shrink-0 shadow-md flex items-center justify-center gap-2 group"
+                className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-[#E07A2B] hover:bg-orange-600 text-white text-sm font-semibold transition-all shrink-0 shadow-md flex items-center justify-center gap-2 group cursor-pointer"
               >
                 <Undo2 className="h-4 w-4 transition-transform group-hover:-translate-x-0.5" />
                 <span>Regresar</span>
@@ -242,6 +259,14 @@ export default function Hero() {
           </div>
         </div>
       )}
+
+      {/* Keyframes de marquesina perfecta sin pausas vacías */}
+      <style jsx global>{`
+        @keyframes marqueeContinuous {
+          0% { transform: translateX(0%); }
+          100% { transform: translateX(-50%); }
+        }
+      `}</style>
 
     </section>
   );
