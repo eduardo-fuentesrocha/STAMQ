@@ -1,6 +1,7 @@
 'use client';
 
-import { X, ShieldCheck, CreditCard } from 'lucide-react';
+import { X, CreditCard } from 'lucide-react';
+import Image from 'next/image';
 
 interface UsuarioCredential {
   nombreCompleto: string;
@@ -13,6 +14,7 @@ interface UsuarioCredential {
   tipoSangre?: string;
   contactoEmergenciaNombre?: string;
   contactoEmergenciaTelefono?: string;
+  vigencia?: string;
   fotoUrl?: string;
 }
 
@@ -31,7 +33,7 @@ export default function CredencialModal({
         <div className="bg-[#E07A2B] text-white px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <CreditCard className="h-5 w-5" />
-            <span className="text-sm font-bold tracking-wide uppercase">Credencial Digital</span>
+            <span className="text-sm font-bold tracking-wide uppercase">Credencial Digital Oficial</span>
           </div>
           <button 
             onClick={onClose}
@@ -41,77 +43,114 @@ export default function CredencialModal({
           </button>
         </div>
 
-        {/* Cuerpo de la Credencial (Diseño exacto al tarjetón) */}
-        <div className="p-6 sm:p-8 bg-zinc-50/50 space-y-6">
-          <div className="bg-white rounded-2xl border border-zinc-200/80 shadow-md p-6 relative overflow-hidden">
+        {/* Cuerpo de la Credencial */}
+        <div className="p-5 sm:p-6 bg-zinc-50/50 space-y-4">
+          <div className="bg-white rounded-2xl border border-zinc-200/80 shadow-md p-4 sm:p-5 relative overflow-hidden">
             
+            {/* Membrete Superior Institucional */}
+            <div className="border-b border-zinc-200 pb-3 mb-4 flex items-center gap-3.5">
+              <div className="relative h-12 w-12 shrink-0 flex items-center justify-center">
+                <Image
+                  src="/STSMQ2.svg"
+                  alt="Logotipo Oficial STSMQ"
+                  fill
+                  className="object-contain"
+                  priority
+                />
+              </div>
+              <div>
+                <span 
+                  style={{ fontFamily: 'Arial, Helvetica, sans-serif', fontWeight: 500 }}
+                  className="text-xs sm:text-sm uppercase tracking-tight text-[#E07A2B] leading-tight block"
+                >
+                  SINDICATO DE TRABAJADORES AL SERVICIO DEL MUNICIPIO DE QUERÉTARO
+                </span>
+              </div>
+            </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 items-start">
+            {/* Grid Principal Simétrico y Proporcionado */}
+            <div className="grid grid-cols-1 sm:grid-cols-12 gap-5 items-start">
               
-              {/* Foto y Nombre Principal */}
-              <div className="sm:col-span-3 flex flex-col sm:flex-row items-center sm:items-start gap-4 border-b border-zinc-100 pb-5">
-                <div className="w-28 h-32 rounded-xl bg-zinc-200 border-2 border-[#E07A2B] overflow-hidden shrink-0 shadow-inner flex items-center justify-center">
+              {/* Columna Izquierda: Fotografía (Posición Original) + Datos Laborales */}
+              <div className="sm:col-span-5 flex flex-col space-y-3.5">
+                
+                {/* Fotografía en proporción pasaporte alineada a la izquierda */}
+                <div className="w-28 h-36 rounded-xl bg-zinc-200 border-2 border-[#E07A2B] overflow-hidden shadow-inner flex items-center justify-center">
                   {usuario.fotoUrl ? (
                     <img src={usuario.fotoUrl} alt="Foto de empleado" className="w-full h-full object-cover" />
                   ) : (
-                    <span className="text-xs font-bold text-zinc-400 text-center px-2">Sin Fotografía</span>
+                    <span className="text-[10px] font-bold text-zinc-400 text-center px-2">Sin Fotografía</span>
                   )}
                 </div>
-                <div className="text-center sm:text-left space-y-1">
-                  {/* Membrete con la tipografía Arial y peso 500 unificado */}
-                  <span 
-                    style={{ fontFamily: 'Arial, Helvetica, sans-serif', fontWeight: 500 }}
-                    className="text-[11px] uppercase tracking-normal text-[#E07A2B] leading-tight block"
-                  >
-                    Sindicato de Trabajadores al Servicio del Municipio de Querétaro
-                  </span>
-                  <h2 className="text-xl sm:text-2xl font-black text-zinc-900 leading-tight uppercase">
+
+                <div className="space-y-2 text-xs">
+                  <div>
+                    <span className="font-bold text-zinc-400 uppercase tracking-wide block text-[9px]">FECHA DE INGRESO:</span>
+                    <strong className="text-zinc-900 text-xs font-bold">{usuario.fechaIngreso || '14/05/2004'}</strong>
+                  </div>
+                  <div>
+                    <span className="font-bold text-zinc-400 uppercase tracking-wide block text-[9px]">PUESTO:</span>
+                    <strong className="text-zinc-900 text-xs font-bold leading-tight block">{usuario.puesto || 'Operador de Maquinaria A'}</strong>
+                  </div>
+                  <div>
+                    <span className="font-bold text-zinc-400 uppercase tracking-wide block text-[9px]">DEPARTAMENTO:</span>
+                    <strong className="text-zinc-900 text-xs font-bold">{usuario.departamento || 'Aseo Público'}</strong>
+                  </div>
+                  <div>
+                    <span className="font-bold text-[#E07A2B] uppercase tracking-wide block text-[9px]">VIGENCIA:</span>
+                    <strong className="text-zinc-900 text-sm font-black">{usuario.vigencia || '2027'}</strong>
+                  </div>
+                </div>
+              </div>
+
+              {/* Columna Derecha: Nombre, Identificaciones, Emergencia y Firma */}
+              <div className="sm:col-span-7 flex flex-col justify-between space-y-3">
+                
+                {/* Nombre y No. Empleado */}
+                <div className="space-y-0.5">
+                  <h2 className="text-base sm:text-lg font-black text-zinc-900 leading-tight uppercase line-clamp-2">
                     {usuario.nombreCompleto}
                   </h2>
-                  <p className="text-xs font-bold text-zinc-500 pt-1">
-                    NO. EMPLEADO: <span className="text-zinc-900 text-sm font-black">{usuario.numeroEmpleado}</span>
+                  <p className="text-xs font-black text-zinc-800 tracking-wide pt-0.5">
+                    No. EMPLEADO: <span className="text-[#E07A2B]">{usuario.numeroEmpleado}</span>
                   </p>
                 </div>
-              </div>
 
-              {/* Datos Laborales e Identificación */}
-              <div className="sm:col-span-2 space-y-3 text-xs">
-                <div>
-                  <span className="font-bold text-zinc-400 uppercase tracking-wide block">Puesto:</span>
-                  <strong className="text-zinc-800 text-sm">{usuario.puesto || 'Operador / Sindicalizado'}</strong>
-                </div>
-                <div>
-                  <span className="font-bold text-zinc-400 uppercase tracking-wide block">Departamento:</span>
-                  <strong className="text-zinc-800 font-bold">{usuario.departamento || 'Servicios Municipales'}</strong>
-                </div>
-                <div>
-                  <span className="font-bold text-zinc-400 uppercase tracking-wide block">Fecha de Ingreso:</span>
-                  <strong className="text-zinc-800">{usuario.fechaIngreso || '01/01/2020'}</strong>
-                </div>
-                <div className="grid grid-cols-2 gap-2 pt-1">
+                {/* Bloque de Identificaciones y Emergencia Optimizado */}
+                <div className="space-y-2 text-xs bg-zinc-50/80 p-3 rounded-xl border border-zinc-200/60">
                   <div>
-                    <span className="font-bold text-zinc-400 uppercase tracking-wide block text-[10px]">CURP:</span>
-                    <span className="font-mono font-bold text-zinc-700 text-[11px]">{usuario.curp || 'XXXXXXXXXXXXXXXXXX'}</span>
+                    <span className="font-bold text-zinc-400 text-[9px] uppercase">CURP:</span>
+                    <p className="font-mono font-bold text-zinc-900 text-xs">{usuario.curp || 'HELA741219HGTNTR08'}</p>
                   </div>
                   <div>
-                    <span className="font-bold text-zinc-400 uppercase tracking-wide block text-[10px]">NSS:</span>
-                    <span className="font-mono font-bold text-zinc-700 text-[11px]">{usuario.nss || 'XXXXXXXXXXX'}</span>
+                    <span className="font-bold text-zinc-400 text-[9px] uppercase">IMSS:</span>
+                    <p className="font-mono font-bold text-zinc-900 text-xs">{usuario.nss || '14747414363'}</p>
+                  </div>
+                  <div>
+                    <span className="font-bold text-zinc-400 text-[9px] uppercase">TIPO DE SANGRE:</span>
+                    <p className="font-black text-zinc-900 text-xs">{usuario.tipoSangre || 'O+'}</p>
+                  </div>
+                  
+                  <div className="border-t border-zinc-200 pt-1.5 space-y-0.5">
+                    <span className="font-bold text-zinc-500 text-[9px] uppercase block">CONTACTO DE EMERGENCIA:</span>
+                    <p className="text-zinc-900 font-bold text-xs">{usuario.contactoEmergenciaNombre || 'Rebeca Esparza Ruiz'}</p>
+                    <p className="text-zinc-900 font-bold text-xs">Tel. {usuario.contactoEmergenciaTelefono || '442 716 3120'}</p>
                   </div>
                 </div>
-              </div>
 
-              {/* Tipo de Sangre y Contacto de Emergencia */}
-              <div className="space-y-3 text-xs bg-zinc-50 p-4 rounded-xl border border-zinc-200/60 flex flex-col justify-between">
-                <div>
-                  <span className="font-bold text-[#E07A2B] uppercase tracking-wide block">Tipo de Sangre:</span>
-                  <span className="text-base font-black text-zinc-900">{usuario.tipoSangre || 'O+'}</span>
+                {/* Firma Institucional del Secretario General */}
+                <div className="pt-1 text-right">
+                  <div className="inline-block text-center w-full max-w-[180px]">
+                    <div className="font-serif italic text-blue-900 text-sm font-bold pb-0 transform -rotate-2">
+                      Celestino Bermúdez
+                    </div>
+                    <div className="border-t border-zinc-400 pt-0.5">
+                      <p className="text-[9px] font-bold text-zinc-900 uppercase">C. Celestino Bermúdez Jiménez</p>
+                      <p className="text-[8px] font-black text-zinc-500 uppercase tracking-tight">SECRETARIO GENERAL</p>
+                    </div>
+                  </div>
                 </div>
 
-                <div className="border-t border-zinc-200/80 pt-2 space-y-1">
-                  <span className="font-bold text-zinc-500 uppercase tracking-wide block text-[11px]">Contacto de Emergencia:</span>
-                  <p className="text-zinc-800 font-semibold">• Nombre: {usuario.contactoEmergenciaNombre || 'Familiar Registrado'}</p>
-                  <p className="text-zinc-800 font-semibold">• Teléfono: {usuario.contactoEmergenciaTelefono || '442 000 0000'}</p>
-                </div>
               </div>
 
             </div>
@@ -120,7 +159,7 @@ export default function CredencialModal({
           <div className="flex justify-end">
             <button
               onClick={onClose}
-              className="px-6 py-2.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-white text-xs font-bold transition-all shadow-md cursor-pointer"
+              className="px-6 py-2 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-white text-xs font-bold transition-all shadow-md cursor-pointer"
             >
               Cerrar Credencial
             </button>
