@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
 import "./globals.css";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 
 // Configurar Montserrat directamente
 const montserrat = Montserrat({
@@ -22,8 +24,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es" className={`scroll-smooth ${montserrat.variable}`}>
-      <body className="font-sans antialiased bg-white text-slate-900">
-        {children}
+      <body className="font-sans antialiased bg-white text-slate-900 min-h-screen flex flex-col">
+        <Navbar />
+        
+        {/* 🔑 min-h-[calc(100vh-160px)] previene el salto del footer durante redirecciones y cargas rápidas */}
+        <main className="flex-1 min-h-[calc(100vh-160px)]">
+          {children}
+        </main>
+
+        <Footer />
       </body>
     </html>
   );

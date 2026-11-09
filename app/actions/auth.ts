@@ -30,7 +30,6 @@ export async function buscarEmpleadoParaRegistro(numeroEmpleado: string) {
       }
     }
 
-    // Si ya tiene contraseña configurada, significa que la cuenta ya fue activada
     if (usuario.password && usuario.password.trim() !== '') {
       return { 
         success: false, 
@@ -67,10 +66,8 @@ export async function registrarUsuario(formData: FormData) {
       return { success: false, error: 'No se encontró la información del empleado en el sistema.' }
     }
 
-    // Cifrar la nueva contraseña
     const hashedPassword = await bcrypt.hash(password, 10)
 
-    // Actualizar el registro existente asignando la contraseña
     await prisma.usuario.update({
       where: { numeroEmpleado },
       data: {
@@ -85,11 +82,12 @@ export async function registrarUsuario(formData: FormData) {
   }
 }
 
-// Función para Iniciar Sesión
+// Función para Iniciar Sesión (Con soporte de redirección dinámica prioritaria)
 export async function iniciarSesion(formData: FormData) {
   try {
     const numeroEmpleado = formData.get('numeroEmpleado') as string
     const password = formData.get('password') as string
+    const redirectTo = formData.get('redirectTo') as string // <--- Capturamos la ruta de redirección
 
     if (!numeroEmpleado || !password) {
       return { success: false, error: 'Ingresa tu número de empleado y contraseña.' }
@@ -103,7 +101,6 @@ export async function iniciarSesion(formData: FormData) {
       return { success: false, error: 'Número de empleado no encontrado en el padrón.' }
     }
 
-    // Si el usuario del padrón aún no genera contraseña
     if (!usuario.password) {
       return { success: false, error: 'Tu cuenta aún no ha sido activada. Da clic en "Activa tu cuenta aquí".' }
     }
@@ -114,34 +111,63 @@ export async function iniciarSesion(formData: FormData) {
       return { success: false, error: 'Contraseña incorrecta.' }
     }
 
-    // Guardar cookies de sesión (Número de Empleado y Rol)
     const cookieStore = await cookies()
     
     cookieStore.set('usuario_num', usuario.numeroEmpleado, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      maxAge: 60 * 60 * 24 * 7, // 7 días
+      maxAge: 60 * 60 * 24 * 7,
       path: '/',
     })
 
-    cookieStore.set('usuario_rol', usuario.rol || 'agremiado', {
+    const rol = usuario.rol || 'agremiado'
+    cookieStore.set('usuario_rol', rol, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      maxAge: 60 * 60 * 24 * 7, // 7 días
+      maxAge: 60 * 60 * 24 * 7,
       path: '/',
     })
+
+    // 🔑 Lógica de destino con prioridad para redirectTo (callbackUrl)
+    let targetUrl = (rol === 'admin' || rol === 'ADMIN') ? '/admin' : '/dashboard'
+
+    if (redirectTo && redirectTo.startsWith('/')) {
+      targetUrl = redirectTo
+    }
 
     return { 
       success: true, 
+      redirectTo: targetUrl, 
       usuario: { 
         nombre: usuario.nombreCompleto, 
         empleado: usuario.numeroEmpleado,
-        rol: usuario.rol
+        rol: rol
       } 
     }
   } catch (error) {
     console.error('Error al iniciar sesión:', error)
     return { success: false, error: 'Ocurrió un error al intentar autenticar.' }
+  }
+}
+
+// 👤 3. Obtener la información del usuario actual autenticado mediante la cookie
+export async function obtenerUsuarioActual() {
+  try {
+    const cookieStore = await cookies()
+    const numeroEmpleado = cookieStore.get('usuario_num')?.value
+
+    if (!numeroEmpleado) {
+      return null
+    }
+
+    const usuario = await prisma.usuario.findUnique({
+      where: { numeroEmpleado },
+    })
+
+    return usuario
+  } catch (error) {
+    console.error('Error al obtener usuario actual:', error)
+    return null
   }
 }
 

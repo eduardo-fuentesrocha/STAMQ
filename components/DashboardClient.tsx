@@ -27,7 +27,6 @@ import NacimientoTab, { SolicitudNacimiento } from '@/app/dashboard/components/t
 import MatrimonioTab, { SolicitudMatrimonioInfo } from '@/app/dashboard/components/tabs/MatrimonioTab';
 import UtilesTab, { SolicitudUtilesInfo } from '@/app/dashboard/components/tabs/UtilesTab';
 import TramiteGenericoTab from '@/app/dashboard/components/tabs/TramiteGenericoTab';
-import CredencialModal from '@/app/dashboard/components/CredencialModal';
 
 export interface FamiliarInfo {
   id: string;
@@ -77,7 +76,6 @@ export default function DashboardClient({
 }) {
   const [tabActiva, setTabActiva] = useState<string | null>(null);
   const [mostrarFamiliares, setMostrarFamiliares] = useState<boolean>(false);
-  const [mostrarCredencial, setMostrarCredencial] = useState<boolean>(false);
   const [familiares, setFamiliares] = useState<FamiliarInfo[]>(usuario.familiares || []);
 
   const handleCerrarSesion = async () => {
@@ -97,30 +95,6 @@ export default function DashboardClient({
 
   return (
     <div className="min-h-screen bg-white text-zinc-800 flex flex-col">
-      {/* Header del Portal */}
-      <header className="border-b border-zinc-200 bg-zinc-50/80 backdrop-blur-md px-6 py-4 flex items-center justify-between sticky top-0 z-50">
-        <div className="flex items-center gap-3.5">
-          <img src="/STSMQ2.svg" alt="Logo STSMQ" className="h-12 w-auto object-contain" />
-          <div>
-            {/* Texto del Sindicato estandarizado con tipografía Arial y peso 500 */}
-            <span 
-              style={{ fontFamily: 'Arial, Helvetica, sans-serif', fontWeight: 500 }}
-              className="text-xs sm:text-sm tracking-normal text-[#E07A2B] uppercase leading-tight block"
-            >
-              SINDICATO DE TRABAJADORES AL SERVICIO DEL MUNICIPIO DE QUERÉTARO
-            </span>
-            <p className="text-sm text-black font-medium">Portal del Trabajador Sindicalizado</p>
-          </div>
-        </div>
-
-        <button
-          onClick={handleCerrarSesion}
-          className="flex items-center gap-2 px-4 py-2 rounded-xl bg-zinc-100 hover:bg-zinc-200 text-zinc-700 hover:text-zinc-900 text-xs font-bold transition-all border border-zinc-200 cursor-pointer shadow-sm"
-        >
-          <LogOut className="h-4 w-4 text-[#E07A2B]" />
-          <span>Cerrar Sesión</span>
-        </button>
-      </header>
 
       {/* Contenido Principal */}
       <main className="flex-1 max-w-7xl w-full mx-auto p-6 sm:p-8 lg:p-12 space-y-8">
@@ -138,18 +112,7 @@ export default function DashboardClient({
             </div>
             
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
-              {/* Botón Credencial Digital */}
-              <button
-                onClick={() => setMostrarCredencial(true)}
-                className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer shadow-sm ${
-                  mostrarCredencial 
-                    ? 'bg-[#E07A2B] text-white shadow-md shadow-[#E07A2B]/20 border border-transparent' 
-                    : 'bg-zinc-100 hover:bg-zinc-200 text-zinc-700 border border-zinc-200'
-                }`}
-              >
-                <CreditCard className={`h-4 w-4 ${mostrarCredencial ? 'text-white' : 'text-[#E07A2B]'}`} />
-                <span>Consulta aquí tu Credencial Digital</span>
-              </button>
+              
 
               {/* Botón Datos Familiares */}
               <button
@@ -216,8 +179,8 @@ export default function DashboardClient({
               { id: 'utiles', label: 'Útiles Escolares', icon: BookOpen },
               { id: 'nacimiento', label: 'Nacimiento de Hijos', icon: Users },
               { id: 'matrimonio', label: 'Matrimonio o Concubinato', icon: Users },
-              { id: 'salon', label: 'Renta del Salón', icon: Calendar },
-              { id: 'materiales', label: 'Materiales para Construcción', icon: Building2 },
+              { id: 'salon', label: 'Renta del Salón del Sindicato', icon: Calendar },
+              { id: 'materiales', label: 'Ayuda de Materiales para Construcción', icon: Building2 },
             ].map(({ id, label, icon: Icon }) => (
               <button
                 key={id}
@@ -275,13 +238,6 @@ export default function DashboardClient({
 
       </main>
 
-      {/* Modal de la Credencial Digital */}
-      {mostrarCredencial && (
-        <CredencialModal 
-          usuario={usuario} 
-          onClose={() => setMostrarCredencial(false)} 
-        />
-      )}
     </div>
   );
 }
