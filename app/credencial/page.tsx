@@ -164,8 +164,8 @@ export default function CredencialPage() {
                     <span className="font-black uppercase tracking-wide block text-[10px] text-[#C05A12]">
                       VIGENCIA:
                       <strong className="text-zinc-950 font-black text-sm">
-                      { usuario.vigencia || ' 2027'}
-                    </strong>
+                        {usuario.vigencia || ' 2027'}
+                      </strong>
                     </span>
                   </div>
                 </div>
@@ -217,20 +217,52 @@ export default function CredencialPage() {
                   </div>
                 </div>
 
-                {/* Firma Institucional */}
-                <div className="pt-0 text-center">
-                  <div className="inline-block w-full">
-                    <div className="h-5 w-36 mx-auto flex items-center justify-center">
-                      <svg viewBox="0 0 160 40" className="w-full h-full overflow-visible" fill="none" stroke="#1e3a8a" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M5 25 C15 5, 20 35, 30 15 C35 5, 45 35, 55 12 C60 2, 70 30, 80 18 C90 5, 100 32, 110 15 C125 3, 140 38, 155 10" />
-                        <path d="M20 28 C45 38, 90 35, 145 22" strokeWidth="1.5" stroke="#1e3a8a" opacity="0.8" />
-                      </svg>
-                    </div>
-                    <div className="border-t border-zinc-400 pt-0.5">
+                {/* Firma Institucional Grande con Margen Inferior Ajustado */}
+                <div className="pt-2 text-center relative mt-2">
+                  {/* SVG posicionado de manera absoluta para encimarse correctamente sobre el nombre del secretario */}
+                  <div className="absolute -top-7 left-1/2 -translate-x-1/2 w-48 h-16 pointer-events-none z-20 opacity-95">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 600 450"
+                      className="w-full h-full overflow-visible drop-shadow-[0_1px_1px_rgba(255,255,255,0.8)]"
+                    >
+                      <g fill="none" stroke="#102b7b" strokeLinecap="round" strokeLinejoin="round">
+                        {/* Trazo principal / Base inclinada hacia abajo */}
+                        <path d="M 90,340 L 450,260" strokeWidth="12" />
+                        
+                        {/* Bucles y trazos circulares centrales de la firma */}
+                        <path d="M 170,320 
+                                 C 140,280 180,210 240,210 
+                                 C 300,210 270,330 200,340 
+                                 C 150,345 130,290 160,250 
+                                 C 190,210 260,200 300,240 
+                                 C 330,270 290,340 220,335 
+                                 C 160,330 180,260 220,240" strokeWidth="10" />
+
+                        {/* Trazos diagonales largos (cruzados hacia la derecha arriba) */}
+                        <path d="M 180,350 L 420,130" strokeWidth="10" />
+                        <path d="M 150,330 L 450,135" strokeWidth="9.5" />
+
+                        {/* Lazos de regreso hacia la derecha y trazo inclinado horizontal */}
+                        <path d="M 450,135 C 470,125 460,150 420,170 L 120,290" strokeWidth="9" />
+                        
+                        {/* Trazos agudos superiores de remate */}
+                        <path d="M 420,130 L 380,180 L 470,220" strokeWidth="9" />
+                        
+                        {/* Lazos pequeños y garabatos inferiores de superposición */}
+                        <path d="M 190,320 C 180,360 230,370 250,320 C 270,270 210,260 190,300" strokeWidth="9" />
+                        <path d="M 230,310 C 260,340 310,320 330,280 L 400,275" strokeWidth="8" />
+                      </g>
+                    </svg>
+                  </div>
+
+                  {/* Bloque de texto inferior del firmante */}
+                  <div className="inline-block w-full pt-2">
+                    <div className="border-t border-zinc-400 pt-0.5 mt-2 relative z-10">
                       <p className="text-[10px] md:text-[10px] font-black uppercase text-zinc-950 tracking-tight whitespace-nowrap">
                         C. Celestino Bermúdez Jiménez
                       </p>
-                      <p className="text-[10px] md:text-[10px] font-black uppercase tracking-wider text-[#C05A12]">
+                      <p className="text-[10px] md:text-[10px] font-black uppercase tracking-wider">
                         SECRETARIO GENERAL
                       </p>
                     </div>
