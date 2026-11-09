@@ -46,15 +46,15 @@ export default function CredencialPage() {
       <div className="w-full max-w-2xl space-y-6 flex flex-col items-center">
 
         {/* Título de sección */}
-        <div className="text-center space-y-1">
+        {/*<div className="text-center space-y-1">
           <h1 className="text-lg sm:text-xl font-black text-zinc-900 tracking-tight flex items-center justify-center gap-2">
             <CreditCard className="h-5 w-5 text-[#E07A2B]" />
             Credencial Digital
           </h1>
-        </div>
+        </div>*/}
 
         {/* 🎛️ SELECTOR INTERACTIVO */}
-        <div className="bg-zinc-50 p-2 rounded-2xl border border-zinc-200 shadow-sm flex items-center justify-center gap-2 sm:gap-3 text-xs font-bold w-full max-w-md">
+        {/*<div className="bg-zinc-50 p-2 rounded-2xl border border-zinc-200 shadow-sm flex items-center justify-center gap-2 sm:gap-3 text-xs font-bold w-full max-w-md">
           <button
             onClick={() => setEstiloSeleccionado('naranja-suave')}
             className={`px-3 sm:px-4 py-2 rounded-xl transition-all cursor-pointer ${
@@ -75,7 +75,7 @@ export default function CredencialPage() {
           >
             3. Platino Clásico
           </button>
-        </div>
+        </div>*/}
 
         {/* 🌟 TARJETA DE CREDENCIAL ADAPTATIVA */}
         <div className="w-full flex justify-center px-1">
