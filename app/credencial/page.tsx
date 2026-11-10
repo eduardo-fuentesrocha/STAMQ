@@ -95,11 +95,11 @@ export default function CredencialPage() {
 
               {/* Columna Izquierda: Fotografía + Datos Laborales (order-2 en móviles) */}
               <div className="w-full md:col-span-5 order-2 flex flex-row md:flex-col items-center md:items-start gap-3.5 md:gap-2">
-                <div className="w-22 h-28 md:w-28 md:h-36 rounded-xl bg-zinc-200 border-2 border-white overflow-hidden shadow-md shrink-0">
+                <div className="w-20 h-28 md:w-28 md:h-36 rounded-xl bg-zinc-200 border-2 border-white overflow-hidden shadow-md shrink-0 relative">
                   <img
                     src={usuario.fotoUrl || '/Foto Credencial.jpeg'}
                     alt="Foto de empleado"
-                    className="w-full h-full object-cover"
+                    className="absolute inset-0 w-full h-full object-cover object-center"
                   />
                 </div>
 
