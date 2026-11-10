@@ -78,16 +78,6 @@ export default function Hero() {
           {/* 4 Accesos rápidos uniformes */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3 max-w-xl w-full">
             <Link
-              href="/dashboard"
-              className="group flex items-center gap-3 p-3 sm:p-3.5 rounded-xl bg-zinc-900/85 hover:bg-zinc-900 text-white font-bold text-xs sm:text-sm border border-zinc-700/80 hover:border-[#E07A2B] backdrop-blur-md shadow-lg transition-all transform hover:-translate-y-0.5"
-            >
-              <div className="p-1.5 sm:p-2 rounded-lg bg-[#E07A2B]/10 text-[#E07A2B] group-hover:bg-[#E07A2B] group-hover:text-white transition-colors shrink-0">
-                <FileText className="h-4 w-4 sm:h-5 sm:w-5" />
-              </div>
-              <span>Trámites en Línea</span>
-            </Link>
-
-            <Link
               href="/credencial"
               className="group flex items-center gap-3 p-3 sm:p-3.5 rounded-xl bg-zinc-900/85 hover:bg-zinc-900 text-white font-bold text-xs sm:text-sm border border-zinc-700/80 hover:border-[#E07A2B] backdrop-blur-md shadow-lg transition-all transform hover:-translate-y-0.5"
             >
@@ -95,6 +85,16 @@ export default function Hero() {
                 <Megaphone className="h-4 w-4 sm:h-5 sm:w-5" />
               </div>
               <span>Credencial Digital</span>
+            </Link>
+
+            <Link
+              href="/dashboard"
+              className="group flex items-center gap-3 p-3 sm:p-3.5 rounded-xl bg-zinc-900/85 hover:bg-zinc-900 text-white font-bold text-xs sm:text-sm border border-zinc-700/80 hover:border-[#E07A2B] backdrop-blur-md shadow-lg transition-all transform hover:-translate-y-0.5"
+            >
+              <div className="p-1.5 sm:p-2 rounded-lg bg-[#E07A2B]/10 text-[#E07A2B] group-hover:bg-[#E07A2B] group-hover:text-white transition-colors shrink-0">
+                <FileText className="h-4 w-4 sm:h-5 sm:w-5" />
+              </div>
+              <span>Trámites en Línea</span>
             </Link>
             
             <Link

@@ -44,38 +44,37 @@ export default function CredencialPage() {
     <div className="min-h-[calc(100vh-140px)] bg-white py-2 sm:py-8 px-2 sm:px-6 flex items-start sm:items-center justify-center">
       <div className="w-full max-w-2xl space-y-3 sm:space-y-6 flex flex-col items-center">
 
-        {/* 🌟 TARJETA DE CREDENCIAL ADAPTATIVA */}
+        {/* 🌟 TARJETA DE CREDENCIAL ADAPTATIVA (CR80 Vertical en Móvil / CR80 Horizontal en Escritorio) */}
         <div className="w-full flex justify-center px-1">
           <div
-            className={`w-full max-w-[420px] md:max-w-[580px] md:min-h-[340px] rounded-2xl overflow-hidden relative flex flex-col justify-between p-3.5 sm:p-4 select-none bg-white shadow-[0_20px_50px_rgba(0,0,0,0.18),0_4px_8px_rgba(0,0,0,0.08)] border-[3px] border-t-white/50 border-l-white/50 border-r-zinc-400 border-b-zinc-500 ring-1 ring-black/5 ${estilosFondo[estiloSeleccionado]}`}
+            className={`w-full max-w-[310px] aspect-[1/1.58] md:max-w-[580px] md:aspect-auto md:min-h-[340px] rounded-2xl overflow-hidden relative flex flex-col justify-between p-3.5 sm:p-4 select-none bg-white shadow-[0_20px_50px_rgba(0,0,0,0.18),0_4px_8px_rgba(0,0,0,0.08)] border-[3px] border-t-white/50 border-l-white/50 border-r-zinc-400 border-b-zinc-500 ring-1 ring-black/5 ${estiloSeleccionado ? estilosFondo[estiloSeleccionado] : ''}`}
           >
             {/* Bisel volumétrico 3D interior */}
             <div className="absolute inset-0 border-[2px] border-t-transparent border-l-transparent border-r-black/30 border-b-black/40 rounded-2xl pointer-events-none z-30" />
 
             {/* Brillo especular superior de laminado PVC */}
             <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/25 to-transparent pointer-events-none z-20" />
-            
 
             {/* =========================================================
-                VISTA MÓVIL (< md) ACTUALIZADA Y COHERENTE
+                VISTA MÓVIL (< md) - FORMATO CR80 VERTICAL
                ========================================================= */}
-            <div className="flex flex-col md:hidden justify-between h-full relative z-10 space-y-2">
+            <div className="flex flex-col md:hidden justify-between h-full relative z-10 py-1">
               
               {/* Nombre y Número de Empleado Centrados */}
-              <div className="w-full text-center space-y-0.5 pb-2 pt-5">
-                <h2 className="text-sm font-black uppercase tracking-tight leading-tight text-zinc-950 drop-shadow-xs">
+              <div className="w-full text-center space-y-0.5 pb-1.5">
+                <h2 className="text-xs font-black uppercase tracking-tight leading-tight text-zinc-950 drop-shadow-xs">
                   {usuario.nombreCompleto}
                 </h2>
-                <p className="text-[11px] font-black tracking-wide text-zinc-900">
+                <p className="text-[10px] font-black tracking-wide text-zinc-900">
                   No. EMPLEADO:{' '}
-                  <span className="text-[#C05A12] font-black text-xs">
+                  <span className="text-[#C05A12] font-black text-[11px]">
                     {usuario.numeroEmpleado}
                   </span>
                 </p>
               </div>
 
-              {/* Cuerpo Móvil (Foto ampliada + Datos Laborales) */}
-              <div className="flex flex-row items-center gap-3 pb-2 pt-2">
+              {/* Fotografía centrada arriba en móvil */}
+              <div className="w-full flex justify-center my-1">
                 <div className="w-24 h-32 rounded-xl bg-zinc-200 border-2 border-white overflow-hidden shadow-md relative shrink-0 flex items-center justify-center">
                   <img
                     src={usuario.fotoUrl || '/Foto Credencial.jpeg'}
@@ -83,59 +82,61 @@ export default function CredencialPage() {
                     className="absolute inset-0 w-full h-full object-cover object-center"
                   />
                 </div>
-                <div className="space-y-1 text-[10px] bg-white/60 p-2 rounded-xl border border-zinc-200/85 w-full">
-                  <div>
-                    <span className="font-bold uppercase tracking-wide text-[9px] text-[#C05A12] mr-1">FECHA DE INGRESO:</span>
-                    <strong className="text-zinc-950 font-extrabold text-[10px]">{usuario.fechaIngreso || '14/05/2004'}</strong>
-                  </div>
-                  <div>
-                    <span className="font-bold uppercase tracking-wide text-[9px] text-[#C05A12] mr-1">PUESTO:</span>
-                    <strong className="text-zinc-950 font-extrabold text-[10px]">{usuario.puesto || 'Operador de Maquinaria A'}</strong>
-                  </div>
-                  <div>
-                    <span className="font-bold uppercase tracking-wide text-[9px] text-[#C05A12] mr-1">DEPARTAMENTO:</span>
-                    <strong className="text-zinc-950 font-extrabold text-[10px]">{usuario.departamento || 'Aseo Público'}</strong>
-                  </div>
+              </div>
+
+              {/* Datos Laborales en Móvil */}
+              <div className="space-y-0.5 text-[9.5px] bg-white/60 p-2 rounded-xl border border-zinc-200/85 w-full">
+                <div>
+                  <span className="font-bold uppercase tracking-wide text-[8.5px] text-[#C05A12] mr-1">FECHA DE INGRESO:</span>
+                  <strong className="text-zinc-950 font-extrabold text-[9.5px]">{usuario.fechaIngreso || '14/05/2004'}</strong>
+                </div>
+                <div>
+                  <span className="font-bold uppercase tracking-wide text-[8.5px] text-[#C05A12] mr-1">PUESTO:</span>
+                  <strong className="text-zinc-950 font-extrabold text-[9.5px]">{usuario.puesto || 'Operador de Maquinaria A'}</strong>
+                </div>
+                <div>
+                  <span className="font-bold uppercase tracking-wide text-[8.5px] text-[#C05A12] mr-1">DEPARTAMENTO:</span>
+                  <strong className="text-zinc-950 font-extrabold text-[9.5px]">{usuario.departamento || 'Aseo Público'}</strong>
                 </div>
               </div>
 
               {/* Recuadro Médico Móvil Unificado */}
-              <div className="space-y-1 text-[10px] p-2 rounded-xl border bg-white/95 backdrop-blur-xs border-zinc-300 text-zinc-950 shadow-xs w-full">
-                <div className="grid grid-cols-2 gap-x-1.5">
+              <div className="space-y-1 text-[9px] p-2 rounded-xl border bg-white/95 backdrop-blur-xs border-zinc-300 text-zinc-950 shadow-xs w-full">
+                <div className="grid grid-cols-2 gap-x-1">
                   <div className="space-y-0.5">
                     <div>
-                      <span className="font-bold text-[9px] uppercase text-[#C05A12] block">CURP:</span>
-                      <span className="font-mono font-bold text-zinc-950 text-[9px]">{usuario.curp || 'HELA741219HGTNTR08'}</span>
+                      <span className="font-bold text-[8px] uppercase text-[#C05A12] block">CURP:</span>
+                      <span className="font-mono font-bold text-zinc-950 text-[8px]">{usuario.curp || 'HELA741219HGTNTR08'}</span>
                     </div>
                     <div className="pt-0.5">
-                      <span className="font-bold text-[9px] uppercase text-[#C05A12] block">IMSS:</span>
-                      <span className="font-mono font-bold text-zinc-950 text-[9px]">{usuario.nss || '14747414363'}</span>
+                      <span className="font-bold text-[8px] uppercase text-[#C05A12] block">IMSS:</span>
+                      <span className="font-mono font-bold text-zinc-950 text-[8px]">{usuario.nss || '14747414363'}</span>
                     </div>
                   </div>
                   <div className="space-y-0">
                     <div>
-                      <span className="font-bold text-[9px] uppercase text-[#C05A12] block">CONTACTO DE EMERGENCIA:</span>
-                      <p className="font-bold text-zinc-950 text-[9px] leading-tight mt-0.5">{usuario.contactoEmergenciaNombre || 'Rebeca Esparza Ruiz'}</p>
+                      <span className="font-bold text-[8px] uppercase text-[#C05A12] block">CONTACTO DE EMERGENCIA:</span>
+                      <p className="font-bold text-zinc-950 text-[8.5px] leading-tight mt-0.5">{usuario.contactoEmergenciaNombre || 'Rebeca Esparza Ruiz'}</p>
                     </div>
                     <div className="pb-0.5">
-                      <span className="font-semibold text-zinc-800 text-[9px]">Tel. {usuario.contactoEmergenciaTelefono || '442 716 3120'}</span>
+                      <span className="font-semibold text-zinc-800 text-[8px]">Tel. {usuario.contactoEmergenciaTelefono || '442 716 3120'}</span>
                     </div>
                     <div className="pb-0">
-                      <span className="font-bold text-[9px] uppercase text-[#C05A12] mr-1">TIPO DE SANGRE:</span>
-                      <span className="font-black text-zinc-950 text-[9px]">{usuario.tipoSangre || 'O+'}</span>
+                      <span className="font-bold text-[8px] uppercase text-[#C05A12] mr-1">TIPO DE SANGRE:</span>
+                      <span className="font-black text-zinc-950 text-[8.5px]">{usuario.tipoSangre || 'O+'}</span>
                     </div>
                   </div>
                 </div>
               </div>
 
-              {/* Firma y Vigencia Móvil (Vigencia izquierda, Firma compacta a 12px centrada) */}
-              <div className="relative flex items-end justify-between pb-5 pt-5">
+              {/* Firma y Vigencia Móvil */}
+              <div className="relative flex items-end justify-between pt-1">
                 <div className="text-left shrink-0 pb-0.5 z-20">
-                  <span className="font-black uppercase tracking-wide text-[9px] text-[#C05A12] mr-1">VIGENCIA:</span>
-                  <strong className="text-zinc-950 font-black text-[9px]">{usuario.vigencia || '2027'}</strong>
+                  <span className="font-black uppercase tracking-wide text-[8.5px] text-[#C05A12] mr-1">VIGENCIA:</span>
+                  <strong className="text-zinc-950 font-black text-[9.5px]">{usuario.vigencia || '2027'}</strong>
                 </div>
                 <div className="text-center relative flex-1">
-                  <div className="absolute -top-6 left-1/2 -translate-x-1/2 w-36 h-12 pointer-events-none z-20 opacity-95">
+                  <div className="absolute -top-6 left-1/2 -translate-x-1/2 w-32 h-10 pointer-events-none z-20 opacity-95">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 450" className="w-full h-full overflow-visible">
                       <g fill="none" stroke="#102b7b" strokeLinecap="round" strokeLinejoin="round">
                         <path d="M 90,340 L 450,260" strokeWidth="12" />
@@ -166,7 +167,7 @@ export default function CredencialPage() {
             <div className="hidden md:flex flex-col justify-between h-full relative z-10 space-y-2.5">
 
               {/* Nombre y Número de Empleado CENTRADOS en la parte superior */}
-              <div className="w-full text-center space-y-0.5 border-b border-zinc-300/40 pb-1">
+              <div className="w-full text-center space-y-0.5 pb-1">
                 <h2 className="text-base font-black uppercase tracking-tight leading-tight text-zinc-950 drop-shadow-xs">
                   {usuario.nombreCompleto}
                 </h2>
