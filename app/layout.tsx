@@ -48,7 +48,7 @@ export const metadata: Metadata = {
         url: "/og-image.png", 
         width: 1200,
         height: 630,
-        alt: "Logotipo STSMQ",
+        alt: "Logo STSMQ",
       },
     ],
     locale: "es_MX",
