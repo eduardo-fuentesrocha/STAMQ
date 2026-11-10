@@ -106,20 +106,22 @@ export default function NavbarClient({ usuarioNum, navItems }: NavbarClientProps
 
             {/* Botón de Sesión */}
             {usuarioNum ? (
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2.5">
                 <span className={`text-xs font-bold flex items-center gap-1.5 px-3.5 py-2 rounded-xl backdrop-blur-sm ${
                   esHome ? 'bg-black/40 text-white border border-white/20' : 'bg-zinc-100 text-zinc-700'
                 }`}>
                   <User className="h-3.5 w-3.5 text-[#E07A2B]" />
                   {usuarioNum}
                 </span>
+
+                {/* Botón Cerrar Sesión Destacado */}
                 <button
                   onClick={handleCerrarSesion}
                   disabled={isPending}
-                  className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer disabled:opacity-50 ${
+                  className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all shadow-sm active:scale-95 cursor-pointer disabled:opacity-50 ${
                     esHome 
-                      ? 'bg-rose-500/30 hover:bg-rose-500/40 text-rose-200 border border-rose-500/30 backdrop-blur-sm' 
-                      : 'border border-rose-200 bg-rose-50 hover:bg-rose-100 text-rose-700'
+                      ? 'bg-rose-600 hover:bg-rose-700 text-white shadow-rose-900/30' 
+                      : 'bg-rose-600 hover:bg-rose-700 text-white shadow-rose-600/20'
                   }`}
                 >
                   <LogOut className="h-4 w-4" />
@@ -211,7 +213,7 @@ export default function NavbarClient({ usuarioNum, navItems }: NavbarClientProps
             );
           })}
 
-          <div className="pt-2 border-t border-white/10">
+          <div className="pt-2 border-t border-zinc-200/50">
             {usuarioNum ? (
               <button
                 onClick={() => {
@@ -219,7 +221,7 @@ export default function NavbarClient({ usuarioNum, navItems }: NavbarClientProps
                   handleCerrarSesion();
                 }}
                 disabled={isPending}
-                className="flex items-center justify-center gap-2 w-full py-3 rounded-xl bg-rose-500/20 border border-rose-500/30 text-rose-300 text-sm font-bold transition-all disabled:opacity-50"
+                className="flex items-center justify-center gap-2 w-full py-3 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-sm font-bold transition-all shadow-md active:scale-95 cursor-pointer disabled:opacity-50"
               >
                 <LogOut className="h-4 w-4" />
                 <span>Cerrar sesión ({usuarioNum})</span>

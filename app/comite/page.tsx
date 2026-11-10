@@ -6,6 +6,7 @@ interface MiembroComite {
   puesto: string;
   nombre: string;
   correo: string;
+  foto?: string; // 👈 Propiedad opcional para la imagen
 }
 
 export default function Committee() {
@@ -14,6 +15,7 @@ export default function Committee() {
       puesto: 'Secretario General',
       nombre: 'Celestino Bermúdez Jiménez',
       correo: 'celestino.bermudez@stsmq.org',
+      foto: '/comite/celestino.jpg', // 👈 Ruta pública de la foto
     },
     {
       puesto: 'Secretario del Interior',
@@ -109,11 +111,19 @@ export default function Committee() {
               key={index} 
               className="bg-white border border-zinc-200/80 rounded-3xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col items-center text-center space-y-4 group"
             >
-              {/* Avatar por Defecto */}
+              {/* Avatar Dinámico (Foto o Ícono por Defecto) */}
               <div className="relative w-24 h-24 rounded-2xl overflow-hidden bg-zinc-100 border-2 border-zinc-200 group-hover:border-[#E07A2B] transition-colors shadow-inner flex items-center justify-center">
-                <div className="w-full h-full bg-zinc-100 flex items-center justify-center text-zinc-400 group-hover:bg-[#E07A2B]/5 transition-colors">
-                  <User className="h-10 w-10 text-zinc-400 group-hover:text-[#E07A2B] transition-colors" />
-                </div>
+                {miembro.foto ? (
+                  <img
+                    src={miembro.foto}
+                    alt={miembro.nombre}
+                    className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-300"
+                  />
+                ) : (
+                  <div className="w-full h-full bg-zinc-100 flex items-center justify-center text-zinc-400 group-hover:bg-[#E07A2B]/5 transition-colors">
+                    <User className="h-10 w-10 text-zinc-400 group-hover:text-[#E07A2B] transition-colors" />
+                  </div>
+                )}
               </div>
 
               {/* Información del Miembro */}

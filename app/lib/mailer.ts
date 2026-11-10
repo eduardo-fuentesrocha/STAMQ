@@ -21,8 +21,6 @@ interface NotificacionTramiteParams {
 interface SugerenciaParams {
   nombreTrabajador: string
   numeroEmpleado: string
-  categoria: string
-  asunto: string
   mensaje: string
 }
 
@@ -36,7 +34,6 @@ export async function enviarNotificacionAdmin({
   const adminEmail = process.env.ADMIN_EMAIL || 'sindicato.municipio.qro@gmail.com'
   const fecha = new Date().toLocaleString('es-MX', { timeZone: 'America/Mexico_City' })
 
-  // Construir tabla de detalles
   const filasDetalles = Object.entries(detalles)
     .map(
       ([clave, valor]) =>
@@ -95,8 +92,6 @@ export async function enviarNotificacionAdmin({
 export async function enviarSugerenciaBuzon({
   nombreTrabajador,
   numeroEmpleado,
-  categoria,
-  asunto,
   mensaje,
 }: SugerenciaParams) {
   const adminEmail = process.env.ADMIN_EMAIL || 'sindicato.municipio.qro@gmail.com'
@@ -105,17 +100,9 @@ export async function enviarSugerenciaBuzon({
   const htmlBody = `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #e0e0e0; border-radius: 12px; padding: 24px; background-color: #ffffff;">
       <h2 style="color: #E07A2B; margin-top: 0;">📬 Nueva Sugerencia</h2>
-      <p style="color: #555;">Se ha enviado un nuevo mensaje a través del Buzón de Sugerencias del Portal.</p>
+      <p style="color: #555;">Se ha enviado un nuevo mensaje a través del Buzón de Sugerencias del Portal del Trabajador Sindicalizado.</p>
       
       <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
-        <tr>
-          <td style="padding: 8px; border-bottom: 1px solid #eee; font-weight: bold; color: #555;">Categoría:</td>
-          <td style="padding: 8px; border-bottom: 1px solid #eee; color: #E07A2B; font-weight: bold;">${categoria}</td>
-        </tr>
-        <tr>
-          <td style="padding: 8px; border-bottom: 1px solid #eee; font-weight: bold; color: #555;">Asunto:</td>
-          <td style="padding: 8px; border-bottom: 1px solid #eee; color: #333; font-weight: bold;">${asunto}</td>
-        </tr>
         <tr>
           <td style="padding: 8px; border-bottom: 1px solid #eee; font-weight: bold; color: #555;">Trabajador:</td>
           <td style="padding: 8px; border-bottom: 1px solid #eee; color: #333;">${nombreTrabajador}</td>
@@ -135,7 +122,7 @@ export async function enviarSugerenciaBuzon({
         <p style="color: #444; margin: 0; white-space: pre-wrap; line-height: 1.5;">${mensaje}</p>
       </div>
       
-      <p style="font-size: 12px; color: #888; margin-top: 24px;">Este es un mensaje automático generado por el Buzón del Portal del Trabajador Sinficalizado.</p>
+      <p style="font-size: 12px; color: #888; margin-top: 24px;">Este es un mensaje automático generado por el Buzón del Portal del Trabajador Sindicalizado.</p>
     </div>
   `
 
@@ -143,7 +130,7 @@ export async function enviarSugerenciaBuzon({
     await transporter.sendMail({
       from: `"Buzón STSMQ" <${process.env.SMTP_USER}>`,
       to: adminEmail,
-      subject: `[Buzón de Sugerencias] (${categoria}) - ${asunto} [${nombreTrabajador}]`,
+      subject: `[Buzón de Sugerencias] Nueva sugerencia de ${nombreTrabajador} (${numeroEmpleado})`,
       html: htmlBody,
     })
     return { success: true }

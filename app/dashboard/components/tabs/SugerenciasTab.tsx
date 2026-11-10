@@ -39,7 +39,7 @@ export default function SugerenciasTab({ usuario }: { usuario: { nombreCompleto:
           <MessageSquarePlus className="h-6 w-6" />
         </div>
         <div>
-          <h3 className="text-lg font-black text-zinc-900">Buzón de Sugerencias y Comentarios</h3>
+          <h3 className="text-lg font-black text-zinc-900">Buzón de Sugerencias</h3>
           <p className="text-xs text-zinc-500 font-medium">Tus opiniones son valiosas para mejorar nuestros servicios.</p>
         </div>
       </div>
@@ -49,7 +49,7 @@ export default function SugerenciasTab({ usuario }: { usuario: { nombreCompleto:
           <CheckCircle2 className="h-10 w-10 text-emerald-600 mx-auto" />
           <h4 className="text-sm font-bold text-zinc-900">¡Sugerencia enviada con éxito!</h4>
           <p className="text-xs text-zinc-500 max-w-md mx-auto">
-            Tu comentario ha sido remitido directamente al correo del comité ejecutivo del Sindicato. ¡Muchas gracias por participar!
+            Tu mensaje ha sido enviado al comité. ¡Muchas gracias!
           </p>
           <button
             onClick={() => setEnviado(false)}
@@ -66,40 +66,13 @@ export default function SugerenciasTab({ usuario }: { usuario: { nombreCompleto:
             </div>
           )}
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div className="space-y-1.5">
-              <label className="text-xs font-bold text-zinc-700 uppercase tracking-wide">Categoría</label>
-              <select
-                name="categoria"
-                className="w-full px-4 py-2.5 rounded-xl border border-zinc-200 bg-white text-xs font-medium text-zinc-800 focus:outline-none focus:ring-2 focus:ring-[#E07A2B]/40"
-              >
-                <option value="Mejora Continua">Mejora Continua de Servicios</option>
-                <option value="Atencion y Modulos">Atención en Oficinas / Módulos</option>
-                <option value="Prestaciones">Prestaciones y Trámites</option>
-                <option value="Infraestructura">Instalaciones o Salón Sindical</option>
-                <option value="Otro">Otro Asunto</option>
-              </select>
-            </div>
-
-            <div className="space-y-1.5">
-              <label className="text-xs font-bold text-zinc-700 uppercase tracking-wide">Asunto de la Sugerencia</label>
-              <input
-                type="text"
-                name="asunto"
-                required
-                placeholder="Ej. Propuesta para nuevos cursos..."
-                className="w-full px-4 py-2.5 rounded-xl border border-zinc-200 bg-white text-xs font-medium text-zinc-800 focus:outline-none focus:ring-2 focus:ring-[#E07A2B]/40"
-              />
-            </div>
-          </div>
-
           <div className="space-y-1.5">
-            <label className="text-xs font-bold text-zinc-700 uppercase tracking-wide">Mensaje / Detalle de la Sugerencia</label>
+            <label className="text-xs font-bold text-zinc-700 uppercase tracking-wide">Mensaje</label>
             <textarea
               name="mensaje"
               required
               rows={4}
-              placeholder="Escribe detalladamente tu propuesta o comentario..."
+              placeholder="Escribe con detalle tu sugerencia..."
               className="w-full p-4 rounded-xl border border-zinc-200 bg-white text-xs font-medium text-zinc-800 focus:outline-none focus:ring-2 focus:ring-[#E07A2B]/40 resize-none"
             />
           </div>
