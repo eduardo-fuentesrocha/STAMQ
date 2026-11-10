@@ -62,7 +62,7 @@ export default function CredencialPage() {
             <div className="flex flex-col md:hidden justify-between h-full relative z-10 space-y-2">
               
               {/* Nombre y Número de Empleado Centrados */}
-              <div className="w-full text-center space-y-0.5 border-b border-zinc-300/40 pb-1">
+              <div className="w-full text-center space-y-0.5 pb-2 pt-5">
                 <h2 className="text-sm font-black uppercase tracking-tight leading-tight text-zinc-950 drop-shadow-xs">
                   {usuario.nombreCompleto}
                 </h2>
@@ -75,7 +75,7 @@ export default function CredencialPage() {
               </div>
 
               {/* Cuerpo Móvil (Foto ampliada + Datos Laborales) */}
-              <div className="flex flex-row items-center gap-3">
+              <div className="flex flex-row items-center gap-3 pb-2 pt-2">
                 <div className="w-24 h-32 rounded-xl bg-zinc-200 border-2 border-white overflow-hidden shadow-md relative shrink-0 flex items-center justify-center">
                   <img
                     src={usuario.fotoUrl || '/Foto Credencial.jpeg'}
@@ -129,7 +129,7 @@ export default function CredencialPage() {
               </div>
 
               {/* Firma y Vigencia Móvil (Vigencia izquierda, Firma compacta a 12px centrada) */}
-              <div className="pt-1 relative flex items-end justify-between">
+              <div className="relative flex items-end justify-between pb-5 pt-5">
                 <div className="text-left shrink-0 pb-0.5 z-20">
                   <span className="font-black uppercase tracking-wide text-[9px] text-[#C05A12] mr-1">VIGENCIA:</span>
                   <strong className="text-zinc-950 font-black text-[9px]">{usuario.vigencia || '2027'}</strong>
