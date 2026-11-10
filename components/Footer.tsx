@@ -31,7 +31,7 @@ export default function Footer() {
 
             {/* Lema Institucional */}
             <p className="text-xs font-semibold text-zinc-400 pl-1 border-l-2 border-[#E07A2B]/60">
-              Por la Unificación del Trabajador
+              "Por la Unificación del Trabajador".
             </p>
           </div>
 
