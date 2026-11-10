@@ -49,7 +49,7 @@ interface SolicitudBeca {
 interface UsuarioInfo {
   nombreCompleto: string;
   numeroEmpleado: string;
-  email?: string;
+  email?: string | null;
   familiares?: FamiliarInfo[];
   puesto?: string;
   departamento?: string;
