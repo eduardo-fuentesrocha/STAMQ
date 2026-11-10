@@ -18,6 +18,7 @@ export const metadata: Metadata = {
 
   title: "SINDICATO DE TRABAJADORES AL SERVICIO DEL MUNICIPIO DE QUERÉTARO",
   description: "Portal del Trabajador Sindicalizado",
+  manifest: "/manifest.json",
   
   // 🌐 Íconos de pestaña, accesos directos y dispositivos móviles
   icons: {

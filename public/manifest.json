@@ -1,0 +1,15 @@
+{
+  "name": "Sindicato de Trabajadores al Servicio del Municipio de Querétaro",
+  "short_name": "STSMQ",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
+  "icons": [
+    {
+      "src": "/STSMQ Original.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ]
+}
