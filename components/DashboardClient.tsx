@@ -234,7 +234,7 @@ export default function DashboardClient({
             />
           )}
           {tabActiva === 'sugerencias' && (
-            <SugerenciasTab usuario={{ nombreCompleto: usuario.nombreCompleto, numeroEmpleado: usuario.numeroEmpleado, email: usuario.email }} />
+            <SugerenciasTab usuario={{ nombreCompleto: usuario.nombreCompleto, numeroEmpleado: usuario.numeroEmpleado, email: usuario.email ?? '' }} />
           )}
           {['jubilaciones', 'pensiones', 'fallecimiento', 'salon'].includes(tabActiva || '') && (
             <TramiteGenericoTab tipo={tabActiva!} />
