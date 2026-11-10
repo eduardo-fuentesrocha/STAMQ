@@ -71,13 +71,13 @@ export default function Footer() {
               </li>
               <li>
                 <a 
-                  href="mailto:sindicato.municipio.qro@gmail.com" 
+                  href="mailto:sindicato.trabajadores.muniqro@gmail.com" 
                   className="flex items-center gap-3 hover:text-[#E07A2B] transition-colors group text-xs"
                 >
                   <div className="p-1.5 rounded-lg bg-[#E07A2B]/10 text-[#E07A2B] group-hover:bg-[#E07A2B] group-hover:text-white transition-colors shrink-0">
                     <Mail className="h-3.5 w-3.5" />
                   </div>
-                  <span className="truncate">sindicato.municipio.qro@gmail.com</span>
+                  <span className="truncate">sindicato.trabajadores.muniqro@gmail.com</span>
                 </a>
               </li>
             </ul>

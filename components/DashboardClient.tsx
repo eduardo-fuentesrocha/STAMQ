@@ -49,6 +49,7 @@ interface SolicitudBeca {
 interface UsuarioInfo {
   nombreCompleto: string;
   numeroEmpleado: string;
+  email?: string;
   familiares?: FamiliarInfo[];
   puesto?: string;
   departamento?: string;
@@ -233,7 +234,7 @@ export default function DashboardClient({
             />
           )}
           {tabActiva === 'sugerencias' && (
-            <SugerenciasTab usuario={{ nombreCompleto: usuario.nombreCompleto, numeroEmpleado: usuario.numeroEmpleado }} />
+            <SugerenciasTab usuario={{ nombreCompleto: usuario.nombreCompleto, numeroEmpleado: usuario.numeroEmpleado, email: usuario.email }} />
           )}
           {['jubilaciones', 'pensiones', 'fallecimiento', 'salon'].includes(tabActiva || '') && (
             <TramiteGenericoTab tipo={tabActiva!} />

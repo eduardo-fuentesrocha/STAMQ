@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { MessageSquarePlus, Send, CheckCircle2, Loader2 } from 'lucide-react';
 import { enviarSugerenciaAction } from '@/app/actions/sugerencias';
 
-export default function SugerenciasTab({ usuario }: { usuario: { nombreCompleto: string; numeroEmpleado: string } }) {
+export default function SugerenciasTab({ usuario }: { usuario: { nombreCompleto: string; numeroEmpleado: string; email?: string } }) {
   const [cargando, setCargando] = useState(false);
   const [enviado, setEnviado] = useState(false);
   const [error, setError] = useState('');
@@ -17,6 +17,9 @@ export default function SugerenciasTab({ usuario }: { usuario: { nombreCompleto:
     const formData = new FormData(e.currentTarget);
     formData.append('nombreTrabajador', usuario.nombreCompleto);
     formData.append('numeroEmpleado', usuario.numeroEmpleado);
+    if (usuario.email) {
+      formData.append('correoTrabajador', usuario.email);
+    }
 
     try {
       const res = await enviarSugerenciaAction(formData);
@@ -49,7 +52,7 @@ export default function SugerenciasTab({ usuario }: { usuario: { nombreCompleto:
           <CheckCircle2 className="h-10 w-10 text-emerald-600 mx-auto" />
           <h4 className="text-sm font-bold text-zinc-900">¡Sugerencia enviada con éxito!</h4>
           <p className="text-xs text-zinc-500 max-w-md mx-auto">
-            Tu mensaje ha sido enviado al comité. ¡Muchas gracias!
+            Tu mensaje ha sido enviado al comité y hemos enviado un acuse de recibo a tu correo. ¡Muchas gracias!
           </p>
           <button
             onClick={() => setEnviado(false)}

@@ -4,7 +4,6 @@ import { Pool } from 'pg'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import DashboardClient from '@/components/DashboardClient'
-import Footer from '@/components/Footer'
 
 const connectionString = process.env.DATABASE_URL;
 const pool = new Pool({ connectionString });
@@ -20,7 +19,7 @@ export default async function DashboardPage() {
     redirect('/login'); 
   }
 
-  // 1. Buscar al usuario y sus familiares relacionados
+  // 1. Buscar al usuario y sus familiares relacionados (incluyendo email)
   const usuario = await prisma.usuario.findUnique({
     where: { numeroEmpleado },
     include: {
@@ -92,11 +91,11 @@ export default async function DashboardPage() {
   return (
     <DashboardClient 
       initialSolicitudes={initialBecas}
-      initialMateriales={[]}  // (O agrégales su respectiva consulta si aplica)
+      initialMateriales={[]}  
       initialNacimientos={initialNacimientos}
       initialMatrimonios={initialMatrimonios}
-      initialUtiles={initialUtiles} // 👈 🔑 Pasa las solicitudes de útiles al cliente
-      usuario={usuario || { nombreCompleto: 'Usuario', numeroEmpleado: '' }}
+      initialUtiles={initialUtiles} 
+      usuario={usuario || { nombreCompleto: 'Usuario', numeroEmpleado: '', email: '' }}
     />
   );
 }

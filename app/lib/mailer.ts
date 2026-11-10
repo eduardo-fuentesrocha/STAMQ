@@ -22,6 +22,7 @@ interface SugerenciaParams {
   nombreTrabajador: string
   numeroEmpleado: string
   mensaje: string
+  correoTrabajador?: string
 }
 
 export async function enviarNotificacionAdmin({
@@ -31,7 +32,7 @@ export async function enviarNotificacionAdmin({
   folio,
   detalles,
 }: NotificacionTramiteParams) {
-  const adminEmail = process.env.ADMIN_EMAIL || 'sindicato.municipio.qro@gmail.com'
+  const adminEmail = process.env.ADMIN_EMAIL || 'sindicato.trabajadores.muniqro@gmail.com'
   const fecha = new Date().toLocaleString('es-MX', { timeZone: 'America/Mexico_City' })
 
   const filasDetalles = Object.entries(detalles)
@@ -93,8 +94,9 @@ export async function enviarSugerenciaBuzon({
   nombreTrabajador,
   numeroEmpleado,
   mensaje,
+  correoTrabajador,
 }: SugerenciaParams) {
-  const adminEmail = process.env.ADMIN_EMAIL || 'sindicato.municipio.qro@gmail.com'
+  const adminEmail = process.env.ADMIN_EMAIL || 'sindicato.trabajadores.muniqro@gmail.com'
   const fecha = new Date().toLocaleString('es-MX', { timeZone: 'America/Mexico_City' })
 
   const htmlBody = `
@@ -110,6 +112,10 @@ export async function enviarSugerenciaBuzon({
         <tr>
           <td style="padding: 8px; border-bottom: 1px solid #eee; font-weight: bold; color: #555;">N° Empleado:</td>
           <td style="padding: 8px; border-bottom: 1px solid #eee; color: #333;">${numeroEmpleado}</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px; border-bottom: 1px solid #eee; font-weight: bold; color: #555;">Correo de Contacto:</td>
+          <td style="padding: 8px; border-bottom: 1px solid #eee; color: #333;">${correoTrabajador || 'No registrado'}</td>
         </tr>
         <tr>
           <td style="padding: 8px; border-bottom: 1px solid #eee; font-weight: bold; color: #555;">Fecha y Hora:</td>
@@ -135,7 +141,68 @@ export async function enviarSugerenciaBuzon({
     })
     return { success: true }
   } catch (error) {
-    console.error('Error al enviar correo de sugerencia:', error)
+    console.error('Error al enviar correo de sugerencia al admin:', error)
     throw new Error('No se pudo enviar la sugerencia.')
+  }
+}
+
+export async function enviarConfirmacionSugerenciaUsuario({
+  nombreTrabajador,
+  mensaje,
+  correoTrabajador,
+}: {
+  nombreTrabajador: string
+  mensaje: string
+  correoTrabajador: string
+}) {
+  // 💡 Asegúrate de poner aquí la URL pública de tu logo
+  const logoUrl = 'https://stsmq.vercel.app/STSMQ Original.svg' 
+
+  const htmlBody = `
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #e0e0e0; border-radius: 12px; padding: 24px; background-color: #ffffff;">
+      
+      <!-- Encabezado con Logo y Título en el mismo renglón -->
+      <table style="width: 100%; border-collapse: collapse; margin-bottom: 24px; padding-bottom: 16px;">
+        <tr>
+          <td style="width: 50px; vertical-align: middle; padding-right: 12px;">
+            <img src="${logoUrl}" alt="Logo STSMQ" style="width: 45px; height: auto; display: block;" />
+          </td>
+          <td style="vertical-align: middle;">
+            <h2 style="color: #E07A2B; font-size: 15px; font-weight: 800; margin: 0; line-height: 1.2;">
+              SINDICATO DE TRABAJADORES AL SERVICIO DEL MUNICIPIO DE QUERÉTARO
+            </h2>
+          </td>
+        </tr>
+      </table>
+
+      <h3 style="color: #333; margin-top: 0;">¡Hemos recibido tu sugerencia!</h3>
+      <p style="color: #555; font-size: 14px; line-height: 1.5;">
+        Hola <strong>${nombreTrabajador || 'Estimado Trabajador'}</strong>, te confirmamos que tu propuesta ha sido recibida correctamente a través de nuestro Buzón de Sugerencias.
+      </p>
+
+      <div style="background-color: #f9f9f9; border-left: 4px solid #E07A2B; padding: 16px; border-radius: 8px; margin: 20px 0;">
+        <p style="font-weight: bold; margin: 0 0 6px 0; color: #333; font-size: 13px;">Resumen de tu mensaje:</p>
+        <p style="color: #555; margin: 0; white-space: pre-wrap; font-style: italic; font-size: 13px;">"${mensaje}"</p>
+      </div>
+
+      <p style="color: #555; font-size: 13px; line-height: 1.5;">
+        Agradecemos tu participación activa para continuar mejorando nuestros servicios.
+      </p>
+
+      <div style="border-top: 1px solid #eee; margin-top: 24px; padding-top: 16px; text-align: center;">
+        <p style="font-size: 11px; color: #999; margin: 0;">Este es un mensaje automático de acuse de recibo, por favor no respondas a este correo.</p>
+      </div>
+    </div>
+  `
+
+  try {
+    await transporter.sendMail({
+      from: `"Buzón STSMQ" <${process.env.SMTP_USER}>`,
+      to: correoTrabajador,
+      subject: `Hemos recibido tu sugerencia - STSMQ`,
+      html: htmlBody,
+    })
+  } catch (error) {
+    console.error('Error al enviar correo de confirmación al usuario:', error)
   }
 }
