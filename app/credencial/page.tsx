@@ -114,16 +114,16 @@ export default function CredencialPage() {
                     </div>
                   </div>
                   <div className="space-y-0">
-                    <div>
-                      <span className="font-bold text-[8px] uppercase text-[#C05A12] block">CONTACTO DE EMERGENCIA:</span>
-                      <p className="font-bold text-zinc-950 text-[8.5px] leading-tight mt-0.5">{usuario.contactoEmergenciaNombre || 'Rebeca Esparza Ruiz'}</p>
-                    </div>
-                    <div className="pb-0.5">
-                      <span className="font-semibold text-zinc-800 text-[8px]">Tel. {usuario.contactoEmergenciaTelefono || '442 716 3120'}</span>
-                    </div>
                     <div className="pb-0">
                       <span className="font-bold text-[8px] uppercase text-[#C05A12] mr-1">TIPO DE SANGRE:</span>
                       <span className="font-black text-zinc-950 text-[8.5px]">{usuario.tipoSangre || 'O+'}</span>
+                    </div>
+                    <div>
+                      <span className="pt-1 font-bold text-[8px] uppercase text-[#C05A12] block">CONTACTO DE EMERGENCIA:</span>
+                      <p className="font-bold text-zinc-950 text-[8.5px] leading-tight mt-0.5">{usuario.contactoEmergenciaNombre || 'Rebeca Esparza Ruiz'}</p>
+                    </div>
+                    <div className="pb-0.5">
+                      <span className="font-bold text-zinc-950 text-[8px]">Tel. {usuario.contactoEmergenciaTelefono || '442 716 3120'}</span>
                     </div>
                   </div>
                 </div>
@@ -233,16 +233,16 @@ export default function CredencialPage() {
                         </div>
                       </div>
                       <div className="space-y-0">
-                        <div>
+                        <div className="">
+                        <span className="font-bold text-[12px] uppercase text-[#C05A12] mr-1">TIPO DE SANGRE:</span>
+                        <span className="font-black text-zinc-950 text-[12px]">{usuario.tipoSangre || 'O+'}</span>
+                        </div>
+                        <div className="pt-1">
                           <span className="font-bold text-[12px] uppercase text-[#C05A12] block">CONTACTO DE EMERGENCIA:</span>
                           <p className="font-bold text-zinc-950 text-[12px] leading-tight mt-0.5">{usuario.contactoEmergenciaNombre || 'Rebeca Esparza Ruiz'}</p>
                         </div>
                         <div className="pb-0.5">
-                          <span className="font-semibold text-zinc-800 text-[12px]">Tel. {usuario.contactoEmergenciaTelefono || '442 716 3120'}</span>
-                        </div>
-                        <div className="pb-0">
-                        <span className="font-bold text-[12px] uppercase text-[#C05A12] mr-1">TIPO DE SANGRE:</span>
-                        <span className="font-black text-zinc-950 text-[12px]">{usuario.tipoSangre || 'O+'}</span>
+                          <span className="font-bold text-zinc-950 text-[12px]">Tel. {usuario.contactoEmergenciaTelefono || '442 716 3120'}</span>
                         </div>
                       </div>
                     </div>
