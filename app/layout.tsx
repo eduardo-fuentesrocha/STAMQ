@@ -10,9 +10,12 @@ const montserrat = Montserrat({
   weight: ["300", "400", "500", "600", "700", "800", "900"],
   variable: "--font-montserrat",
   display: "swap",
-});
+},);
 
 export const metadata: Metadata = {
+  // 🔑 NECESARIO: Define la URL base para que OpenGraph resuelva las imágenes absolutas en producción
+  metadataBase: new URL("https://stsmq.vercel.app"),
+
   title: "SINDICATO DE TRABAJADORES AL SERVICIO DEL MUNICIPIO DE QUERÉTARO",
   description: "Portal del Trabajador Sindicalizado",
   
