@@ -82,7 +82,7 @@ export async function registrarUsuario(formData: FormData) {
   }
 }
 
-// Función para Iniciar Sesión (Con soporte de redirección dinámica prioritaria)
+// 🔑 3. Función para Iniciar Sesión (Con redirección directa a /admin/credenciales para el Secretario General)
 export async function iniciarSesion(formData: FormData) {
   try {
     const numeroEmpleado = formData.get('numeroEmpleado') as string
@@ -128,8 +128,15 @@ export async function iniciarSesion(formData: FormData) {
       path: '/',
     })
 
-    // 🔑 Lógica de destino con prioridad para redirectTo (callbackUrl)
-    let targetUrl = (rol === 'admin' || rol === 'ADMIN') ? '/admin' : '/dashboard'
+    // 🔑 Lógica de destino: Si es Secretario General o Admin, va directo a /admin/credenciales
+    const esSecretarioOAdmin = 
+      rol === 'secretario_general' || 
+      rol === 'SECRETARIO_GENERAL' || 
+      rol === 'admin' || 
+      rol === 'ADMIN' || 
+      usuario.numeroEmpleado === '45892'
+
+    let targetUrl = esSecretarioOAdmin ? '/admin/credenciales' : '/dashboard'
 
     if (redirectTo && redirectTo.startsWith('/')) {
       targetUrl = redirectTo
@@ -150,7 +157,7 @@ export async function iniciarSesion(formData: FormData) {
   }
 }
 
-// 👤 3. Obtener la información del usuario actual autenticado mediante la cookie
+// 👤 4. Obtener la información del usuario actual autenticado mediante la cookie
 export async function obtenerUsuarioActual() {
   try {
     const cookieStore = await cookies()
@@ -171,7 +178,7 @@ export async function obtenerUsuarioActual() {
   }
 }
 
-// Función para verificar a dónde enviar al usuario al hacer clic en "Trámites en Línea"
+// 🔄 5. Función para verificar a dónde enviar al usuario al hacer clic en "Trámites en Línea"
 export async function obtenerRedireccionTramites() {
   const cookieStore = await cookies()
   const numeroEmpleado = cookieStore.get('usuario_num')?.value
@@ -181,14 +188,21 @@ export async function obtenerRedireccionTramites() {
     return '/login'
   }
 
-  if (rol === 'admin' || rol === 'ADMIN') {
-    return '/admin'
+  const esSecretarioOAdmin = 
+    rol === 'secretario_general' || 
+    rol === 'SECRETARIO_GENERAL' || 
+    rol === 'admin' || 
+    rol === 'ADMIN' || 
+    numeroEmpleado === '45892'
+
+  if (esSecretarioOAdmin) {
+    return '/admin/credenciales'
   }
 
   return '/dashboard'
 }
 
-// Función para Cerrar Sesión (Borra cookies y permite redirección a /)
+// 🚪 6. Función para Cerrar Sesión (Borra cookies y permite redirección a /)
 export async function cerrarSesion() {
   const cookieStore = await cookies()
   cookieStore.delete({ name: 'usuario_num', path: '/' })

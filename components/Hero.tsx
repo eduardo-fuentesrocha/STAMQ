@@ -70,17 +70,6 @@ export default function Hero() {
             Portal del <br />
             <span className="text-[#E07A2B]">Trabajador Sindicalizado </span>
           </h1>
-
-          {/* Botón de Trámites en Línea Prominente en Móvil */}
-          <div className="block md:hidden pt-1">
-            <Link
-              href="/login"
-              className="flex items-center justify-center gap-2.5 px-5 py-3.5 rounded-xl bg-[#E07A2B] hover:bg-[#c46522] text-white font-bold text-sm transition-all shadow-lg shadow-[#E07A2B]/30 border border-amber-500/30 w-full max-w-sm"
-            >
-              <UserCheck className="h-5 w-5" />
-              <span>Iniciar Sesión</span>
-            </Link>
-          </div>
         </div>
 
         {/* Bloque de Accesos Rápidos y Aviso Destacado */}

@@ -17,7 +17,8 @@ import {
   ChevronUp,
   UserCheck,
   CreditCard,
-  MousePointerClick
+  MousePointerClick,
+  MessageSquarePlus
 } from 'lucide-react';
 import { SolicitudMaterial } from '@/app/actions/materials';
 import { cerrarSesion } from '@/app/actions/auth';
@@ -27,6 +28,7 @@ import NacimientoTab, { SolicitudNacimiento } from '@/app/dashboard/components/t
 import MatrimonioTab, { SolicitudMatrimonioInfo } from '@/app/dashboard/components/tabs/MatrimonioTab';
 import UtilesTab, { SolicitudUtilesInfo } from '@/app/dashboard/components/tabs/UtilesTab';
 import TramiteGenericoTab from '@/app/dashboard/components/tabs/TramiteGenericoTab';
+import SugerenciasTab from '@/app/dashboard/components/tabs/SugerenciasTab';
 
 export interface FamiliarInfo {
   id: string;
@@ -112,8 +114,6 @@ export default function DashboardClient({
             </div>
             
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
-              
-
               {/* Botón Datos Familiares */}
               <button
                 onClick={() => setMostrarFamiliares(!mostrarFamiliares)}
@@ -181,6 +181,7 @@ export default function DashboardClient({
               { id: 'matrimonio', label: 'Matrimonio o Concubinato', icon: Users },
               { id: 'salon', label: 'Renta del Salón del Sindicato', icon: Calendar },
               { id: 'materiales', label: 'Ayuda de Materiales para Construcción', icon: Building2 },
+              { id: 'sugerencias', label: 'Buzón de Sugerencias', icon: MessageSquarePlus },
             ].map(({ id, label, icon: Icon }) => (
               <button
                 key={id}
@@ -209,7 +210,7 @@ export default function DashboardClient({
               </div>
               <div className="space-y-1">
                 <h3 className="text-sm font-bold text-zinc-900">Ningún trámite seleccionado</h3>
-                <p className="text-xs text-zinc-500">Selecciona una de las opciones del menú superior para comenzar a gestionar tu solicitud.</p>
+                <p className="text-xs text-zinc-500">Selecciona una de las opciones del menú superior para comenzar a gestionar tu solicitud o enviar una sugerencia.</p>
               </div>
             </div>
           )}
@@ -230,6 +231,9 @@ export default function DashboardClient({
               familiares={usuario.familiares || []} 
               onIrANacimiento={() => handleSeleccionarTab('nacimiento')}
             />
+          )}
+          {tabActiva === 'sugerencias' && (
+            <SugerenciasTab usuario={{ nombreCompleto: usuario.nombreCompleto, numeroEmpleado: usuario.numeroEmpleado }} />
           )}
           {['jubilaciones', 'pensiones', 'fallecimiento', 'salon'].includes(tabActiva || '') && (
             <TramiteGenericoTab tipo={tabActiva!} />
