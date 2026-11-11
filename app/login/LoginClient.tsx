@@ -252,7 +252,7 @@ export default function LoginClient() {
             </div>
 
             <div className="space-y-1">
-              <label className="text-xs font-bold text-zinc-700">Correo Electrónico Registrado</label>
+              <label className="text-xs font-bold text-zinc-700">Correo electrónico asignado por el Municipio</label>
               <div className="relative">
                 <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-zinc-400">
                   <Mail className="h-4 w-4" />
