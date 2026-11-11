@@ -157,7 +157,81 @@ export async function iniciarSesion(formData: FormData) {
   }
 }
 
-// 👤 4. Obtener la información del usuario actual autenticado mediante la cookie
+// 🛡️ 4. Validar correo electrónico asignado para recuperación de contraseña
+export async function validarCorreoRecuperacion(numeroEmpleado: string, emailIngresado: string) {
+  try {
+    const empleadoLimpio = numeroEmpleado?.trim()
+    const emailLimpio = emailIngresado?.trim()
+
+    if (!empleadoLimpio || !emailLimpio) {
+      return { success: false, error: 'Por favor ingresa tu número de empleado y tu correo electrónico.' }
+    }
+
+    const usuario = await prisma.usuario.findUnique({
+      where: { numeroEmpleado: empleadoLimpio },
+      select: { email: true, nombreCompleto: true, numeroEmpleado: true }
+    })
+
+    if (!usuario) {
+      return { success: false, error: 'No se encontró un usuario registrado con ese número de empleado.' }
+    }
+
+    if (!usuario.email || usuario.email.trim() === '') {
+      return { success: false, error: 'Tu usuario no tiene un correo asignado en el sistema. Contacta al administrador.' }
+    }
+
+    if (usuario.email.trim().toLowerCase() !== emailLimpio.toLowerCase()) {
+      return { success: false, error: 'El correo electrónico no coincide con el registrado para este número de empleado.' }
+    }
+
+    return {
+      success: true,
+      nombreCompleto: usuario.nombreCompleto,
+      numeroEmpleado: usuario.numeroEmpleado,
+    }
+  } catch (error) {
+    console.error('Error al validar correo para recuperación:', error)
+    return { success: false, error: 'Ocurrió un error al consultar la información del usuario.' }
+  }
+}
+
+// 🔄 5. Restablecer / Actualizar la contraseña del usuario
+export async function actualizarPasswordAction(numeroEmpleado: string, nuevoPassword: string) {
+  try {
+    const empleadoLimpio = numeroEmpleado?.trim()
+
+    if (!empleadoLimpio || !nuevoPassword || nuevoPassword.length < 8) {
+      return { success: false, error: 'La nueva contraseña debe tener al menos 8 caracteres.' }
+    }
+
+    const usuario = await prisma.usuario.findUnique({
+      where: { numeroEmpleado: empleadoLimpio },
+    })
+
+    if (!usuario) {
+      return { success: false, error: 'No se encontró la información del empleado.' }
+    }
+
+    const hashedPassword = await bcrypt.hash(nuevoPassword, 10)
+
+    await prisma.usuario.update({
+      where: { numeroEmpleado: empleadoLimpio },
+      data: {
+        password: hashedPassword,
+      },
+    })
+
+    return { 
+      success: true, 
+      message: '¡Contraseña restablecida con éxito! Ya puedes iniciar sesión con tu nueva contraseña.' 
+    }
+  } catch (error) {
+    console.error('Error al restablecer contraseña:', error)
+    return { success: false, error: 'No se pudo actualizar la contraseña en el servidor.' }
+  }
+}
+
+// 👤 6. Obtener la información del usuario actual autenticado mediante la cookie
 export async function obtenerUsuarioActual() {
   try {
     const cookieStore = await cookies()
@@ -178,7 +252,7 @@ export async function obtenerUsuarioActual() {
   }
 }
 
-// 🔄 5. Función para verificar a dónde enviar al usuario al hacer clic en "Trámites en Línea"
+// 🔄 7. Función para verificar a dónde enviar al usuario al hacer clic en "Trámites en Línea"
 export async function obtenerRedireccionTramites() {
   const cookieStore = await cookies()
   const numeroEmpleado = cookieStore.get('usuario_num')?.value
@@ -202,7 +276,7 @@ export async function obtenerRedireccionTramites() {
   return '/dashboard'
 }
 
-// 🚪 6. Función para Cerrar Sesión (Borra cookies y permite redirección a /)
+// 🚪 8. Función para Cerrar Sesión (Borra cookies y permite redirección a /)
 export async function cerrarSesion() {
   const cookieStore = await cookies()
   cookieStore.delete({ name: 'usuario_num', path: '/' })
