@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useTransition } from 'react';
+import { useRouter } from 'next/navigation';
 import { GraduationCap, Upload, CheckCircle2, AlertCircle, Clock, XCircle, Loader2, ArrowRight } from 'lucide-react';
 import { registrarSolicitudBeca } from '@/app/actions/becas';
 
@@ -28,6 +29,7 @@ export default function BecasTab({
   familiares?: FamiliarInfo[];
   onIrANacimiento: () => void;
 }) {
+  const router = useRouter();
   const [solicitudesBecas, setSolicitudesBecas] = useState<SolicitudBeca[]>(initialSolicitudes);
   const [archivoActa, setArchivoActa] = useState<File | null>(null);
   const [archivoBoleta, setArchivoBoleta] = useState<File | null>(null);
@@ -60,7 +62,7 @@ export default function BecasTab({
       const result = await registrarSolicitudBeca(formData);
       
       if (result.success && result.data) {
-        const nuevoFolio = `BEC-2026-${String(solicitudesBecas.length + 1).padStart(2, '0')}`;
+        const nuevoFolio = `BEC-2026-${result.data.id.slice(0, 4).toUpperCase()}`;
         
         const nuevaUI: SolicitudBeca = {
           id: result.data.id,
@@ -76,6 +78,7 @@ export default function BecasTab({
         setArchivoActa(null);
         setArchivoBoleta(null);
         form.reset();
+        router.refresh(); // 👈 Sincroniza automáticamente con el servidor
         setTimeout(() => setMensajeExitoBeca(false), 5000);
       } else {
         setErrorBeca(result.error || 'Ocurrió un error al procesar la solicitud.');

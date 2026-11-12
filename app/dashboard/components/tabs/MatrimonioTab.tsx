@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useTransition } from 'react';
+import { useRouter } from 'next/navigation';
 import { HeartHandshake, Upload, CheckCircle2, AlertCircle, Clock, XCircle, Loader2 } from 'lucide-react';
 import { registrarSolicitudMatrimonio } from '@/app/actions/matrimonio';
 
@@ -18,6 +19,7 @@ export default function MatrimonioTab({
 }: { 
   initialSolicitudes: SolicitudMatrimonioInfo[] 
 }) {
+  const router = useRouter();
   const [solicitudesMatrimonio, setSolicitudesMatrimonio] = useState<SolicitudMatrimonioInfo[]>(initialSolicitudes);
   const [archivoActa, setArchivoActa] = useState<File | null>(null);
   const [mensajeExito, setMensajeExito] = useState(false);
@@ -43,7 +45,7 @@ export default function MatrimonioTab({
       const result = await registrarSolicitudMatrimonio(formData);
       
       if (result.success && result.data) {
-        const nuevoFolio = `MATR-2026-${String(solicitudesMatrimonio.length + 1).padStart(2, '0')}`;
+        const nuevoFolio = `MATR-2026-${result.data.id.slice(0, 4).toUpperCase()}`;
         
         const nuevaUI: SolicitudMatrimonioInfo = {
           id: result.data.id,
@@ -58,6 +60,7 @@ export default function MatrimonioTab({
         setMensajeExito(true);
         setArchivoActa(null);
         form.reset();
+        router.refresh(); // 👈 Sincroniza y actualiza los datos del servidor al instante
         setTimeout(() => setMensajeExito(false), 5000);
       } else {
         setErrorTramite(result.error || 'Ocurrió un error al procesar la solicitud.');

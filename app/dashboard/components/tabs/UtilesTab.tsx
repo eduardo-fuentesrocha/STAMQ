@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useTransition } from 'react';
+import { useRouter } from 'next/navigation';
 import { BookOpen, Upload, CheckCircle2, AlertCircle, Clock, XCircle, Loader2, ArrowRight } from 'lucide-react';
 import { registrarSolicitudUtiles } from '@/app/actions/utiles';
 
@@ -28,6 +29,7 @@ export default function UtilesTab({
   familiares?: FamiliarInfo[];
   onIrANacimiento: () => void;
 }) {
+  const router = useRouter();
   const [solicitudesUtiles, setSolicitudesUtiles] = useState<SolicitudUtilesInfo[]>(initialSolicitudes);
   const [archivoBoleta, setArchivoBoleta] = useState<File | null>(null);
   const [archivoInscripcion, setArchivoInscripcion] = useState<File | null>(null);
@@ -60,7 +62,7 @@ export default function UtilesTab({
       const result = await registrarSolicitudUtiles(formData);
       
       if (result.success && result.data) {
-        const nuevoFolio = `UTIL-2026-${String(solicitudesUtiles.length + 1).padStart(2, '0')}`;
+        const nuevoFolio = `UTIL-2026-${result.data.id.slice(0, 4).toUpperCase()}`;
         
         const nuevaUI: SolicitudUtilesInfo = {
           id: result.data.id,
@@ -76,6 +78,7 @@ export default function UtilesTab({
         setArchivoBoleta(null);
         setArchivoInscripcion(null);
         form.reset();
+        router.refresh(); // 👈 Sincroniza y actualiza los datos del servidor al instante
         setTimeout(() => setMensajeExito(false), 5000);
       } else {
         setErrorUtiles(result.error || 'Ocurrió un error al procesar la solicitud.');
@@ -156,7 +159,7 @@ export default function UtilesTab({
                 onChange={(e) => {
                   const file = e.target.files?.[0] || null;
                   if (file && !file.name.toLowerCase().endsWith('.pdf')) {
-                    setErrorUtiles('La boleta debe ser strictly en formato .pdf');
+                    setErrorUtiles('La boleta debe ser estrictamente en formato .pdf');
                     return;
                   }
                   setErrorUtiles(null);
@@ -184,7 +187,7 @@ export default function UtilesTab({
                 onChange={(e) => {
                   const file = e.target.files?.[0] || null;
                   if (file && !file.name.toLowerCase().endsWith('.pdf')) {
-                    setErrorUtiles('El recibo de inscripción debe ser strictly en formato .pdf');
+                    setErrorUtiles('El recibo de inscripción debe ser estrictamente en formato .pdf');
                     return;
                   }
                   setErrorUtiles(null);

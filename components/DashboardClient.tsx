@@ -110,7 +110,7 @@ export default function DashboardClient({
               <h2 className="text-2xl sm:text-3xl font-black text-zinc-900">{usuario.nombreCompleto}</h2>
               <p className="text-sm text-zinc-500 font-medium">
                 Número de Empleado: <strong className="text-zinc-800">{usuario.numeroEmpleado}</strong>
-                <br/> Puesto: Base Operativa
+                <br/> Puesto: <strong className="text-zinc-800">{usuario.puesto}</strong>
               </p>
             </div>
             

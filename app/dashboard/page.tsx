@@ -86,6 +86,12 @@ export default async function DashboardPage() {
     orderBy: { createdAt: 'desc' },
   });
 
+  // 🧱 6. Buscar las solicitudes de materiales de este empleado
+  const solicitudesMaterialesRaw = await prisma.solicitudMaterial.findMany({
+    where: { numeroEmpleado },
+    orderBy: { createdAt: 'desc' },
+  });
+
   // Formatear la estructura que espera BecasTab
   const initialBecas = solicitudesBecasRaw.map((item) => ({
     id: item.id,
@@ -113,7 +119,6 @@ export default async function DashboardPage() {
     fecha: item.createdAt.toISOString().split('T')[0],
   }));
 
-  // 🔑 Formatear la estructura que espera UtilesTab
   const initialUtiles = solicitudesUtilesRaw.map((item) => ({
     id: item.id,
     folio: `UTIL-2026-${item.id.slice(0, 4).toUpperCase()}`,
@@ -123,10 +128,24 @@ export default async function DashboardPage() {
     fecha: item.createdAt.toISOString().split('T')[0],
   }));
 
+  // 🧱 Formatear la estructura que espera MaterialesTab
+  const initialMateriales = solicitudesMaterialesRaw.map((item) => ({
+    id: item.id,
+    folio: `MAT-2026-${item.id.slice(0, 4).toUpperCase()}`,
+    domicilio: item.domicilioInmueble,
+    cantidadTepetate: item.cantidadTepetate,
+    cantidadArena: item.cantidadArena,
+    cantidadGrava: item.cantidadGrava,
+    cantidadPiedraNegra: item.cantidadPiedraNegra,
+    cantidadCantera: item.cantidadCantera,
+    estatus: item.estatus || 'En Revisión',
+    fecha: item.createdAt.toISOString().split('T')[0],
+  }));
+
   return (
     <DashboardClient 
       initialSolicitudes={initialBecas}
-      initialMateriales={[]}  
+      initialMateriales={initialMateriales}  
       initialNacimientos={initialNacimientos}
       initialMatrimonios={initialMatrimonios}
       initialUtiles={initialUtiles} 

@@ -8,8 +8,8 @@ export default async function Navbar() {
   const usuarioNum = cookieStore.get('usuario_num')?.value;
 
   const navItems = [
-    { name: 'Trámites en Línea', href: '/dashboard' },
     { name: 'Credencial Digital', href: '/credencial' },
+    { name: 'Trámites en Línea', href: '/dashboard' },
     { name: 'Comité Ejecutivo', href: '/comite' },
     { name: 'Beneficios Exclusivos', href: '/beneficios' },
   ];

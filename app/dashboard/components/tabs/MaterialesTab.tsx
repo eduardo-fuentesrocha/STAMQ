@@ -1,18 +1,105 @@
 'use client';
 
-import { useState, useTransition } from 'react';
-import { Building2, CheckCircle2, AlertCircle, Clock, XCircle, Loader2 } from 'lucide-react';
+import { useState, useEffect, useRef, useTransition } from 'react';
+import { useRouter } from 'next/navigation';
+import { Building2, CheckCircle2, AlertCircle, Clock, XCircle, Loader2, MapPin } from 'lucide-react';
 import { registrarSolicitudMateriales, SolicitudMaterial } from '../../../actions/materials';
+
+interface SugerenciaDireccion {
+  id: string;
+  textoCompleto: string;
+}
 
 export default function MaterialesTab({ 
   initialMateriales 
 }: { 
   initialMateriales: SolicitudMaterial[] 
 }) {
+  const router = useRouter();
   const [solicitudesMateriales, setSolicitudesMateriales] = useState<SolicitudMaterial[]>(initialMateriales);
   const [mensajeExitoMat, setMensajeExitoMat] = useState(false);
   const [errorMat, setErrorMat] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
+
+  // Estados para el autocompletado de dirección
+  const [direccion, setDireccion] = useState('');
+  const [sugerencias, setSugerencias] = useState<SugerenciaDireccion[]>([]);
+  const [mostrarSugerencias, setMostrarSugerencias] = useState(false);
+  const seleccionManualRef = useRef(false);
+  const contenedorRef = useRef<HTMLDivElement>(null);
+
+  // Cerrar lista desplegable si se hace clic fuera
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (contenedorRef.current && !contenedorRef.current.contains(event.target as Node)) {
+        setMostrarSugerencias(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  // Búsqueda con debounce en Photon (OpenStreetMap) priorizando Querétaro
+  useEffect(() => {
+    if (seleccionManualRef.current) {
+      seleccionManualRef.current = false;
+      return;
+    }
+
+    const query = direccion.trim();
+    if (query.length < 4) {
+      setSugerencias([]);
+      setMostrarSugerencias(false);
+      return;
+    }
+
+    const timer = setTimeout(async () => {
+      try {
+        // Coordenadas de Querétaro (lat: 20.5888, lon: -100.3899) para priorizar resultados locales
+        const url = `https://photon.komoot.io/api/?q=${encodeURIComponent(query)}&lat=20.5888&lon=-100.3899&limit=5`;
+        const res = await fetch(url);
+        const data = await res.json();
+
+        if (data?.features) {
+          const resultadosFormateados: SugerenciaDireccion[] = data.features
+            .filter((f: any) => f.properties?.countrycode === 'MX')
+            .map((f: any, idx: number) => {
+              const p = f.properties;
+              const partes = [
+                p.street ? `${p.street}${p.housenumber ? ' #' + p.housenumber : ''}` : p.name,
+                p.district || p.suburb || p.locality,
+                p.city || p.county,
+                p.postcode ? `C.P. ${p.postcode}` : null,
+                p.state,
+              ].filter(Boolean);
+
+              // Eliminar duplicados consecutivos
+              const unicas = partes.filter((item, pos) => partes.indexOf(item) === pos);
+
+              return {
+                id: `${p.osm_id || idx}-${idx}`,
+                textoCompleto: unicas.join(', '),
+              };
+            })
+            .filter((item: SugerenciaDireccion) => item.textoCompleto.length > 0);
+
+          setSugerencias(resultadosFormateados);
+          setMostrarSugerencias(resultadosFormateados.length > 0);
+        }
+      } catch (err) {
+        console.error('Error al autocompletar dirección:', err);
+      }
+    }, 350);
+
+    return () => clearTimeout(timer);
+  }, [direccion]);
+
+  function handleSeleccionarSugerencia(texto: string) {
+    seleccionManualRef.current = true;
+    setDireccion(texto);
+    setMostrarSugerencias(false);
+    setSugerencias([]);
+  }
 
   async function handleSubmitMateriales(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -29,6 +116,9 @@ export default function MaterialesTab({
         setSolicitudesMateriales([result.data, ...solicitudesMateriales]);
         setMensajeExitoMat(true);
         form.reset();
+        setDireccion('');
+        setSugerencias([]);
+        router.refresh(); // 👈 Sincroniza y actualiza los datos del servidor al instante
         setTimeout(() => setMensajeExitoMat(false), 5000);
       } else {
         setErrorMat(result.error || 'Ocurrió un error al procesar la solicitud.');
@@ -53,18 +143,45 @@ export default function MaterialesTab({
 
         <form onSubmit={handleSubmitMateriales} className="space-y-4">
           
-          {/* Autocompletado Dirección */}
-          <div className="space-y-1.5">
+          {/* Autocompletado Dirección (Sin indicador de carga) */}
+          <div ref={contenedorRef} className="space-y-1.5 relative">
             <label className="text-xs font-bold text-zinc-700">Dirección del Inmueble (Autocompletado)</label>
-            <input
-              type="text"
-              name="domicilioInmueble"
-              id="autocomplete-direccion"
-              required
-              placeholder="Empieza a escribir tu dirección..."
-              className="w-full px-4 py-2.5 rounded-xl bg-white border border-zinc-200 text-sm text-zinc-900 placeholder-zinc-400 focus:outline-none focus:border-[#E07A2B] focus:ring-1 focus:ring-[#E07A2B] shadow-sm"
-            />
-            <span className="text-[10px] text-zinc-400">Selecciona una sugerencia de la lista estándar.</span>
+            <div className="relative">
+              <input
+                type="text"
+                name="domicilioInmueble"
+                id="autocomplete-direccion"
+                required
+                autoComplete="off"
+                value={direccion}
+                onChange={(e) => setDireccion(e.target.value)}
+                onFocus={() => sugerencias.length > 0 && setMostrarSugerencias(true)}
+                placeholder="Empieza a escribir calle, colonia o municipio..."
+                className="w-full px-4 py-2.5 rounded-xl bg-white border border-zinc-200 text-base sm:text-sm text-zinc-900 placeholder-zinc-400 focus:outline-none focus:border-[#E07A2B] focus:ring-1 focus:ring-[#E07A2B] shadow-sm"
+              />
+            </div>
+
+            {/* Lista desplegable de sugerencias */}
+            {mostrarSugerencias && sugerencias.length > 0 && (
+              <ul className="absolute z-30 left-0 right-0 mt-1 bg-white border border-zinc-200 rounded-xl shadow-lg overflow-hidden divide-y divide-zinc-100 max-h-56 overflow-y-auto">
+                {sugerencias.map((sug) => (
+                  <li key={sug.id}>
+                    <button
+                      type="button"
+                      onClick={() => handleSeleccionarSugerencia(sug.textoCompleto)}
+                      className="w-full text-left px-3.5 py-2.5 text-xs text-zinc-700 hover:bg-[#E07A2B]/10 hover:text-zinc-900 flex items-start gap-2 transition-colors cursor-pointer"
+                    >
+                      <MapPin className="h-3.5 w-3.5 text-[#E07A2B] shrink-0 mt-0.5" />
+                      <span className="leading-snug font-medium">{sug.textoCompleto}</span>
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            )}
+
+            <span className="text-[10px] text-zinc-400 block">
+              Selecciona una sugerencia de la lista o completa manualmente con número exterior/interior.
+            </span>
           </div>
 
           {/* Selector de Cantidades Numéricas */}
@@ -143,7 +260,6 @@ export default function MaterialesTab({
                 </div>
               </div>
 
-              {/* CANTERA ACTUALIZADA A VIAJES */}
               <div className="flex items-center justify-between gap-3 pt-1.5 border-t border-zinc-100">
                 <div className="flex flex-col">
                   <span className="font-bold text-zinc-800">Cantera</span>

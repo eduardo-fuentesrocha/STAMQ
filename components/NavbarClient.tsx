@@ -18,8 +18,8 @@ interface NavbarClientProps {
 }
 
 const iconMap: Record<string, any> = {
-  'Trámites en línea': FileText,
   'Credencial Digital': CreditCard,
+  'Trámites en línea': FileText,
   'Comité Ejecutivo': Users,
   'Beneficios Exclusivos': Gift,
 };

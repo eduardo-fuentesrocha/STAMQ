@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useTransition } from 'react';
+import { useRouter } from 'next/navigation';
 import { Users, Upload, CheckCircle2, AlertCircle, Clock, XCircle, Loader2 } from 'lucide-react';
 import { registrarSolicitudNacimiento } from '@/app/actions/nacimiento';
 
@@ -18,6 +19,7 @@ export default function NacimientoTab({
 }: { 
   initialSolicitudes: SolicitudNacimiento[] 
 }) {
+  const router = useRouter();
   const [solicitudesNacimiento, setSolicitudesNacimiento] = useState<SolicitudNacimiento[]>(initialSolicitudes);
   const [archivoActa, setArchivoActa] = useState<File | null>(null);
   const [mensajeExito, setMensajeExito] = useState(false);
@@ -43,7 +45,7 @@ export default function NacimientoTab({
       const result = await registrarSolicitudNacimiento(formData);
       
       if (result.success && result.data) {
-        const nuevoFolio = `NAC-2026-${String(solicitudesNacimiento.length + 1).padStart(2, '0')}`;
+        const nuevoFolio = `NAC-2026-${result.data.id.slice(0, 4).toUpperCase()}`;
         
         const nuevaUI: SolicitudNacimiento = {
           id: result.data.id,
@@ -57,6 +59,7 @@ export default function NacimientoTab({
         setMensajeExito(true);
         setArchivoActa(null);
         form.reset();
+        router.refresh(); // 👈 Sincroniza y actualiza los datos del servidor al instante
         setTimeout(() => setMensajeExito(false), 5000);
       } else {
         setErrorTramite(result.error || 'Ocurrió un error al procesar la solicitud.');
