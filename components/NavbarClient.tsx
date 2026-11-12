@@ -95,7 +95,7 @@ export default function NavbarClient({ usuarioNum, navItems }: NavbarClientProps
                 placeholder="Buscar..."
                 value={busqueda}
                 onChange={(e) => setBusqueda(e.target.value)}
-                className={`text-xs px-3.5 py-2 pl-9 rounded-xl outline-none transition-all w-48 xl:w-60 border ${
+                className={`text-base sm:text-xs px-3.5 py-2 pl-9 rounded-xl outline-none transition-all w-48 xl:w-60 border ${
                   esHome 
                     ? 'bg-black/40 text-white placeholder-zinc-400 border-white/20 focus:border-[#E07A2B] backdrop-blur-sm' 
                     : 'bg-zinc-100 text-zinc-800 placeholder-zinc-500 border-zinc-200 focus:border-[#E07A2B] focus:bg-white'

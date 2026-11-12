@@ -7,20 +7,33 @@ generator client {
 }
 
 model Usuario {
-  id                  String                @id @default(uuid())
-  numeroEmpleado      String                @unique
-  nombreCompleto      String
-  email               String?              @unique
-  password            String
-  rol                 String                @default("agremiado") // "agremiado" o "admin"
-  createdAt           DateTime              @default(now())
+  id                         String    @id @default(uuid())
+  numeroEmpleado             String    @unique
+  nombreCompleto             String
+  email                      String?   @unique
+  password                   String
+  rol                        String    @default("agremiado") // "agremiado" o "admin"
+  
+  // Campos de la Credencial Sindical
+  puesto                     String?
+  departamento               String?
+  fechaIngreso               String?
+  curp                       String?
+  nss                        String?
+  tipoSangre                 String?
+  contactoEmergenciaNombre   String?
+  contactoEmergenciaTelefono String?
+  fotoUrl                    String?
+  vigencia                   String?
+
+  createdAt                  DateTime  @default(now())
 
   // Relaciones anidadas
-  familiares          Familiar[]
-  solicitudesBecas    SolicitudBeca[]
+  familiares         Familiar[]
+  solicitudesBecas   SolicitudBeca[]
   solicitudesMaterial SolicitudMaterial[]
-  solicitudesMatr     SolicitudMatrimonio[]
-  solicitudesNac      SolicitudNacimiento[]
+  solicitudesMatr    SolicitudMatrimonio[]
+  solicitudesNac     SolicitudNacimiento[]
 }
 
 model Familiar {

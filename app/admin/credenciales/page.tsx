@@ -76,7 +76,7 @@ export default async function AdminCredencialesPage({
             name="q"
             defaultValue={query}
             placeholder="Ej. Gelasio o 45892..."
-            className="w-full pl-10 pr-4 py-3 rounded-xl border border-zinc-200 bg-zinc-50 text-xs font-medium text-zinc-900 focus:outline-none focus:ring-2 focus:ring-[#E07A2B]/40 focus:bg-white transition-all shadow-xs"
+            className="w-full pl-10 pr-4 py-3 rounded-xl border border-zinc-200 bg-zinc-50 text-base sm:text-xs font-medium text-zinc-900 focus:outline-none focus:ring-2 focus:ring-[#E07A2B]/40 focus:bg-white transition-all shadow-xs"
           />
         </div>
         <button
