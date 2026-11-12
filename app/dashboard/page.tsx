@@ -19,13 +19,48 @@ export default async function DashboardPage() {
     redirect('/login'); 
   }
 
-  // 1. Buscar al usuario y sus familiares relacionados (incluyendo email)
-  const usuario = await prisma.usuario.findUnique({
+  // 1. Buscar al usuario y sus familiares relacionados (incluyendo email y campos de credencial)
+  const usuarioRaw = await prisma.usuario.findUnique({
     where: { numeroEmpleado },
     include: {
       familiares: true,
     },
   });
+
+  // Sanitizar el objeto usuario para asegurar compatibilidad estricta de tipos (evitando nulls)
+  const usuario = usuarioRaw ? {
+    ...usuarioRaw,
+    email: usuarioRaw.email ?? '',
+    puesto: usuarioRaw.puesto ?? '',
+    departamento: usuarioRaw.departamento ?? '',
+    fechaIngreso: usuarioRaw.fechaIngreso ?? '',
+    curp: usuarioRaw.curp ?? '',
+    nss: usuarioRaw.nss ?? '',
+    tipoSangre: usuarioRaw.tipoSangre ?? '',
+    contactoEmergenciaNombre: usuarioRaw.contactoEmergenciaNombre ?? '',
+    contactoEmergenciaTelefono: usuarioRaw.contactoEmergenciaTelefono ?? '',
+    fotoUrl: usuarioRaw.fotoUrl ?? '',
+    vigencia: usuarioRaw.vigencia ?? '',
+  } : {
+    nombreCompleto: 'Usuario',
+    numeroEmpleado: '',
+    email: '',
+    puesto: '',
+    departamento: '',
+    fechaIngreso: '',
+    curp: '',
+    nss: '',
+    tipoSangre: '',
+    contactoEmergenciaNombre: '',
+    contactoEmergenciaTelefono: '',
+    fotoUrl: '',
+    vigencia: '',
+    rol: 'agremiado',
+    password: '',
+    createdAt: new Date(),
+    id: '',
+    familiares: [],
+  };
 
   // 2. Buscar las solicitudes de becas de este empleado
   const solicitudesBecasRaw = await prisma.solicitudBeca.findMany({
@@ -95,7 +130,7 @@ export default async function DashboardPage() {
       initialNacimientos={initialNacimientos}
       initialMatrimonios={initialMatrimonios}
       initialUtiles={initialUtiles} 
-      usuario={usuario || { nombreCompleto: 'Usuario', numeroEmpleado: '', email: '' }}
+      usuario={usuario}
     />
   );
 }
