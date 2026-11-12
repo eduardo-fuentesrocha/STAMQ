@@ -51,22 +51,22 @@ export default function NavbarClient({ usuarioNum, navItems }: NavbarClientProps
 
   return (
     <header 
-      className={`z-50 transition-colors duration-300 ${
+      className={`z-50 transition-colors duration-300 w-full ${
         esHome 
-          ? 'absolute top-0 left-0 w-full bg-transparent text-white' 
+          ? 'absolute top-0 left-0 bg-transparent text-white' 
           : 'sticky top-0 bg-white/95 backdrop-blur-md text-zinc-900 border-b border-zinc-200/80 shadow-sm'
       }`}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
         
         {/* =================================================== */}
         {/* PRIMER RENGLÓN: Logotipo, Texto Institucional y Sesión */}
         {/* =================================================== */}
-        <div className={`flex items-center justify-between py-3 ${esHome ? '' : 'border-b border-zinc-100'}`}>
+        <div className={`flex items-center justify-between gap-2 py-2.5 sm:py-3 ${esHome ? '' : 'border-b border-zinc-100'}`}>
           
           {/* Logotipo e Identidad Institucional */}
-          <Link href="/" className="flex items-center gap-3 sm:gap-4 group cursor-pointer">
-            <div className="relative h-16 w-16 sm:h-20 sm:w-20 lg:h-24 lg:w-24 shrink-0 flex items-center justify-center -ml-1 sm:-ml-2 transition-transform group-hover:scale-105">
+          <Link href="/" className="flex items-center gap-2.5 sm:gap-4 group cursor-pointer min-w-0 flex-1">
+            <div className="relative h-12 w-12 sm:h-20 sm:w-20 lg:h-24 lg:w-24 shrink-0 flex items-center justify-center transition-transform group-hover:scale-105">
               <Image
                 src="/STSMQ Original.svg"
                 alt="Logotipo Oficial STSMQ"
@@ -75,10 +75,10 @@ export default function NavbarClient({ usuarioNum, navItems }: NavbarClientProps
                 priority
               />
             </div>
-            <div className="flex flex-col">
+            <div className="flex flex-col min-w-0 flex-1">
               <span 
                 style={{ fontFamily: 'Arial, Helvetica, sans-serif', fontWeight: 600 }}
-                className="text-base sm:text-lg md:text-xl lg:text-2xl tracking-normal text-[#E07A2B] uppercase leading-tight drop-shadow-sm block max-w-3xl"
+                className="text-[11px] sm:text-base md:text-lg lg:text-2xl tracking-normal text-[#E07A2B] uppercase leading-tight drop-shadow-sm block whitespace-normal break-words"
               >
                 SINDICATO DE TRABAJADORES AL SERVICIO DEL MUNICIPIO DE QUERÉTARO
               </span>
@@ -86,7 +86,7 @@ export default function NavbarClient({ usuarioNum, navItems }: NavbarClientProps
           </Link>
 
           {/* Acciones de Escritorio (Buscador y Sesión) */}
-          <div className="hidden lg:flex items-center gap-4">
+          <div className="hidden lg:flex items-center gap-4 shrink-0">
             
             {/* 🔍 Buscador en Escritorio */}
             <form onSubmit={handleBuscar} className="relative flex items-center">
@@ -140,10 +140,10 @@ export default function NavbarClient({ usuarioNum, navItems }: NavbarClientProps
           </div>
 
           {/* Botón Menú Hamburguesa (Móvil) */}
-          <div className="flex lg:hidden">
+          <div className="flex lg:hidden shrink-0">
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className={`p-2.5 rounded-xl transition-colors cursor-pointer ${
+              className={`p-2 rounded-xl transition-colors cursor-pointer ${
                 esHome ? 'bg-black/40 text-white hover:bg-black/60 backdrop-blur-sm' : 'bg-zinc-100 text-zinc-700 hover:bg-zinc-200'
               }`}
               aria-label="Abrir menú"
@@ -185,7 +185,7 @@ export default function NavbarClient({ usuarioNum, navItems }: NavbarClientProps
               placeholder="Buscar..."
               value={busqueda}
               onChange={(e) => setBusqueda(e.target.value)}
-              className={`text-sm px-4 py-2.5 pl-10 rounded-xl outline-none w-full border ${
+              className={`text-base px-4 py-2.5 pl-10 rounded-xl outline-none w-full border ${
                 esHome 
                   ? 'bg-black/50 text-white placeholder-zinc-400 border-white/20 focus:border-[#E07A2B]' 
                   : 'bg-zinc-100 text-zinc-800 placeholder-zinc-500 border-zinc-200 focus:border-[#E07A2B]'

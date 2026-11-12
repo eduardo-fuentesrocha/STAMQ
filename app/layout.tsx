@@ -64,11 +64,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es" className={`scroll-smooth ${montserrat.variable}`}>
-      <body className="font-sans antialiased bg-white text-slate-900 min-h-screen flex flex-col">
+      {/* Añadimos w-full overflow-x-hidden para cortar cualquier elemento rebelde */}
+      <body className="font-sans antialiased bg-white text-slate-900 min-h-screen flex flex-col w-full overflow-x-hidden">
         <Navbar />
         
-        {/* 🔑 min-h-[calc(100vh-160px)] previene el salto del footer durante redirecciones y cargas rápidas */}
-        <main className="flex-1 min-h-[calc(100vh-160px)]">
+        <main className="flex-1 min-h-[calc(100vh-160px)] w-full max-w-full">
           {children}
         </main>
 
