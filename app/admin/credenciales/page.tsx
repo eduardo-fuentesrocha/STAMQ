@@ -127,15 +127,15 @@ export default async function AdminCredencialesPage({
                   </div>
 
                   {/* Fotografía centrada */}
-                  <div className="w-full flex justify-center my-0.5">
-                    <div className="w-24 h-32 rounded-xl bg-zinc-200 border-2 border-white overflow-hidden shadow-md relative shrink-0 flex items-center justify-center">
-                      <img
-                        src={empleado.fotoUrl || '/Foto Credencial.jpeg'}
-                        alt="Foto de empleado"
-                        className="absolute inset-0 w-full h-full object-cover object-center"
-                      />
-                    </div>
-                  </div>
+<div className="w-full flex justify-center my-0.5">
+  <div className="w-24 h-32 rounded-xl bg-zinc-200 border-2 border-white overflow-hidden shadow-md relative shrink-0 flex items-center justify-center">
+    <img
+      src={`/api/foto/${empleado.numeroEmpleado}`}
+      alt="Foto de empleado"
+      className="absolute inset-0 w-full h-full object-cover object-center"
+    />
+  </div>
+</div>
 
                   {/* Datos Laborales */}
                   <div className="space-y-0.5 text-[9.5px] bg-white/60 p-2 rounded-xl border border-zinc-200/85 w-full">

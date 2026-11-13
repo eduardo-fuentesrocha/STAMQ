@@ -45,7 +45,7 @@ export async function buscarEmpleadoCredencial(query: string) {
   const terminoBusqueda = normalizarTexto(query)
 
   try {
-    // 1. Obtenemos los usuarios de la base de datos incluyendo todos los campos de la credencial
+    // 1. Obtenemos los usuarios de la base de datos incluyendo los campos necesarios
     const todosLosUsuarios = await prisma.usuario.findMany({
       select: {
         id: true,
@@ -61,7 +61,6 @@ export async function buscarEmpleadoCredencial(query: string) {
         tipoSangre: true,
         contactoEmergenciaNombre: true,
         contactoEmergenciaTelefono: true,
-        fotoUrl: true,
         vigencia: true,
       },
     })

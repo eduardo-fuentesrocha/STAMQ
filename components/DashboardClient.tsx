@@ -59,7 +59,6 @@ interface UsuarioInfo {
   tipoSangre?: string;
   contactoEmergenciaNombre?: string;
   contactoEmergenciaTelefono?: string;
-  fotoUrl?: string;
 }
 
 export default function DashboardClient({ 

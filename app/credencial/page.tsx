@@ -35,6 +35,9 @@ export default function CredencialPage() {
     );
   }
 
+  // 🔍 Depuración para confirmar que el número de empleado existe al renderizar
+  console.log("Renderizando credencial para el empleado No:", usuario.numeroEmpleado);
+
   const estilosFondo = {
     'naranja-suave': 'bg-gradient-to-br from-white via-[#ffdcba] to-[#e8913e] text-zinc-950',
     'platino-clasico': 'bg-gradient-to-br from-white via-zinc-100 to-zinc-200 text-zinc-950',
@@ -44,7 +47,7 @@ export default function CredencialPage() {
     <div className="min-h-[calc(100vh-140px)] bg-white py-2 sm:py-8 px-2 sm:px-6 flex items-start sm:items-center justify-center">
       <div className="w-full max-w-2xl space-y-3 sm:space-y-6 flex flex-col items-center">
 
-        {/* 🌟 TARJETA DE CREDENCIAL ADAPTATIVA (CR80 Vertical en Móvil / CR80 Horizontal en Escritorio) */}
+        {/* 🌟 TARJETA DE CREDENCIAL ADAPTATIVA */}
         <div className="w-full flex justify-center px-1">
           <div
             className={`w-full max-w-[310px] aspect-[1/1.58] md:max-w-[580px] md:aspect-auto md:min-h-[340px] rounded-2xl overflow-hidden relative flex flex-col justify-between p-3.5 sm:p-4 select-none bg-white shadow-[0_20px_50px_rgba(0,0,0,0.18),0_4px_8px_rgba(0,0,0,0.08)] border-[3px] border-t-white/50 border-l-white/50 border-r-zinc-400 border-b-zinc-500 ring-1 ring-black/5 ${estiloSeleccionado ? estilosFondo[estiloSeleccionado] : ''}`}
@@ -77,7 +80,7 @@ export default function CredencialPage() {
               <div className="w-full flex justify-center my-1">
                 <div className="w-24 h-32 rounded-xl bg-zinc-200 border-2 border-white overflow-hidden shadow-md relative shrink-0 flex items-center justify-center">
                   <img
-                    src={usuario.fotoUrl || '/Foto Credencial.jpeg'}
+                    src={`/api/foto/${usuario.numeroEmpleado}`}
                     alt="Foto de empleado"
                     className="absolute inset-0 w-full h-full object-cover object-center"
                   />
@@ -182,11 +185,11 @@ export default function CredencialPage() {
               {/* Grid Principal de 12 Columnas */}
               <div className="grid grid-cols-12 gap-3 items-start w-full">
                 
-                {/* Columna Izquierda (5 columnas): Foto visible garantizada + Recuadro Médico */}
+                {/* Columna Izquierda (3 columnas): Foto visible garantizada + Recuadro Médico */}
                 <div className="col-span-3 flex flex-col space-y-4">
                   <div className="w-28 h-36 rounded-xl bg-zinc-200 border-2 border-white overflow-hidden shadow-md relative shrink-0">
                     <img
-                      src={usuario.fotoUrl || '/Foto Credencial.jpeg'}
+                      src={`/api/foto/${usuario.numeroEmpleado}`}
                       alt="Foto de empleado"
                       className="absolute inset-0 w-full h-full object-cover object-center"
                     />
@@ -197,11 +200,9 @@ export default function CredencialPage() {
                       <strong className="text-zinc-950 font-black text-[12px]">{usuario.vigencia || '2027'}</strong>
                   </div>
 
-                  {/* Recuadro Médico */}
-                  
                 </div>
 
-                {/* Columna Derecha (7 columnas): Datos Laborales + Firma Institucional */}
+                {/* Columna Derecha (9 columnas): Datos Laborales + Firma Institucional */}
                 <div className="col-span-9 flex flex-col justify-between space-y-2">
                   
                   {/* Datos Laborales */}

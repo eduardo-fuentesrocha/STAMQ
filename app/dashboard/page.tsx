@@ -39,7 +39,6 @@ export default async function DashboardPage() {
     tipoSangre: usuarioRaw.tipoSangre ?? '',
     contactoEmergenciaNombre: usuarioRaw.contactoEmergenciaNombre ?? '',
     contactoEmergenciaTelefono: usuarioRaw.contactoEmergenciaTelefono ?? '',
-    fotoUrl: usuarioRaw.fotoUrl ?? '',
     vigencia: usuarioRaw.vigencia ?? '',
   } : {
     nombreCompleto: 'Usuario',
@@ -53,7 +52,6 @@ export default async function DashboardPage() {
     tipoSangre: '',
     contactoEmergenciaNombre: '',
     contactoEmergenciaTelefono: '',
-    fotoUrl: '',
     vigencia: '',
     rol: 'agremiado',
     password: '',

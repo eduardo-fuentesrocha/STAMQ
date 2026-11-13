@@ -23,7 +23,6 @@ model Usuario {
   tipoSangre                 String?
   contactoEmergenciaNombre   String?
   contactoEmergenciaTelefono String?
-  fotoUrl                    String?
   vigencia                   String?
 
   createdAt                  DateTime  @default(now())
