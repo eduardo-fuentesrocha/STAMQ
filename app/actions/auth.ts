@@ -82,7 +82,7 @@ export async function registrarUsuario(formData: FormData) {
   }
 }
 
-// 🔑 3. Función para Iniciar Sesión (Con redirección directa a /admin/credenciales para el Secretario General)
+// 🔑 3. Función para Iniciar Sesión (Con redirección diferenciada por rol)
 export async function iniciarSesion(formData: FormData) {
   try {
     const numeroEmpleado = formData.get('numeroEmpleado') as string
@@ -128,15 +128,20 @@ export async function iniciarSesion(formData: FormData) {
       path: '/',
     })
 
-    // 🔑 Lógica de destino: Si es Secretario General o Admin, va directo a /admin/credenciales
-    const esSecretarioOAdmin = 
+    // 🔑 Lógica de destino diferenciada: Admin -> /admin | Secretario General (o 45892) -> /admin/credenciales
+    let targetUrl = '/dashboard'
+
+    const esAdminPuro = rol === 'admin' || rol === 'ADMIN'
+    const esSecretarioGeneral = 
       rol === 'secretario_general' || 
       rol === 'SECRETARIO_GENERAL' || 
-      rol === 'admin' || 
-      rol === 'ADMIN' || 
       usuario.numeroEmpleado === '45892'
 
-    let targetUrl = esSecretarioOAdmin ? '/admin/credenciales' : '/dashboard'
+    if (esAdminPuro) {
+      targetUrl = '/admin'
+    } else if (esSecretarioGeneral) {
+      targetUrl = '/admin/credenciales'
+    }
 
     if (redirectTo && redirectTo.startsWith('/')) {
       targetUrl = redirectTo
@@ -262,14 +267,15 @@ export async function obtenerRedireccionTramites() {
     return '/login'
   }
 
-  const esSecretarioOAdmin = 
+  const esAdminPuro = rol === 'admin' || rol === 'ADMIN'
+  const esSecretarioGeneral = 
     rol === 'secretario_general' || 
     rol === 'SECRETARIO_GENERAL' || 
-    rol === 'admin' || 
-    rol === 'ADMIN' || 
     numeroEmpleado === '45892'
 
-  if (esSecretarioOAdmin) {
+  if (esAdminPuro) {
+    return '/admin'
+  } else if (esSecretarioGeneral) {
     return '/admin/credenciales'
   }
 
