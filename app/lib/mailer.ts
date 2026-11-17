@@ -155,7 +155,6 @@ export async function enviarConfirmacionSugerenciaUsuario({
   mensaje: string
   correoTrabajador: string
 }) {
-  // 💡 Asegúrate de poner aquí la URL pública de tu logo
   const logoUrl = 'https://stsmq.vercel.app/STSMQ Original.svg' 
 
   const htmlBody = `
@@ -204,5 +203,122 @@ export async function enviarConfirmacionSugerenciaUsuario({
     })
   } catch (error) {
     console.error('Error al enviar correo de confirmación al usuario:', error)
+  }
+}
+
+// ==========================================
+// 4. NOTIFICACIÓN AL TRABAJADOR (APROBACIÓN / RECHAZO DE TRÁMITE)
+// ==========================================
+export async function enviarNotificacionEstatusTrabajador({
+  correoTrabajador,
+  nombreTrabajador,
+  tipoTramite,
+  folio,
+  detalleTramite,
+  estatus,
+  motivoRechazo,
+}: {
+  correoTrabajador: string
+  nombreTrabajador: string
+  tipoTramite: string
+  folio: string
+  detalleTramite: string
+  estatus: 'Aprobada' | 'Rechazada' | string
+  motivoRechazo?: string | null
+}) {
+  if (!correoTrabajador) return
+
+  const logoUrl = 'https://stsmq.vercel.app/STSMQ Original.svg'
+  const fecha = new Date().toLocaleString('es-MX', { timeZone: 'America/Mexico_City' })
+  const esAprobada = estatus === 'Aprobada'
+
+  const colorEstatus = esAprobada ? '#047857' : '#be123c'
+  const fondoEstatus = esAprobada ? '#ecfdf5' : '#fff1f2'
+  const bordeEstatus = esAprobada ? '#a7f3d0' : '#fecdd3'
+
+  const bloqueMotivoRechazo =
+    !esAprobada && motivoRechazo
+      ? `
+        <div style="background-color: #fff1f2; border-left: 4px solid #e11d48; padding: 16px; border-radius: 8px; margin: 20px 0;">
+          <p style="font-weight: bold; margin: 0 0 6px 0; color: #9f1239; font-size: 13px;">Motivo del rechazo:</p>
+          <p style="color: #881337; margin: 0; white-space: pre-wrap; font-size: 13px; line-height: 1.5;">${motivoRechazo}</p>
+        </div>
+      `
+      : ''
+
+  const htmlBody = `
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #e0e0e0; border-radius: 12px; padding: 24px; background-color: #ffffff;">
+      
+      <!-- Encabezado con Logo y Título STSMQ -->
+      <table style="width: 100%; border-collapse: collapse; margin-bottom: 24px; padding-bottom: 16px;">
+        <tr>
+          <td style="width: 50px; vertical-align: middle; padding-right: 12px;">
+            <img src="${logoUrl}" alt="Logo STSMQ" style="width: 45px; height: auto; display: block;" />
+          </td>
+          <td style="vertical-align: middle;">
+            <h2 style="color: #E07A2B; font-size: 15px; font-weight: 800; margin: 0; line-height: 1.2;">
+              SINDICATO DE TRABAJADORES AL SERVICIO DEL MUNICIPIO DE QUERÉTARO
+            </h2>
+          </td>
+        </tr>
+      </table>
+
+      <h3 style="color: #333; margin-top: 0;">Actualización en el estatus de tu trámite</h3>
+      <p style="color: #555; font-size: 14px; line-height: 1.5;">
+        Hola <strong>${nombreTrabajador}</strong>, te informamos que tu solicitud registrada en el Portal STSMQ ha sido revisada con el siguiente resultado:
+      </p>
+
+      <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
+        <tr>
+          <td style="padding: 8px; border-bottom: 1px solid #eee; font-weight: bold; color: #555; width: 35%;">Trámite:</td>
+          <td style="padding: 8px; border-bottom: 1px solid #eee; color: #333;"><strong>${tipoTramite}</strong></td>
+        </tr>
+        <tr>
+          <td style="padding: 8px; border-bottom: 1px solid #eee; font-weight: bold; color: #555;">Folio:</td>
+          <td style="padding: 8px; border-bottom: 1px solid #eee; color: #E07A2B; font-weight: bold;">${folio}</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px; border-bottom: 1px solid #eee; font-weight: bold; color: #555;">Detalle:</td>
+          <td style="padding: 8px; border-bottom: 1px solid #eee; color: #333;">${detalleTramite}</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px; border-bottom: 1px solid #eee; font-weight: bold; color: #555;">Fecha de resolución:</td>
+          <td style="padding: 8px; border-bottom: 1px solid #eee; color: #333;">${fecha}</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px; border-bottom: 1px solid #eee; font-weight: bold; color: #555;">Estatus:</td>
+          <td style="padding: 8px; border-bottom: 1px solid #eee;">
+            <span style="display: inline-block; padding: 4px 12px; border-radius: 999px; font-size: 12px; font-weight: bold; color: ${colorEstatus}; background-color: ${fondoEstatus}; border: 1px solid ${bordeEstatus};">
+              ${estatus}
+            </span>
+          </td>
+        </tr>
+      </table>
+
+      ${bloqueMotivoRechazo}
+
+      <p style="color: #555; font-size: 13px; line-height: 1.5;">
+        ${
+          esAprobada
+            ? 'Tu trámite ha sido validado satisfactoriamente. Puedes consultar el detalle ingresando a tu panel en el portal.'
+            : 'Si deseas volver a ingresar tu trámite corrigiendo las observaciones señaladas, puedes hacerlo desde tu panel en el portal del trabajador.'
+        }
+      </p>
+
+      <div style="border-top: 1px solid #eee; margin-top: 24px; padding-top: 16px; text-align: center;">
+        <p style="font-size: 11px; color: #999; margin: 0;">Este es un mensaje automático generado por el Portal STSMQ, por favor no respondas a este correo.</p>
+      </div>
+    </div>
+  `
+
+  try {
+    await transporter.sendMail({
+      from: `"Trámites STSMQ" <${process.env.SMTP_USER}>`,
+      to: correoTrabajador,
+      subject: `[Trámite ${estatus}] ${tipoTramite} - Folio ${folio}`,
+      html: htmlBody,
+    })
+  } catch (error) {
+    console.error('Error al enviar correo de notificación al trabajador:', error)
   }
 }

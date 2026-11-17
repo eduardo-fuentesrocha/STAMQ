@@ -7,12 +7,12 @@ generator client {
 }
 
 model Usuario {
-  id                         String    @id @default(uuid())
-  numeroEmpleado             String    @unique
+  id                         String   @id @default(uuid())
+  numeroEmpleado             String   @unique
   nombreCompleto             String
-  email                      String?   @unique
+  email                      String?  @unique
   password                   String
-  rol                        String    @default("agremiado") // "agremiado" o "admin"
+  rol                        String   @default("agremiado") // "agremiado", "admin" o "secretario_general"
   
   // Campos de la Credencial Sindical
   puesto                     String?
@@ -25,14 +25,14 @@ model Usuario {
   contactoEmergenciaTelefono String?
   vigencia                   String?
 
-  createdAt                  DateTime  @default(now())
+  createdAt                  DateTime @default(now())
 
   // Relaciones anidadas
-  familiares         Familiar[]
-  solicitudesBecas   SolicitudBeca[]
+  familiares          Familiar[]
+  solicitudesBecas    SolicitudBeca[]
   solicitudesMaterial SolicitudMaterial[]
-  solicitudesMatr    SolicitudMatrimonio[]
-  solicitudesNac     SolicitudNacimiento[]
+  solicitudesMatr     SolicitudMatrimonio[]
+  solicitudesNac      SolicitudNacimiento[]
 }
 
 model Familiar {
@@ -47,64 +47,79 @@ model Familiar {
 }
 
 model SolicitudNacimiento {
-  id             String   @id @default(uuid())
+  id             String    @id @default(uuid())
   numeroEmpleado String
   nombreHijo     String
   actaUrl        String
-  estatus        String   @default("En Revisión")
-  createdAt      DateTime @default(now())
+  estatus        String    @default("En Revisión")
+  motivoRechazo  String?
+  gestionadoPor  String?
+  fechaGestion   DateTime?
+  createdAt      DateTime  @default(now())
 
-  usuario        Usuario  @relation(fields: [numeroEmpleado], references: [numeroEmpleado], onDelete: Cascade)
+  usuario        Usuario   @relation(fields: [numeroEmpleado], references: [numeroEmpleado], onDelete: Cascade)
 }
 
 model SolicitudMatrimonio {
-  id             String   @id @default(uuid())
+  id             String    @id @default(uuid())
   numeroEmpleado String
   nombreConyuge  String
-  tipoUnion      String   // "Matrimonio" o "Concubinato"
+  tipoUnion      String    // "Matrimonio" o "Concubinato"
   actaUrl        String   
-  estatus        String   @default("En Revisión")
-  createdAt      DateTime @default(now())
+  estatus        String    @default("En Revisión")
+  motivoRechazo  String?
+  gestionadoPor  String?
+  fechaGestion   DateTime?
+  createdAt      DateTime  @default(now())
 
-  usuario        Usuario  @relation(fields: [numeroEmpleado], references: [numeroEmpleado], onDelete: Cascade)
+  usuario        Usuario   @relation(fields: [numeroEmpleado], references: [numeroEmpleado], onDelete: Cascade)
 }
 
 model SolicitudBeca {
-  id             String   @id @default(uuid())
+  id             String    @id @default(uuid())
   numeroEmpleado String
   nombreHijo     String
   nivelEducativo String
   actaUrl        String   
   boletaUrl      String   
-  estatus        String   @default("En Revisión")
-  createdAt      DateTime @default(now())
+  estatus        String    @default("En Revisión")
+  motivoRechazo  String?
+  gestionadoPor  String?
+  fechaGestion   DateTime?
+  createdAt      DateTime  @default(now())
 
-  usuario        Usuario  @relation(fields: [numeroEmpleado], references: [numeroEmpleado], onDelete: Cascade)
+  usuario        Usuario   @relation(fields: [numeroEmpleado], references: [numeroEmpleado], onDelete: Cascade)
 }
 
 model SolicitudMaterial {
-  id                  String   @id @default(uuid())
+  id                  String    @id @default(uuid())
   domicilioInmueble   String
-  cantidadTepetate    Int      @default(0)
-  cantidadArena       Int      @default(0)
-  cantidadGrava       Int      @default(0)
-  cantidadPiedraNegra Int      @default(0)
-  cantidadCantera     Int      @default(0)
+  cantidadTepetate    Int       @default(0)
+  cantidadArena       Int       @default(0)
+  cantidadGrava       Int       @default(0)
+  cantidadPiedraNegra Int       @default(0)
+  cantidadCantera     Int       @default(0)
   numeroEmpleado      String
-  estatus             String   @default("En Revisión")
-  createdAt           DateTime @default(now())
+  estatus             String    @default("En Revisión")
+  motivoRechazo       String?
+  gestionadoPor       String?
+  fechaGestion        DateTime?
+  createdAt           DateTime  @default(now())
 
-  usuario             Usuario  @relation(fields: [numeroEmpleado], references: [numeroEmpleado], onDelete: Cascade)
+  usuario             Usuario   @relation(fields: [numeroEmpleado], references: [numeroEmpleado], onDelete: Cascade)
 }
 
 model SolicitudUtiles {
-  id             String   @id @default(cuid())
+  id             String    @id @default(cuid())
   numeroEmpleado String
   nombreHijo     String
-  nivelEducativo String   // Primaria, Secundaria, Preparatoria
-  boletaUrl      String   // Boleta del ciclo que termina
-  inscripcionUrl String   // Recibo de inscripción al nuevo ciclo
-  estatus        String   @default("En Revisión") // En Revisión, Aprobada, Rechazada
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  nivelEducativo String    // Primaria, Secundaria, Preparatoria
+  boletaUrl      String    // Boleta del ciclo que termina
+  inscripcionUrl String    // Recibo de inscripción al nuevo ciclo
+  estatus        String    @default("En Revisión") // En Revisión, Aprobada, Rechazada
+  motivoRechazo  String?
+  gestionadoPor  String?
+  fechaGestion   DateTime?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
 }

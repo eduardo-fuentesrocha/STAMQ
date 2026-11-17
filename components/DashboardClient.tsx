@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { 
-  LogOut, 
   GraduationCap, 
   Building2, 
   FileText, 
@@ -10,15 +9,13 @@ import {
   Users, 
   Calendar, 
   Award, 
-  Briefcase, 
-  Clock, 
   BookOpen,
   ChevronDown,
   ChevronUp,
   UserCheck,
-  CreditCard,
   MousePointerClick,
-  MessageSquarePlus
+  MessageSquarePlus,
+  AlertCircle
 } from 'lucide-react';
 import { SolicitudMaterial } from '@/app/actions/materials';
 import { cerrarSesion } from '@/app/actions/auth';
@@ -43,6 +40,7 @@ interface SolicitudBeca {
   hijo: string;
   nivel: string;
   estatus: string;
+  motivoRechazo?: string | null;
   fecha: string;
 }
 
@@ -70,20 +68,15 @@ export default function DashboardClient({
   usuario 
 }: { 
   initialSolicitudes: SolicitudBeca[];
-  initialMateriales: SolicitudMaterial[];
-  initialNacimientos?: SolicitudNacimiento[];
-  initialMatrimonios?: SolicitudMatrimonioInfo[];
-  initialUtiles?: SolicitudUtilesInfo[];
+  initialMateriales: (SolicitudMaterial & { motivoRechazo?: string | null })[];
+  initialNacimientos?: (SolicitudNacimiento & { motivoRechazo?: string | null })[];
+  initialMatrimonios?: (SolicitudMatrimonioInfo & { motivoRechazo?: string | null })[];
+  initialUtiles?: (SolicitudUtilesInfo & { motivoRechazo?: string | null })[];
   usuario: UsuarioInfo;
 }) {
   const [tabActiva, setTabActiva] = useState<string | null>(null);
   const [mostrarFamiliares, setMostrarFamiliares] = useState<boolean>(false);
-  const [familiares, setFamiliares] = useState<FamiliarInfo[]>(usuario.familiares || []);
-
-  const handleCerrarSesion = async () => {
-    await cerrarSesion();
-    window.location.href = '/';
-  };
+  const [familiares] = useState<FamiliarInfo[]>(usuario.familiares || []);
 
   const handleSeleccionarTab = (id: string) => {
     setTabActiva(id);
@@ -94,6 +87,25 @@ export default function DashboardClient({
       }
     }, 50);
   };
+
+  // Recopilar trámites rechazados con motivo para alertar al agremiado
+  const tramitesRechazados = [
+    ...initialSolicitudes
+      .filter((s) => s.estatus === 'Rechazada' && s.motivoRechazo)
+      .map((s) => ({ tab: 'becas', titulo: `Beca (${s.hijo})`, motivo: s.motivoRechazo! })),
+    ...initialMateriales
+      .filter((s) => s.estatus === 'Rechazada' && s.motivoRechazo)
+      .map((s) => ({ tab: 'materiales', titulo: 'Ayuda de Materiales', motivo: s.motivoRechazo! })),
+    ...initialNacimientos
+      .filter((s) => s.estatus === 'Rechazada' && s.motivoRechazo)
+      .map((s) => ({ tab: 'nacimiento', titulo: `Nacimiento (${s.nombreHijo})`, motivo: s.motivoRechazo! })),
+    ...initialMatrimonios
+      .filter((s) => s.estatus === 'Rechazada' && s.motivoRechazo)
+      .map((s) => ({ tab: 'matrimonio', titulo: `Matrimonio (${s.nombreConyuge})`, motivo: s.motivoRechazo! })),
+    ...initialUtiles
+      .filter((s) => s.estatus === 'Rechazada' && s.motivoRechazo)
+      .map((s) => ({ tab: 'utiles', titulo: `Útiles Escolares (${s.hijo})`, motivo: s.motivoRechazo! })),
+  ];
 
   return (
     <div className="min-h-screen bg-white text-zinc-800 flex flex-col">
@@ -163,6 +175,30 @@ export default function DashboardClient({
             </div>
           )}
         </div>
+
+        {/* Alerta de Trámites Rechazados con Motivo */}
+        {tramitesRechazados.length > 0 && (
+          <div className="rounded-3xl bg-rose-50/90 border border-rose-200 p-5 space-y-3 shadow-sm">
+            <div className="flex items-center gap-2 text-rose-800">
+              <AlertCircle className="h-5 w-5 text-rose-600 shrink-0" />
+              <h3 className="text-sm font-black">Tienes {tramitesRechazados.length} solicitud(es) rechazada(s) con observaciones</h3>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-2.5">
+              {tramitesRechazados.map((item, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => handleSeleccionarTab(item.tab)}
+                  className="text-left p-3 rounded-2xl bg-white border border-rose-200/80 hover:border-rose-400 transition-colors cursor-pointer space-y-1 shadow-xs"
+                >
+                  <span className="text-xs font-bold text-rose-700 block">{item.titulo}</span>
+                  <p className="text-xs text-zinc-600 leading-snug">
+                    <strong className="text-zinc-800">Motivo:</strong> {item.motivo}
+                  </p>
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Menú Superior en Cuadrícula Responsiva */}
         <div className="space-y-4 border-b border-zinc-200 pb-8">

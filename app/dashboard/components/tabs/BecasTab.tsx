@@ -11,6 +11,7 @@ interface SolicitudBeca {
   hijo: string;
   nivel: string;
   estatus: string;
+  motivoRechazo?: string | null;
   fecha: string;
 }
 
@@ -70,6 +71,7 @@ export default function BecasTab({
           hijo: result.data.nombreHijo,
           nivel: result.data.nivelEducativo,
           estatus: result.data.estatus || 'En Revisión',
+          motivoRechazo: null,
           fecha: new Date().toISOString().split('T')[0],
         };
 
@@ -78,7 +80,7 @@ export default function BecasTab({
         setArchivoActa(null);
         setArchivoBoleta(null);
         form.reset();
-        router.refresh(); // 👈 Sincroniza automáticamente con el servidor
+        router.refresh();
         setTimeout(() => setMensajeExitoBeca(false), 5000);
       } else {
         setErrorBeca(result.error || 'Ocurrió un error al procesar la solicitud.');
@@ -246,26 +248,39 @@ export default function BecasTab({
               <p className="text-xs text-zinc-500 text-center py-6 font-medium">No hay solicitudes de becas registradas.</p>
             ) : (
               solicitudesBecas.map((item) => (
-                <div key={item.id} className="p-4 rounded-2xl bg-white border border-zinc-200/80 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-sm">
-                  <div className="space-y-1">
-                    <div className="flex items-center gap-2">
-                      <span className="text-xs font-bold text-[#E07A2B]">{item.folio}</span>
-                      <span className="text-xs text-zinc-400 font-medium">{item.fecha}</span>
+                <div key={item.id} className="p-4 rounded-2xl bg-white border border-zinc-200/80 space-y-3 shadow-sm">
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                    <div className="space-y-1">
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs font-bold text-[#E07A2B]">{item.folio}</span>
+                        <span className="text-xs text-zinc-400 font-medium">{item.fecha}</span>
+                      </div>
+                      <h4 className="text-sm font-bold text-zinc-900">Hijo(a): {item.hijo}</h4>
+                      <p className="text-xs text-zinc-500 font-medium">Nivel: {item.nivel}</p>
                     </div>
-                    <h4 className="text-sm font-bold text-zinc-900">Hijo(a): {item.hijo}</h4>
-                    <p className="text-xs text-zinc-500 font-medium">Nivel: {item.nivel}</p>
+
+                    <span className={`px-3 py-1 rounded-lg text-xs font-bold flex items-center gap-1.5 shadow-sm shrink-0 ${
+                      item.estatus === 'Aprobada' ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' :
+                      item.estatus === 'Rechazada' ? 'bg-rose-50 text-rose-700 border border-rose-200' :
+                      'bg-amber-50 text-amber-700 border border-amber-200'
+                    }`}>
+                      {item.estatus === 'Aprobada' && <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600" />}
+                      {item.estatus === 'Rechazada' && <XCircle className="h-3.5 w-3.5 text-rose-600" />}
+                      {(!item.estatus || item.estatus === 'En Revisión') && <Clock className="h-3.5 w-3.5 text-amber-600" />}
+                      <span>{item.estatus || 'En Revisión'}</span>
+                    </span>
                   </div>
 
-                  <span className={`px-3 py-1 rounded-lg text-xs font-bold flex items-center gap-1.5 shadow-sm ${
-                    item.estatus === 'Aprobada' ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' :
-                    item.estatus === 'Rechazada' ? 'bg-rose-50 text-rose-700 border border-rose-200' :
-                    'bg-amber-50 text-amber-700 border border-amber-200'
-                  }`}>
-                    {item.estatus === 'Aprobada' && <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600" />}
-                    {item.estatus === 'Rechazada' && <XCircle className="h-3.5 w-3.5 text-rose-600" />}
-                    {(!item.estatus || item.estatus === 'En Revisión') && <Clock className="h-3.5 w-3.5 text-amber-600" />}
-                    <span>{item.estatus || 'En Revisión'}</span>
-                  </span>
+                  {/* Motivo del rechazo si aplica */}
+                  {item.estatus === 'Rechazada' && item.motivoRechazo && (
+                    <div className="p-3 rounded-xl bg-rose-50/90 border border-rose-200/80 text-xs text-rose-800 flex items-start gap-2 leading-relaxed">
+                      <AlertCircle className="h-4 w-4 text-rose-600 shrink-0 mt-0.5" />
+                      <div>
+                        <span className="font-bold text-rose-900 block mb-0.5">Motivo del rechazo:</span>
+                        <span>{item.motivoRechazo}</span>
+                      </div>
+                    </div>
+                  )}
                 </div>
               ))
             )}

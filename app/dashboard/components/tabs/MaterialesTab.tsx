@@ -10,13 +10,17 @@ interface SugerenciaDireccion {
   textoCompleto: string;
 }
 
+type SolicitudMaterialConRechazo = SolicitudMaterial & {
+  motivoRechazo?: string | null;
+};
+
 export default function MaterialesTab({ 
   initialMateriales 
 }: { 
-  initialMateriales: SolicitudMaterial[] 
+  initialMateriales: SolicitudMaterialConRechazo[] 
 }) {
   const router = useRouter();
-  const [solicitudesMateriales, setSolicitudesMateriales] = useState<SolicitudMaterial[]>(initialMateriales);
+  const [solicitudesMateriales, setSolicitudesMateriales] = useState<SolicitudMaterialConRechazo[]>(initialMateriales);
   const [mensajeExitoMat, setMensajeExitoMat] = useState(false);
   const [errorMat, setErrorMat] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
@@ -113,12 +117,12 @@ export default function MaterialesTab({
       const result = await registrarSolicitudMateriales(formData);
       
       if (result.success && result.data) {
-        setSolicitudesMateriales([result.data, ...solicitudesMateriales]);
+        setSolicitudesMateriales([{ ...result.data, motivoRechazo: null }, ...solicitudesMateriales]);
         setMensajeExitoMat(true);
         form.reset();
         setDireccion('');
         setSugerencias([]);
-        router.refresh(); // 👈 Sincroniza y actualiza los datos del servidor al instante
+        router.refresh();
         setTimeout(() => setMensajeExitoMat(false), 5000);
       } else {
         setErrorMat(result.error || 'Ocurrió un error al procesar la solicitud.');
@@ -143,7 +147,7 @@ export default function MaterialesTab({
 
         <form onSubmit={handleSubmitMateriales} className="space-y-4">
           
-          {/* Autocompletado Dirección (Sin indicador de carga) */}
+          {/* Autocompletado Dirección */}
           <div ref={contenedorRef} className="space-y-1.5 relative">
             <label className="text-xs font-bold text-zinc-700">Dirección del Inmueble (Autocompletado)</label>
             <div className="relative">
@@ -321,32 +325,45 @@ export default function MaterialesTab({
               <p className="text-xs text-zinc-500 text-center py-6 font-medium">No hay solicitudes de materiales registradas.</p>
             ) : (
               solicitudesMateriales.map((item) => (
-                <div key={item.id} className="p-4 rounded-2xl bg-white border border-zinc-200/80 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-sm">
-                  <div className="space-y-1">
-                    <div className="flex items-center gap-2">
-                      <span className="text-xs font-bold text-[#E07A2B]">{item.folio}</span>
-                      <span className="text-xs text-zinc-400 font-medium">{item.fecha}</span>
+                <div key={item.id} className="p-4 rounded-2xl bg-white border border-zinc-200/80 space-y-3 shadow-sm">
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                    <div className="space-y-1">
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs font-bold text-[#E07A2B]">{item.folio}</span>
+                        <span className="text-xs text-zinc-400 font-medium">{item.fecha}</span>
+                      </div>
+                      <h4 className="text-sm font-bold text-zinc-900">Inmueble: {item.domicilio}</h4>
+                      <div className="flex flex-wrap gap-2 pt-1 text-[11px] text-zinc-600 font-medium">
+                        {item.cantidadTepetate > 0 && <span className="bg-zinc-100 px-2 py-0.5 rounded">Tepetate: {item.cantidadTepetate} m³</span>}
+                        {item.cantidadArena > 0 && <span className="bg-zinc-100 px-2 py-0.5 rounded">Arena: {item.cantidadArena} m³</span>}
+                        {item.cantidadGrava > 0 && <span className="bg-zinc-100 px-2 py-0.5 rounded">Grava: {item.cantidadGrava} m³</span>}
+                        {item.cantidadPiedraNegra > 0 && <span className="bg-zinc-100 px-2 py-0.5 rounded">Piedra N.: {item.cantidadPiedraNegra} viajes</span>}
+                        {item.cantidadCantera > 0 && <span className="bg-zinc-100 px-2 py-0.5 rounded">Cantera: {item.cantidadCantera} viajes</span>}
+                      </div>
                     </div>
-                    <h4 className="text-sm font-bold text-zinc-900">Inmueble: {item.domicilio}</h4>
-                    <div className="flex flex-wrap gap-2 pt-1 text-[11px] text-zinc-600 font-medium">
-                      {item.cantidadTepetate > 0 && <span className="bg-zinc-100 px-2 py-0.5 rounded">Tepetate: {item.cantidadTepetate} m³</span>}
-                      {item.cantidadArena > 0 && <span className="bg-zinc-100 px-2 py-0.5 rounded">Arena: {item.cantidadArena} m³</span>}
-                      {item.cantidadGrava > 0 && <span className="bg-zinc-100 px-2 py-0.5 rounded">Grava: {item.cantidadGrava} m³</span>}
-                      {item.cantidadPiedraNegra > 0 && <span className="bg-zinc-100 px-2 py-0.5 rounded">Piedra N.: {item.cantidadPiedraNegra} viajes</span>}
-                      {item.cantidadCantera > 0 && <span className="bg-zinc-100 px-2 py-0.5 rounded">Cantera: {item.cantidadCantera} viajes</span>}
-                    </div>
+
+                    <span className={`px-3 py-1 rounded-lg text-xs font-bold flex items-center gap-1.5 shadow-sm shrink-0 ${
+                      item.estatus === 'Aprobada' ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' :
+                      item.estatus === 'Rechazada' ? 'bg-rose-50 text-rose-700 border border-rose-200' :
+                      'bg-amber-50 text-amber-700 border border-amber-200'
+                    }`}>
+                      {item.estatus === 'Aprobada' && <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600" />}
+                      {item.estatus === 'Rechazada' && <XCircle className="h-3.5 w-3.5 text-rose-600" />}
+                      {(!item.estatus || item.estatus === 'En Revisión') && <Clock className="h-3.5 w-3.5 text-amber-600" />}
+                      <span>{item.estatus || 'En Revisión'}</span>
+                    </span>
                   </div>
 
-                  <span className={`px-3 py-1 rounded-lg text-xs font-bold flex items-center gap-1.5 shadow-sm ${
-                    item.estatus === 'Aprobada' ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' :
-                    item.estatus === 'Rechazada' ? 'bg-rose-50 text-rose-700 border border-rose-200' :
-                    'bg-amber-50 text-amber-700 border border-amber-200'
-                  }`}>
-                    {item.estatus === 'Aprobada' && <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600" />}
-                    {item.estatus === 'Rechazada' && <XCircle className="h-3.5 w-3.5 text-rose-600" />}
-                    {(!item.estatus || item.estatus === 'En Revisión') && <Clock className="h-3.5 w-3.5 text-amber-600" />}
-                    <span>{item.estatus || 'En Revisión'}</span>
-                  </span>
+                  {/* Motivo del rechazo si aplica */}
+                  {item.estatus === 'Rechazada' && item.motivoRechazo && (
+                    <div className="p-3 rounded-xl bg-rose-50/90 border border-rose-200/80 text-xs text-rose-800 flex items-start gap-2 leading-relaxed">
+                      <AlertCircle className="h-4 w-4 text-rose-600 shrink-0 mt-0.5" />
+                      <div>
+                        <span className="font-bold text-rose-900 block mb-0.5">Motivo del rechazo:</span>
+                        <span>{item.motivoRechazo}</span>
+                      </div>
+                    </div>
+                  )}
                 </div>
               ))
             )}

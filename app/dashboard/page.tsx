@@ -97,6 +97,7 @@ export default async function DashboardPage() {
     hijo: item.nombreHijo,
     nivel: item.nivelEducativo,
     estatus: item.estatus || 'En Revisión',
+    motivoRechazo: item.motivoRechazo ?? null,
     fecha: item.createdAt.toISOString().split('T')[0],
   }));
 
@@ -105,6 +106,7 @@ export default async function DashboardPage() {
     folio: `NAC-2026-${item.id.slice(0, 4).toUpperCase()}`,
     nombreHijo: item.nombreHijo,
     estatus: item.estatus || 'En Revisión',
+    motivoRechazo: item.motivoRechazo ?? null,
     fecha: item.createdAt.toISOString().split('T')[0],
   }));
 
@@ -114,6 +116,7 @@ export default async function DashboardPage() {
     nombreConyuge: item.nombreConyuge,
     tipoUnion: item.tipoUnion,
     estatus: item.estatus || 'En Revisión',
+    motivoRechazo: item.motivoRechazo ?? null,
     fecha: item.createdAt.toISOString().split('T')[0],
   }));
 
@@ -123,6 +126,7 @@ export default async function DashboardPage() {
     hijo: item.nombreHijo,
     nivel: item.nivelEducativo,
     estatus: item.estatus || 'En Revisión',
+    motivoRechazo: item.motivoRechazo ?? null,
     fecha: item.createdAt.toISOString().split('T')[0],
   }));
 
@@ -137,6 +141,7 @@ export default async function DashboardPage() {
     cantidadPiedraNegra: item.cantidadPiedraNegra,
     cantidadCantera: item.cantidadCantera,
     estatus: item.estatus || 'En Revisión',
+    motivoRechazo: item.motivoRechazo ?? null,
     fecha: item.createdAt.toISOString().split('T')[0],
   }));
 
