@@ -231,6 +231,7 @@ export async function enviarNotificacionEstatusTrabajador({
   const logoUrl = 'https://stsmq.vercel.app/STSMQ Original.svg'
   const fecha = new Date().toLocaleString('es-MX', { timeZone: 'America/Mexico_City' })
   const esAprobada = estatus === 'Aprobada'
+  const estatusTitulo = esAprobada ? 'Aprobado' : 'Rechazado'
 
   const colorEstatus = esAprobada ? '#047857' : '#be123c'
   const fondoEstatus = esAprobada ? '#ecfdf5' : '#fff1f2'
@@ -315,7 +316,7 @@ export async function enviarNotificacionEstatusTrabajador({
     await transporter.sendMail({
       from: `"Trámites STSMQ" <${process.env.SMTP_USER}>`,
       to: correoTrabajador,
-      subject: `[Trámite ${estatus}] ${tipoTramite} - Folio ${folio}`,
+      subject: `[Trámite ${estatusTitulo}] ${tipoTramite} - Folio ${folio}`,
       html: htmlBody,
     })
   } catch (error) {
