@@ -15,11 +15,10 @@ export default async function DashboardPage() {
   const numeroEmpleado = cookieStore.get('usuario_num')?.value;
 
   if (!numeroEmpleado) {
-    // Redirigir a login si no hay sesión
     redirect('/login'); 
   }
 
-  // 1. Buscar al usuario y sus familiares relacionados (incluyendo email y campos de credencial)
+  // 1. Buscar al usuario y sus familiares relacionados
   const usuarioRaw = await prisma.usuario.findUnique({
     where: { numeroEmpleado },
     include: {
@@ -27,7 +26,7 @@ export default async function DashboardPage() {
     },
   });
 
-  // Sanitizar el objeto usuario para asegurar compatibilidad estricta de tipos (evitando nulls)
+  // Sanitizar el objeto usuario para asegurar compatibilidad estricta de tipos
   const usuario = usuarioRaw ? {
     ...usuarioRaw,
     email: usuarioRaw.email ?? '',
@@ -78,13 +77,13 @@ export default async function DashboardPage() {
     orderBy: { createdAt: 'desc' },
   });
 
-  // 🔑 5. Buscar las solicitudes de útiles escolares de este empleado
+  // 5. Buscar las solicitudes de útiles escolares de este empleado
   const solicitudesUtilesRaw = await prisma.solicitudUtiles.findMany({
     where: { numeroEmpleado },
     orderBy: { createdAt: 'desc' },
   });
 
-  // 🧱 6. Buscar las solicitudes de materiales de este empleado
+  // 6. Buscar las solicitudes de materiales de este empleado
   const solicitudesMaterialesRaw = await prisma.solicitudMaterial.findMany({
     where: { numeroEmpleado },
     orderBy: { createdAt: 'desc' },
@@ -98,6 +97,8 @@ export default async function DashboardPage() {
     nivel: item.nivelEducativo,
     estatus: item.estatus || 'En Revisión',
     motivoRechazo: item.motivoRechazo ?? null,
+    notificacionVista: item.notificacionVista ?? false,
+    fechaGestion: item.fechaGestion ? item.fechaGestion.toISOString() : null,
     fecha: item.createdAt.toISOString().split('T')[0],
   }));
 
@@ -107,6 +108,8 @@ export default async function DashboardPage() {
     nombreHijo: item.nombreHijo,
     estatus: item.estatus || 'En Revisión',
     motivoRechazo: item.motivoRechazo ?? null,
+    notificacionVista: item.notificacionVista ?? false,
+    fechaGestion: item.fechaGestion ? item.fechaGestion.toISOString() : null,
     fecha: item.createdAt.toISOString().split('T')[0],
   }));
 
@@ -117,6 +120,8 @@ export default async function DashboardPage() {
     tipoUnion: item.tipoUnion,
     estatus: item.estatus || 'En Revisión',
     motivoRechazo: item.motivoRechazo ?? null,
+    notificacionVista: item.notificacionVista ?? false,
+    fechaGestion: item.fechaGestion ? item.fechaGestion.toISOString() : null,
     fecha: item.createdAt.toISOString().split('T')[0],
   }));
 
@@ -127,10 +132,11 @@ export default async function DashboardPage() {
     nivel: item.nivelEducativo,
     estatus: item.estatus || 'En Revisión',
     motivoRechazo: item.motivoRechazo ?? null,
+    notificacionVista: item.notificacionVista ?? false,
+    fechaGestion: item.fechaGestion ? item.fechaGestion.toISOString() : null,
     fecha: item.createdAt.toISOString().split('T')[0],
   }));
 
-  // 🧱 Formatear la estructura que espera MaterialesTab
   const initialMateriales = solicitudesMaterialesRaw.map((item) => ({
     id: item.id,
     folio: `MAT-2026-${item.id.slice(0, 4).toUpperCase()}`,
@@ -142,6 +148,8 @@ export default async function DashboardPage() {
     cantidadCantera: item.cantidadCantera,
     estatus: item.estatus || 'En Revisión',
     motivoRechazo: item.motivoRechazo ?? null,
+    notificacionVista: item.notificacionVista ?? false,
+    fechaGestion: item.fechaGestion ? item.fechaGestion.toISOString() : null,
     fecha: item.createdAt.toISOString().split('T')[0],
   }));
 

@@ -27,6 +27,7 @@ async function validarYPrepararAuditoria(nuevoEstatus: string, motivoRechazo?: s
   return {
     estatus: nuevoEstatus,
     motivoRechazo: nuevoEstatus === 'Rechazada' ? motivoRechazo!.trim() : null,
+    notificacionVista: nuevoEstatus === 'Rechazada' ? false : true, // 👈 Reinicia la visibilidad de la alerta si es rechazado
     gestionadoPor: `${admin.nombreCompleto} (${admin.numeroEmpleado})`,
     fechaGestion: new Date(),
   }

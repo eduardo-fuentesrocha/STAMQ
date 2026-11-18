@@ -47,48 +47,51 @@ model Familiar {
 }
 
 model SolicitudNacimiento {
-  id             String    @id @default(uuid())
-  numeroEmpleado String
-  nombreHijo     String
-  actaUrl        String
-  estatus        String    @default("En Revisión")
-  motivoRechazo  String?
-  gestionadoPor  String?
-  fechaGestion   DateTime?
-  createdAt      DateTime  @default(now())
+  id                String    @id @default(uuid())
+  numeroEmpleado    String
+  nombreHijo        String
+  actaUrl           String
+  estatus           String    @default("En Revisión")
+  motivoRechazo     String?
+  notificacionVista Boolean   @default(false)
+  gestionadoPor     String?
+  fechaGestion      DateTime?
+  createdAt         DateTime  @default(now())
 
-  usuario        Usuario   @relation(fields: [numeroEmpleado], references: [numeroEmpleado], onDelete: Cascade)
+  usuario           Usuario   @relation(fields: [numeroEmpleado], references: [numeroEmpleado], onDelete: Cascade)
 }
 
 model SolicitudMatrimonio {
-  id             String    @id @default(uuid())
-  numeroEmpleado String
-  nombreConyuge  String
-  tipoUnion      String    // "Matrimonio" o "Concubinato"
-  actaUrl        String   
-  estatus        String    @default("En Revisión")
-  motivoRechazo  String?
-  gestionadoPor  String?
-  fechaGestion   DateTime?
-  createdAt      DateTime  @default(now())
+  id                String    @id @default(uuid())
+  numeroEmpleado    String
+  nombreConyuge     String
+  tipoUnion         String    // "Matrimonio" o "Concubinato"
+  actaUrl           String   
+  estatus           String    @default("En Revisión")
+  motivoRechazo     String?
+  notificacionVista Boolean   @default(false)
+  gestionadoPor     String?
+  fechaGestion      DateTime?
+  createdAt         DateTime  @default(now())
 
-  usuario        Usuario   @relation(fields: [numeroEmpleado], references: [numeroEmpleado], onDelete: Cascade)
+  usuario           Usuario   @relation(fields: [numeroEmpleado], references: [numeroEmpleado], onDelete: Cascade)
 }
 
 model SolicitudBeca {
-  id             String    @id @default(uuid())
-  numeroEmpleado String
-  nombreHijo     String
-  nivelEducativo String
-  actaUrl        String   
-  boletaUrl      String   
-  estatus        String    @default("En Revisión")
-  motivoRechazo  String?
-  gestionadoPor  String?
-  fechaGestion   DateTime?
-  createdAt      DateTime  @default(now())
+  id                String    @id @default(uuid())
+  numeroEmpleado    String
+  nombreHijo        String
+  nivelEducativo    String
+  actaUrl           String   
+  boletaUrl         String   
+  estatus           String    @default("En Revisión")
+  motivoRechazo     String?
+  notificacionVista Boolean   @default(false)
+  gestionadoPor     String?
+  fechaGestion      DateTime?
+  createdAt         DateTime  @default(now())
 
-  usuario        Usuario   @relation(fields: [numeroEmpleado], references: [numeroEmpleado], onDelete: Cascade)
+  usuario           Usuario   @relation(fields: [numeroEmpleado], references: [numeroEmpleado], onDelete: Cascade)
 }
 
 model SolicitudMaterial {
@@ -102,6 +105,7 @@ model SolicitudMaterial {
   numeroEmpleado      String
   estatus             String    @default("En Revisión")
   motivoRechazo       String?
+  notificacionVista   Boolean   @default(false)
   gestionadoPor       String?
   fechaGestion        DateTime?
   createdAt           DateTime  @default(now())
@@ -110,16 +114,17 @@ model SolicitudMaterial {
 }
 
 model SolicitudUtiles {
-  id             String    @id @default(cuid())
-  numeroEmpleado String
-  nombreHijo     String
-  nivelEducativo String    // Primaria, Secundaria, Preparatoria
-  boletaUrl      String    // Boleta del ciclo que termina
-  inscripcionUrl String    // Recibo de inscripción al nuevo ciclo
-  estatus        String    @default("En Revisión") // En Revisión, Aprobada, Rechazada
-  motivoRechazo  String?
-  gestionadoPor  String?
-  fechaGestion   DateTime?
-  createdAt      DateTime  @default(now())
-  updatedAt      DateTime  @updatedAt
+  id                String    @id @default(cuid())
+  numeroEmpleado    String
+  nombreHijo        String
+  nivelEducativo    String    // Primaria, Secundaria, Preparatoria
+  boletaUrl         String    // Boleta del ciclo que termina
+  inscripcionUrl    String    // Recibo de inscripción al nuevo ciclo
+  estatus           String    @default("En Revisión") // En Revisión, Aprobada, Rechazada
+  motivoRechazo     String?
+  notificacionVista Boolean   @default(false)
+  gestionadoPor     String?
+  fechaGestion      DateTime?
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
 }
