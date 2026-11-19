@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { list, del } from '@vercel/blob'
+import { list, del, type ListBlobResult } from '@vercel/blob'
 
 const DIAS_RETENCION = 15
 const MS_POR_DIA = 24 * 60 * 60 * 1000
@@ -18,9 +18,13 @@ export async function GET(request: Request) {
     const limiteAntiguedad = Date.now() - DIAS_RETENCION * MS_POR_DIA
     const urlsAEliminar: string[] = []
     let cursor: string | undefined = undefined
+    let hayMas = false
 
     do {
-      const pagina = await list({ cursor, limit: 1000 })
+      const pagina: ListBlobResult = await list({
+        ...(cursor ? { cursor } : {}),
+        limit: 1000,
+      })
 
       for (const blob of pagina.blobs) {
         if (blob.pathname.startsWith(CARPETA_EXCLUIDA)) {
@@ -33,8 +37,9 @@ export async function GET(request: Request) {
         }
       }
 
-      cursor = pagina.hasMore ? pagina.cursor : undefined
-    } while (cursor)
+      hayMas = pagina.hasMore
+      cursor = pagina.cursor
+    } while (hayMas)
 
     if (urlsAEliminar.length > 0) {
       await del(urlsAEliminar)
