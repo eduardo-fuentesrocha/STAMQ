@@ -32,6 +32,7 @@ export async function enviarNotificacionAdmin({
   folio,
   detalles,
 }: NotificacionTramiteParams) {
+  const logoUrl = 'https://stsmq.vercel.app/STSMQ Original.svg'
   const adminEmail = process.env.ADMIN_EMAIL || 'sindicato.trabajadores.muniqro@gmail.com'
   const fecha = new Date().toLocaleString('es-MX', { timeZone: 'America/Mexico_City' })
 
@@ -47,8 +48,23 @@ export async function enviarNotificacionAdmin({
 
   const htmlBody = `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #e0e0e0; border-radius: 12px; padding: 24px; background-color: #ffffff;">
-      <h2 style="color: #E07A2B; margin-top: 0;">Nueva Solicitud de Trámite Recibida</h2>
-      <p style="color: #555;">Se ha registrado una nueva solicitud en el portal STSMQ.</p>
+      
+      <!-- Encabezado con Logo y Título STSMQ -->
+      <table style="width: 100%; border-collapse: collapse; margin-bottom: 24px; padding-bottom: 16px;">
+        <tr>
+          <td style="width: 50px; vertical-align: middle; padding-right: 12px;">
+            <img src="${logoUrl}" alt="Logo STSMQ" style="width: 45px; height: auto; display: block;" />
+          </td>
+          <td style="vertical-align: middle;">
+            <h2 style="color: #E07A2B; font-size: 15px; font-weight: 800; margin: 0; line-height: 1.2;">
+              SINDICATO DE TRABAJADORES AL SERVICIO DEL MUNICIPIO DE QUERÉTARO
+            </h2>
+          </td>
+        </tr>
+      </table>
+
+      <h3 style="color: #333; margin-top: 0;">Nueva Solicitud de Trámite Recibida</h3>
+      <p style="color: #555; font-size: 14px; line-height: 1.5;">Se ha registrado una nueva solicitud en el Portal del Trabajador Sindicalizado.</p>
       
       <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
         <tr>
@@ -74,7 +90,9 @@ export async function enviarNotificacionAdmin({
         ${filasDetalles}
       </table>
       
-      <p style="font-size: 12px; color: #888; margin-top: 24px;">Este es un mensaje automático generado por el Portal STSMQ 2026.</p>
+      <div style="border-top: 1px solid #eee; margin-top: 24px; padding-top: 16px; text-align: center;">
+        <p style="font-size: 11px; color: #999; margin: 0;">Este es un mensaje automático generado por el Sindicato de Trabajadores al Servicio del Municipio de Querétaro.</p>
+      </div>
     </div>
   `
 
@@ -96,13 +114,29 @@ export async function enviarSugerenciaBuzon({
   mensaje,
   correoTrabajador,
 }: SugerenciaParams) {
+  const logoUrl = 'https://stsmq.vercel.app/STSMQ Original.svg'
   const adminEmail = process.env.ADMIN_EMAIL || 'sindicato.trabajadores.muniqro@gmail.com'
   const fecha = new Date().toLocaleString('es-MX', { timeZone: 'America/Mexico_City' })
 
   const htmlBody = `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #e0e0e0; border-radius: 12px; padding: 24px; background-color: #ffffff;">
-      <h2 style="color: #E07A2B; margin-top: 0;">📬 Nueva Sugerencia</h2>
-      <p style="color: #555;">Se ha enviado un nuevo mensaje a través del Buzón de Sugerencias del Portal del Trabajador Sindicalizado.</p>
+      
+      <!-- Encabezado con Logo y Título STSMQ -->
+      <table style="width: 100%; border-collapse: collapse; margin-bottom: 24px; padding-bottom: 16px;">
+        <tr>
+          <td style="width: 50px; vertical-align: middle; padding-right: 12px;">
+            <img src="${logoUrl}" alt="Logo STSMQ" style="width: 45px; height: auto; display: block;" />
+          </td>
+          <td style="vertical-align: middle;">
+            <h2 style="color: #E07A2B; font-size: 15px; font-weight: 800; margin: 0; line-height: 1.2;">
+              SINDICATO DE TRABAJADORES AL SERVICIO DEL MUNICIPIO DE QUERÉTARO
+            </h2>
+          </td>
+        </tr>
+      </table>
+
+      <h3 style="color: #333; margin-top: 0;">📬 Nueva Sugerencia</h3>
+      <p style="color: #555; font-size: 14px; line-height: 1.5;">Se ha enviado un nuevo mensaje a través del Buzón de Sugerencias del Portal del Trabajador Sindicalizado.</p>
       
       <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
         <tr>
@@ -128,7 +162,9 @@ export async function enviarSugerenciaBuzon({
         <p style="color: #444; margin: 0; white-space: pre-wrap; line-height: 1.5;">${mensaje}</p>
       </div>
       
-      <p style="font-size: 12px; color: #888; margin-top: 24px;">Este es un mensaje automático generado por el Buzón del Portal del Trabajador Sindicalizado.</p>
+      <div style="border-top: 1px solid #eee; margin-top: 24px; padding-top: 16px; text-align: center;">
+        <p style="font-size: 11px; color: #999; margin: 0;">Este es un mensaje automático generado por el Buzón del Portal del Trabajador Sindicalizado.</p>
+      </div>
     </div>
   `
 

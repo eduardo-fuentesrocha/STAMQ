@@ -6,6 +6,7 @@ import { Pool } from 'pg'
 import { cookies } from 'next/headers'
 import { put } from '@vercel/blob'
 import { revalidatePath } from 'next/cache'
+import { enviarNotificacionAdmin } from '../lib/mailer' // <-- ajusta esta ruta a tu archivo de correos
 
 const connectionString = process.env.DATABASE_URL
 const pool = new Pool({ connectionString })
@@ -53,6 +54,24 @@ export async function registrarSolicitudMatrimonio(formData: FormData) {
     })
 
     const folioCorto = `MATR-2026-${nuevaSolicitud.id.slice(0, 4).toUpperCase()}`
+
+    // Obtener nombre del trabajador para la notificación al admin
+    const usuario = await prisma.usuario.findUnique({
+      where: { numeroEmpleado },
+    })
+    const nombreTrabajador =
+      (usuario as { nombreCompleto?: string } | null)?.nombreCompleto || numeroEmpleado
+
+    await enviarNotificacionAdmin({
+      nombreTrabajador,
+      numeroEmpleado,
+      tipoTramite: 'Matrimonio',
+      folio: folioCorto,
+      detalles: {
+        'Cónyuge / Pareja': nombreConyuge,
+        'Tipo de Unión': tipoUnion,
+      },
+    })
 
     revalidatePath('/dashboard')
 

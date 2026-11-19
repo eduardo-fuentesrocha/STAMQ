@@ -6,6 +6,7 @@ import { Pool } from 'pg'
 import { cookies } from 'next/headers'
 import { put } from '@vercel/blob'
 import { revalidatePath } from 'next/cache'
+import { enviarNotificacionAdmin } from '../lib/mailer';
 
 const connectionString = process.env.DATABASE_URL
 const pool = new Pool({ connectionString })
@@ -63,6 +64,24 @@ export async function registrarSolicitudUtiles(formData: FormData) {
     })
 
     const folioCorto = `UTIL-2026-${nuevaSolicitud.id.slice(0, 4).toUpperCase()}`
+
+    // Obtener nombre del trabajador para la notificación al admin
+    const usuario = await prisma.usuario.findUnique({
+      where: { numeroEmpleado },
+    })
+    const nombreTrabajador =
+      (usuario as { nombreCompleto?: string } | null)?.nombreCompleto || numeroEmpleado
+
+    await enviarNotificacionAdmin({
+      nombreTrabajador,
+      numeroEmpleado,
+      tipoTramite: 'Útiles Escolares',
+      folio: folioCorto,
+      detalles: {
+        'Hijo(a)': nombreHijo,
+        'Nivel Educativo': nivelEducativo,
+      },
+    })
 
     revalidatePath('/dashboard')
 
