@@ -98,6 +98,11 @@ export default function DashboardClient({
   const [avisosDescartados, setAvisosDescartados] = useState<string[]>([]);
   const [, startTransition] = useTransition();
 
+  const usuarioBasico = {
+    nombreCompleto: usuario.nombreCompleto,
+    numeroEmpleado: usuario.numeroEmpleado,
+  };
+
   const handleSeleccionarTab = (id: string) => {
     setTabActiva(id);
     setTimeout(() => {
@@ -331,16 +336,28 @@ export default function DashboardClient({
             <BecasTab 
               initialSolicitudes={initialSolicitudes} 
               familiares={usuario.familiares || []} 
+              usuario={usuarioBasico}
               onIrANacimiento={() => handleSeleccionarTab('nacimiento')}
             />
           )}
           {tabActiva === 'materiales' && <MaterialesTab initialMateriales={initialMateriales} />}
-          {tabActiva === 'nacimiento' && <NacimientoTab initialSolicitudes={initialNacimientos} />}
-          {tabActiva === 'matrimonio' && <MatrimonioTab initialSolicitudes={initialMatrimonios} />}
+          {tabActiva === 'nacimiento' && (
+            <NacimientoTab 
+              initialSolicitudes={initialNacimientos} 
+              usuario={usuarioBasico}
+            />
+          )}
+          {tabActiva === 'matrimonio' && (
+            <MatrimonioTab 
+              initialSolicitudes={initialMatrimonios} 
+              usuario={usuarioBasico}
+            />
+          )}
           {tabActiva === 'utiles' && (
             <UtilesTab 
               initialSolicitudes={initialUtiles} 
               familiares={usuario.familiares || []} 
+              usuario={usuarioBasico}
               onIrANacimiento={() => handleSeleccionarTab('nacimiento')}
             />
           )}

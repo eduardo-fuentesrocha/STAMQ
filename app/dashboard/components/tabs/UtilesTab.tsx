@@ -21,13 +21,29 @@ interface FamiliarInfo {
   parentesco: string;
 }
 
+interface UsuarioInfo {
+  nombreCompleto: string;
+  numeroEmpleado: string;
+}
+
+function normalizarNombreArchivo(texto: string): string {
+  return texto
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-zA-Z0-9\s]/g, '')
+    .trim()
+    .replace(/\s+/g, '_');
+}
+
 export default function UtilesTab({ 
   initialSolicitudes = [],
   familiares = [],
+  usuario,
   onIrANacimiento
 }: { 
   initialSolicitudes?: SolicitudUtilesInfo[];
   familiares?: FamiliarInfo[];
+  usuario?: UsuarioInfo;
   onIrANacimiento: () => void;
 }) {
   const router = useRouter();
@@ -48,13 +64,33 @@ export default function UtilesTab({
     const form = event.currentTarget;
     const formData = new FormData(form);
 
+    const nombreHijoSeleccionado = (formData.get('nombreHijo') as string) || '';
     const boleta = formData.get('boleta') as File;
     const inscripcion = formData.get('inscripcion') as File;
 
-    if ((boleta && !boleta.name.toLowerCase().endsWith('.pdf')) || (inscripcion && !inscripcion.name.toLowerCase().endsWith('.pdf'))) {
+    if (!boleta || !inscripcion) {
+      setErrorUtiles('Debes adjuntar tanto la boleta de calificaciones como el recibo de inscripción.');
+      return;
+    }
+
+    if (!boleta.name.toLowerCase().endsWith('.pdf') || !inscripcion.name.toLowerCase().endsWith('.pdf')) {
       setErrorUtiles('Todos los documentos adjuntos deben estar estrictamente en formato .pdf');
       return;
     }
+
+    // 🏷️ GENERAR NOMBRES ESTANDARIZADOS CON NOMBRES COMPLETOS Y SIN PÉRDIDA DE LETRAS ACENTUADAS
+    const numEmp = usuario?.numeroEmpleado || 'SIND';
+    const trabajadorCompleto = normalizarNombreArchivo(usuario?.nombreCompleto || 'Trabajador');
+    const hijoCompleto = normalizarNombreArchivo(nombreHijoSeleccionado || 'Hijo');
+
+    const nombreBoletaPersonalizado = `${numEmp}_${trabajadorCompleto}_${hijoCompleto}_Boleta.pdf`;
+    const nombreInscripcionPersonalizado = `${numEmp}_${trabajadorCompleto}_${hijoCompleto}_Inscripcion.pdf`;
+
+    const boletaRenombrada = new File([boleta], nombreBoletaPersonalizado, { type: boleta.type });
+    const inscripcionRenombrada = new File([inscripcion], nombreInscripcionPersonalizado, { type: inscripcion.type });
+
+    formData.set('boleta', boletaRenombrada);
+    formData.set('inscripcion', inscripcionRenombrada);
 
     setMensajeExito(false);
     setErrorUtiles(null);

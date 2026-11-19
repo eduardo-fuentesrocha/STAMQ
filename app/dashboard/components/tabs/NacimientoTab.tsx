@@ -14,10 +14,26 @@ export interface SolicitudNacimiento {
   fecha: string;
 }
 
+interface UsuarioInfo {
+  nombreCompleto: string;
+  numeroEmpleado: string;
+}
+
+function normalizarNombreArchivo(texto: string): string {
+  return texto
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-zA-Z0-9\s]/g, '')
+    .trim()
+    .replace(/\s+/g, '_');
+}
+
 export default function NacimientoTab({ 
-  initialSolicitudes 
+  initialSolicitudes,
+  usuario
 }: { 
-  initialSolicitudes: SolicitudNacimiento[] 
+  initialSolicitudes: SolicitudNacimiento[];
+  usuario?: UsuarioInfo;
 }) {
   const router = useRouter();
   const [solicitudesNacimiento, setSolicitudesNacimiento] = useState<SolicitudNacimiento[]>(initialSolicitudes);
@@ -31,12 +47,28 @@ export default function NacimientoTab({
     const form = event.currentTarget;
     const formData = new FormData(form);
 
+    const nombreHijoIngresado = (formData.get('nombreHijo') as string) || '';
     const acta = formData.get('actaNacimiento') as File;
 
-    if (acta && !acta.name.toLowerCase().endsWith('.pdf')) {
+    if (!acta) {
+      setErrorTramite('Debes adjuntar el acta de nacimiento en formato .pdf');
+      return;
+    }
+
+    if (!acta.name.toLowerCase().endsWith('.pdf')) {
       setErrorTramite('El acta de nacimiento debe estar estrictamente en formato .pdf');
       return;
     }
+
+    // 🏷️ GENERAR NOMBRE ESTANDARIZADO: [NumEmpleado]_[NombreCompletoTrabajador]_[NombreCompletoFamiliar]_Acta.pdf
+    const numEmp = usuario?.numeroEmpleado || 'SIND';
+    const trabajadorCompleto = normalizarNombreArchivo(usuario?.nombreCompleto || 'Trabajador');
+    const hijoCompleto = normalizarNombreArchivo(nombreHijoIngresado || 'Hijo');
+
+    const nombreActaPersonalizado = `${numEmp}_${trabajadorCompleto}_${hijoCompleto}_Acta.pdf`;
+    const actaRenombrada = new File([acta], nombreActaPersonalizado, { type: acta.type });
+
+    formData.set('actaNacimiento', actaRenombrada);
 
     setMensajeExito(false);
     setErrorTramite(null);

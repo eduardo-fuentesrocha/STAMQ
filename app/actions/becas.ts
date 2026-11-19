@@ -5,7 +5,7 @@ import { PrismaClient } from '@prisma/client'
 import { PrismaPg } from '@prisma/adapter-pg'
 import { Pool } from 'pg'
 import { cookies } from 'next/headers'
-import { revalidatePath } from 'next/cache' // 👈 1. Importar revalidatePath
+import { revalidatePath } from 'next/cache'
 import { enviarNotificacionAdmin } from '../lib/mailer';
 
 const connectionString = process.env.DATABASE_URL
@@ -37,10 +37,10 @@ export async function registrarSolicitudBeca(formData: FormData) {
       return { success: false, error: 'Todos los campos y documentos son obligatorios.' }
     }
 
-    // Subir archivos a Vercel Blob de forma privada en paralelo
+    // 🏷️ USAR DIRECTAMENTE EL NOMBRE RENOMBRADO QUE VIENE DEL CLIENTE CON allowOverwrite: true
     const [blobActa, blobBoleta] = await Promise.all([
-      put(`actas/${Date.now()}-${archivoActa.name}`, archivoActa, { access: 'private' }),
-      put(`boletas/${Date.now()}-${archivoBoleta.name}`, archivoBoleta, { access: 'private' })
+      put(`becas/${archivoActa.name}`, archivoActa, { access: 'private', allowOverwrite: true }),
+      put(`becas/${archivoBoleta.name}`, archivoBoleta, { access: 'private', allowOverwrite: true })
     ])
 
     // Guardar en la base de datos incluyendo las URLs y el número de empleado asociado
@@ -74,7 +74,7 @@ export async function registrarSolicitudBeca(formData: FormData) {
       console.error('Error no bloqueante al enviar correo:', mailErr)
     }
 
-    // 🔑 2. Revalidar la caché del Dashboard para que al refrescar consulte la BD
+    // Revalidar la caché del Dashboard
     revalidatePath('/dashboard')
 
     return {

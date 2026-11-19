@@ -5,6 +5,7 @@ import { PrismaPg } from '@prisma/adapter-pg'
 import { Pool } from 'pg'
 import { cookies } from 'next/headers'
 import { put } from '@vercel/blob'
+import { revalidatePath } from 'next/cache'
 
 const connectionString = process.env.DATABASE_URL
 const pool = new Pool({ connectionString })
@@ -20,12 +21,12 @@ export async function registrarSolicitudUtiles(formData: FormData) {
       return { success: false, error: 'Sesión no válida. Inicia sesión nuevamente.' }
     }
 
-    const nombreHijo = (formData.get('nombreHijo') as string) || ''
-    const nivelEducativo = (formData.get('nivelEducativo') as string) || ''
+    const nombreHijo = ((formData.get('nombreHijo') as string) || '').trim()
+    const nivelEducativo = ((formData.get('nivelEducativo') as string) || '').trim()
     const archivoBoleta = formData.get('boleta') as File
     const archivoInscripcion = formData.get('inscripcion') as File
 
-    if (!nombreHijo.trim() || !nivelEducativo) {
+    if (!nombreHijo || !nivelEducativo) {
       return { success: false, error: 'Todos los campos son obligatorios.' }
     }
 
@@ -37,17 +38,19 @@ export async function registrarSolicitudUtiles(formData: FormData) {
       return { success: false, error: 'El recibo de inscripción es obligatorio.' }
     }
 
-    // 1. Subir la boleta de calificaciones a Vercel Blob (privado)
-    const blobBoleta = await put(`utiles/${numeroEmpleado}-boleta-${Date.now()}-${archivoBoleta.name}`, archivoBoleta, {
-      access: 'private',
-    });
+    // 🏷️ Usar directamente los nombres renombrados desde UtilesTab y permitir sobrescritura
+    const [blobBoleta, blobInscripcion] = await Promise.all([
+      put(`utiles/${archivoBoleta.name}`, archivoBoleta, {
+        access: 'private',
+        allowOverwrite: true,
+      }),
+      put(`utiles/${archivoInscripcion.name}`, archivoInscripcion, {
+        access: 'private',
+        allowOverwrite: true,
+      }),
+    ])
 
-    // 2. Subir el recibo de inscripción a Vercel Blob (privado)
-    const blobInscripcion = await put(`utiles/${numeroEmpleado}-inscripcion-${Date.now()}-${archivoInscripcion.name}`, archivoInscripcion, {
-      access: 'private',
-    });
-
-    // 3. Guardar en la base de datos
+    // Guardar en la base de datos
     const nuevaSolicitud = await prisma.solicitudUtiles.create({
       data: {
         numeroEmpleado,
@@ -59,7 +62,9 @@ export async function registrarSolicitudUtiles(formData: FormData) {
       },
     })
 
-    const folioCorto = `UTIL-2026-${Date.now().toString().slice(-4)}`
+    const folioCorto = `UTIL-2026-${nuevaSolicitud.id.slice(0, 4).toUpperCase()}`
+
+    revalidatePath('/dashboard')
 
     return {
       success: true,

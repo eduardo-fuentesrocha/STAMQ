@@ -35,9 +35,6 @@ export default function CredencialPage() {
     );
   }
 
-  // 🔍 Depuración para confirmar que el número de empleado existe al renderizar
-  console.log("Renderizando credencial para el empleado No:", usuario.numeroEmpleado);
-
   const estilosFondo = {
     'naranja-suave': 'bg-gradient-to-br from-white via-[#ffdcba] to-[#e8913e] text-zinc-950',
     'platino-clasico': 'bg-gradient-to-br from-white via-zinc-100 to-zinc-200 text-zinc-950',

@@ -21,13 +21,29 @@ interface FamiliarInfo {
   parentesco: string;
 }
 
+interface UsuarioInfo {
+  nombreCompleto: string;
+  numeroEmpleado: string;
+}
+
+function normalizarNombreArchivo(texto: string): string {
+  return texto
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-zA-Z0-9\s]/g, '')
+    .trim()
+    .replace(/\s+/g, '_');
+}
+
 export default function BecasTab({ 
   initialSolicitudes = [],
   familiares = [],
+  usuario,
   onIrANacimiento
 }: { 
   initialSolicitudes?: SolicitudBeca[];
   familiares?: FamiliarInfo[];
+  usuario?: UsuarioInfo;
   onIrANacimiento: () => void;
 }) {
   const router = useRouter();
@@ -48,13 +64,33 @@ export default function BecasTab({
     const form = event.currentTarget;
     const formData = new FormData(form);
 
-    const acta = formData.get('actaNacimiento') as File;
-    const boleta = formData.get('boletaCalificaciones') as File;
+    const nombreHijoSeleccionado = formData.get('nombreHijo') as string;
 
-    if ((acta && !acta.name.toLowerCase().endsWith('.pdf')) || (boleta && !boleta.name.toLowerCase().endsWith('.pdf'))) {
+    if (!archivoActa || !archivoBoleta) {
+      setErrorBeca('Debes adjuntar tanto el Acta de Nacimiento como la Boleta de Calificaciones.');
+      return;
+    }
+
+    if (!archivoActa.name.toLowerCase().endsWith('.pdf') || !archivoBoleta.name.toLowerCase().endsWith('.pdf')) {
       setErrorBeca('Todos los documentos adjuntos deben estar estrictamente en formato .pdf');
       return;
     }
+
+    // 🏷️ GENERAR NOMBRES ESTANDARIZADOS CON NOMBRES COMPLETOS Y SIN PÉRDIDA DE LETRAS ACENTUADAS
+    const numEmp = usuario?.numeroEmpleado || 'SIND';
+    const trabajadorCompleto = normalizarNombreArchivo(usuario?.nombreCompleto || 'Trabajador');
+    const hijoCompleto = normalizarNombreArchivo(nombreHijoSeleccionado);
+
+    const nombreActaPersonalizado = `${numEmp}_${trabajadorCompleto}_${hijoCompleto}_Acta.pdf`;
+    const nombreBoletaPersonalizado = `${numEmp}_${trabajadorCompleto}_${hijoCompleto}_Boleta.pdf`;
+
+    // Crear nuevos objetos File con el nombre personalizado completo
+    const actaRenombrada = new File([archivoActa], nombreActaPersonalizado, { type: archivoActa.type });
+    const boletaRenombrada = new File([archivoBoleta], nombreBoletaPersonalizado, { type: archivoBoleta.type });
+
+    // Sustituir en el FormData
+    formData.set('actaNacimiento', actaRenombrada);
+    formData.set('boletaCalificaciones', boletaRenombrada);
 
     setMensajeExitoBeca(false);
     setErrorBeca(null);

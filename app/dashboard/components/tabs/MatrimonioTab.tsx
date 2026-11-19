@@ -15,10 +15,26 @@ export interface SolicitudMatrimonioInfo {
   fecha: string;
 }
 
+interface UsuarioInfo {
+  nombreCompleto: string;
+  numeroEmpleado: string;
+}
+
+function normalizarNombreArchivo(texto: string): string {
+  return texto
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-zA-Z0-9\s]/g, '')
+    .trim()
+    .replace(/\s+/g, '_');
+}
+
 export default function MatrimonioTab({ 
-  initialSolicitudes 
+  initialSolicitudes,
+  usuario
 }: { 
-  initialSolicitudes: SolicitudMatrimonioInfo[] 
+  initialSolicitudes: SolicitudMatrimonioInfo[];
+  usuario?: UsuarioInfo;
 }) {
   const router = useRouter();
   const [solicitudesMatrimonio, setSolicitudesMatrimonio] = useState<SolicitudMatrimonioInfo[]>(initialSolicitudes);
@@ -32,12 +48,30 @@ export default function MatrimonioTab({
     const form = event.currentTarget;
     const formData = new FormData(form);
 
+    const nombreConyugeIngresado = (formData.get('nombreConyuge') as string) || '';
+    const tipoUnionSeleccionado = (formData.get('tipoUnion') as string) || 'Union';
     const acta = formData.get('actaMatrimonio') as File;
 
-    if (acta && !acta.name.toLowerCase().endsWith('.pdf')) {
+    if (!acta) {
+      setErrorTramite('Debes adjuntar el acta o constancia en formato .pdf');
+      return;
+    }
+
+    if (!acta.name.toLowerCase().endsWith('.pdf')) {
       setErrorTramite('El documento debe estar estrictamente en formato .pdf');
       return;
     }
+
+    // 🏷️ GENERAR NOMBRE ESTANDARIZADO: [NumEmpleado]_[NombreCompletoTrabajador]_[NombreCompletoConyuge]_[TipoUnion].pdf
+    const numEmp = usuario?.numeroEmpleado || 'SIND';
+    const trabajadorCompleto = normalizarNombreArchivo(usuario?.nombreCompleto || 'Trabajador');
+    const conyugeCompleto = normalizarNombreArchivo(nombreConyugeIngresado || 'Conyuge');
+    const tipoUnionLimpio = normalizarNombreArchivo(tipoUnionSeleccionado);
+
+    const nombreActaPersonalizado = `${numEmp}_${trabajadorCompleto}_${conyugeCompleto}_${tipoUnionLimpio}.pdf`;
+    const actaRenombrada = new File([acta], nombreActaPersonalizado, { type: acta.type });
+
+    formData.set('actaMatrimonio', actaRenombrada);
 
     setMensajeExito(false);
     setErrorTramite(null);

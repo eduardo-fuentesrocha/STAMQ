@@ -5,7 +5,7 @@ import { PrismaPg } from '@prisma/adapter-pg'
 import { Pool } from 'pg'
 import { cookies } from 'next/headers'
 import { put } from '@vercel/blob'
-import { revalidatePath } from 'next/cache' // 👈 1. Importar revalidatePath para forzar la actualización de la página
+import { revalidatePath } from 'next/cache'
 
 const connectionString = process.env.DATABASE_URL
 const pool = new Pool({ connectionString })
@@ -21,10 +21,10 @@ export async function registrarSolicitudNacimiento(formData: FormData) {
       return { success: false, error: 'Sesión no válida. Inicia sesión nuevamente.' }
     }
 
-    const nombreHijo = (formData.get('nombreHijo') as string) || ''
+    const nombreHijo = ((formData.get('nombreHijo') as string) || '').trim()
     const archivoActa = formData.get('actaNacimiento') as File
 
-    if (!nombreHijo.trim()) {
+    if (!nombreHijo) {
       return { success: false, error: 'El nombre del hijo(a) es obligatorio.' }
     }
 
@@ -32,26 +32,26 @@ export async function registrarSolicitudNacimiento(formData: FormData) {
       return { success: false, error: 'El acta de nacimiento en PDF es obligatoria.' }
     }
 
-    // 1. Subir el archivo de manera segura a Vercel Blob
-    const blob = await put(`nacimientos/${numeroEmpleado}-${Date.now()}-${archivoActa.name}`, archivoActa, {
+    // 🏷️ Usar directamente el nombre renombrado desde NacimientoTab y permitir sobrescritura
+    const blob = await put(`nacimientos/${archivoActa.name}`, archivoActa, {
       access: 'private',
-    });
+      allowOverwrite: true,
+    })
 
-    const actaUrl = blob.url;
+    const actaUrl = blob.url
 
-    // 2. Guardar en la base de datos con la URL real de Vercel Blob
+    // Guardar en la base de datos con la URL real de Vercel Blob
     const nuevaSolicitud = await prisma.solicitudNacimiento.create({
       data: {
         numeroEmpleado,
         nombreHijo,
-        actaUrl, 
+        actaUrl,
         estatus: 'En Revisión',
       },
     })
 
     const folioCorto = `NAC-2026-${nuevaSolicitud.id.slice(0, 4).toUpperCase()}`
 
-    // 🔑 3. Revalidar la ruta del dashboard para que al recargar (F5) los datos se sincronicen desde la BD
     revalidatePath('/dashboard')
 
     return {
