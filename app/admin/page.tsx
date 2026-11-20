@@ -69,12 +69,23 @@ export default async function AdminPage() {
     console.error('Error al cargar matrimonios admin:', error)
   }
 
+  // 5. Obtener solicitudes de Útiles Escolares
+  let utiles: any[] = []
+  try {
+    utiles = await prisma.solicitudUtiles.findMany({
+      orderBy: { createdAt: 'desc' },
+    })
+  } catch (error) {
+    console.error('Error al cargar útiles admin:', error)
+  }
+
   return (
     <AdminDashboardClient
       initialBecas={becas}
       initialMateriales={materiales}
       initialNacimientos={nacimientos}
       initialMatrimonios={matrimonios}
+      initialUtiles={utiles}
       adminNombre={usuario.nombreCompleto}
     />
   )

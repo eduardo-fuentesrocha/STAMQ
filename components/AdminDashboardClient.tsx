@@ -8,17 +8,19 @@ import {
   Loader2, 
   Clock, 
   GraduationCap, 
-  Building2,
+  BookOpen,
   Users,
   HeartHandshake,
+  Building2,
   ShieldCheck,
   AlertCircle
 } from 'lucide-react';
 import { 
   actualizarEstatusSolicitud, 
-  actualizarEstatusMateriales, 
+  actualizarEstatusUtiles,
   actualizarEstatusNacimiento,
-  actualizarEstatusMatrimonio 
+  actualizarEstatusMatrimonio,
+  actualizarEstatusMateriales
 } from '@/app/actions/admin';
 import { formatearFechaHoraMX } from '@/app/lib/fechas';
 
@@ -39,15 +41,13 @@ interface SolicitudBecaAdmin extends AuditoriaFields {
   createdAt: Date | string;
 }
 
-interface SolicitudMaterialAdmin extends AuditoriaFields {
+interface SolicitudUtilesAdmin extends AuditoriaFields {
   id: string;
-  domicilioInmueble: string;
-  cantidadTepetate: number;
-  cantidadArena: number;
-  cantidadGrava: number;
-  cantidadPiedraNegra: number;
-  cantidadCantera: number;
+  nombreHijo: string;
+  nivelEducativo: string;
   numeroEmpleado: string;
+  boletaUrl: string;
+  inscripcionUrl: string;
   estatus: string | null;
   createdAt: Date | string;
 }
@@ -71,26 +71,42 @@ interface SolicitudMatrimonioAdmin extends AuditoriaFields {
   createdAt: Date | string;
 }
 
-type TipoTramiteAdmin = 'becas' | 'materiales' | 'nacimiento' | 'matrimonio';
+interface SolicitudMaterialAdmin extends AuditoriaFields {
+  id: string;
+  domicilioInmueble: string;
+  cantidadTepetate: number;
+  cantidadArena: number;
+  cantidadGrava: number;
+  cantidadPiedraNegra: number;
+  cantidadCantera: number;
+  numeroEmpleado: string;
+  estatus: string | null;
+  createdAt: Date | string;
+}
+
+type TipoTramiteAdmin = 'becas' | 'utiles' | 'nacimiento' | 'matrimonio' | 'materiales';
 
 export default function AdminDashboardClient({ 
   initialBecas,
-  initialMateriales,
+  initialUtiles = [],
   initialNacimientos = [],
   initialMatrimonios = [],
+  initialMateriales,
   adminNombre 
 }: { 
   initialBecas: SolicitudBecaAdmin[];
-  initialMateriales: SolicitudMaterialAdmin[];
+  initialUtiles?: SolicitudUtilesAdmin[];
   initialNacimientos?: SolicitudNacimientoAdmin[];
   initialMatrimonios?: SolicitudMatrimonioAdmin[];
+  initialMateriales: SolicitudMaterialAdmin[];
   adminNombre: string;
 }) {
   const [tabActiva, setTabActiva] = useState<TipoTramiteAdmin>('becas');
   const [becas, setBecas] = useState<SolicitudBecaAdmin[]>(initialBecas);
-  const [materiales, setMateriales] = useState<SolicitudMaterialAdmin[]>(initialMateriales);
+  const [utiles, setUtiles] = useState<SolicitudUtilesAdmin[]>(initialUtiles);
   const [nacimientos, setNacimientos] = useState<SolicitudNacimientoAdmin[]>(initialNacimientos);
   const [matrimonios, setMatrimonios] = useState<SolicitudMatrimonioAdmin[]>(initialMatrimonios);
+  const [materiales, setMateriales] = useState<SolicitudMaterialAdmin[]>(initialMateriales);
   const [cargandoArchivoId, setCargandoArchivoId] = useState<string | null>(null);
 
   // Estados para el Modal de Rechazo y Gestión
@@ -120,12 +136,14 @@ export default function AdminDashboardClient({
 
     if (tipo === 'becas') {
       res = await actualizarEstatusSolicitud(id, nuevoEstatus, motivo);
-    } else if (tipo === 'materiales') {
-      res = await actualizarEstatusMateriales(id, nuevoEstatus, motivo);
+    } else if (tipo === 'utiles') {
+      res = await actualizarEstatusUtiles(id, nuevoEstatus, motivo);
     } else if (tipo === 'nacimiento') {
       res = await actualizarEstatusNacimiento(id, nuevoEstatus, motivo);
     } else if (tipo === 'matrimonio') {
       res = await actualizarEstatusMatrimonio(id, nuevoEstatus, motivo);
+    } else if (tipo === 'materiales') {
+      res = await actualizarEstatusMateriales(id, nuevoEstatus, motivo);
     }
 
     setProcesandoGestion(false);
@@ -140,12 +158,14 @@ export default function AdminDashboardClient({
 
       if (tipo === 'becas') {
         setBecas(prev => prev.map(item => item.id === id ? { ...item, ...datosAuditoriaActualizados } : item));
-      } else if (tipo === 'materiales') {
-        setMateriales(prev => prev.map(item => item.id === id ? { ...item, ...datosAuditoriaActualizados } : item));
+      } else if (tipo === 'utiles') {
+        setUtiles(prev => prev.map(item => item.id === id ? { ...item, ...datosAuditoriaActualizados } : item));
       } else if (tipo === 'nacimiento') {
         setNacimientos(prev => prev.map(item => item.id === id ? { ...item, ...datosAuditoriaActualizados } : item));
       } else if (tipo === 'matrimonio') {
         setMatrimonios(prev => prev.map(item => item.id === id ? { ...item, ...datosAuditoriaActualizados } : item));
+      } else if (tipo === 'materiales') {
+        setMateriales(prev => prev.map(item => item.id === id ? { ...item, ...datosAuditoriaActualizados } : item));
       }
 
       if (nuevoEstatus === 'Rechazada') {
@@ -211,8 +231,8 @@ export default function AdminDashboardClient({
         </div>
       </div>
 
-      {/* Pestañas de Navegación Admin */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 border-b border-zinc-200 pb-4">
+      {/* Pestañas de Navegación Admin (mismo orden y nombres que el dashboard) */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 border-b border-zinc-200 pb-4">
         <button
           onClick={() => setTabActiva('becas')}
           className={`flex items-center justify-center gap-2 px-4 py-3 rounded-2xl text-xs font-bold transition-all cursor-pointer shadow-sm ${
@@ -221,20 +241,20 @@ export default function AdminDashboardClient({
               : 'bg-zinc-100 text-zinc-600 hover:bg-zinc-200 border border-zinc-200'
           }`}
         >
-          <GraduationCap className="h-4 w-4" />
+          <GraduationCap className="h-4 w-4 shrink-0" />
           <span>Becas ({becas.length})</span>
         </button>
 
         <button
-          onClick={() => setTabActiva('materiales')}
+          onClick={() => setTabActiva('utiles')}
           className={`flex items-center justify-center gap-2 px-4 py-3 rounded-2xl text-xs font-bold transition-all cursor-pointer shadow-sm ${
-            tabActiva === 'materiales'
+            tabActiva === 'utiles'
               ? 'bg-[#E07A2B] text-white shadow-md shadow-[#E07A2B]/20'
               : 'bg-zinc-100 text-zinc-600 hover:bg-zinc-200 border border-zinc-200'
           }`}
         >
-          <Building2 className="h-4 w-4" />
-          <span>Materiales ({materiales.length})</span>
+          <BookOpen className="h-4 w-4 shrink-0" />
+          <span>Útiles Escolares ({utiles.length})</span>
         </button>
 
         <button
@@ -245,8 +265,8 @@ export default function AdminDashboardClient({
               : 'bg-zinc-100 text-zinc-600 hover:bg-zinc-200 border border-zinc-200'
           }`}
         >
-          <Users className="h-4 w-4" />
-          <span>Nacimientos ({nacimientos.length})</span>
+          <Users className="h-4 w-4 shrink-0" />
+          <span>Nacimiento de Hijos ({nacimientos.length})</span>
         </button>
 
         <button
@@ -257,16 +277,28 @@ export default function AdminDashboardClient({
               : 'bg-zinc-100 text-zinc-600 hover:bg-zinc-200 border border-zinc-200'
           }`}
         >
-          <HeartHandshake className="h-4 w-4" />
-          <span>Matrimonios ({matrimonios.length})</span>
+          <HeartHandshake className="h-4 w-4 shrink-0" />
+          <span>Matrimonio o Concubinato ({matrimonios.length})</span>
+        </button>
+
+        <button
+          onClick={() => setTabActiva('materiales')}
+          className={`flex items-center justify-center gap-2 px-4 py-3 rounded-2xl text-xs font-bold transition-all cursor-pointer shadow-sm ${
+            tabActiva === 'materiales'
+              ? 'bg-[#E07A2B] text-white shadow-md shadow-[#E07A2B]/20'
+              : 'bg-zinc-100 text-zinc-600 hover:bg-zinc-200 border border-zinc-200'
+          }`}
+        >
+          <Building2 className="h-4 w-4 shrink-0" />
+          <span>Ayuda de Materiales para Construcción ({materiales.length})</span>
         </button>
       </div>
 
-      {/* 1. PESTAÑA BECAS */}
+      {/* 1. BECAS */}
       {tabActiva === 'becas' && (
         <div className="bg-zinc-50/90 border border-zinc-200/80 rounded-3xl overflow-hidden shadow-sm animate-in fade-in duration-300">
           <div className="p-4 border-b border-zinc-200 font-bold text-sm text-zinc-900 bg-zinc-100/50 flex items-center justify-between">
-            <span>Listado General de Trámites de Becas Escolares</span>
+            <span>Listado General de Becas</span>
             <span className="text-xs px-3 py-1 rounded-full bg-zinc-200/80 text-zinc-700 font-bold shadow-sm">
               {becas.length} Registro(s)
             </span>
@@ -331,7 +363,7 @@ export default function AdminDashboardClient({
                           <CheckCircle2 className="h-4 w-4" />
                         </button>
                         <button
-                          onClick={() => abrirModalRechazo(item.id, 'becas', `Beca - ${item.nombreHijo}`)}
+                          onClick={() => abrirModalRechazo(item.id, 'becas', `Becas - ${item.nombreHijo}`)}
                           disabled={procesandoGestion}
                           className="p-2 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 cursor-pointer shadow-sm disabled:opacity-50"
                           title="Rechazar Solicitud"
@@ -348,20 +380,20 @@ export default function AdminDashboardClient({
         </div>
       )}
 
-      {/* 2. PESTAÑA MATERIALES DE CONSTRUCCIÓN */}
-      {tabActiva === 'materiales' && (
+      {/* 2. ÚTILES ESCOLARES */}
+      {tabActiva === 'utiles' && (
         <div className="bg-zinc-50/90 border border-zinc-200/80 rounded-3xl overflow-hidden shadow-sm animate-in fade-in duration-300">
           <div className="p-4 border-b border-zinc-200 font-bold text-sm text-zinc-900 bg-zinc-100/50 flex items-center justify-between">
-            <span>Listado General de Trámites para Materiales de Construcción</span>
+            <span>Listado General de Útiles Escolares</span>
             <span className="text-xs px-3 py-1 rounded-full bg-zinc-200/80 text-zinc-700 font-bold shadow-sm">
-              {materiales.length} Registro(s)
+              {utiles.length} Registro(s)
             </span>
           </div>
           <div className="divide-y divide-zinc-200/80">
-            {materiales.length === 0 ? (
-              <p className="p-8 text-center text-xs text-zinc-500 font-medium">No hay solicitudes de materiales registradas.</p>
+            {utiles.length === 0 ? (
+              <p className="p-8 text-center text-xs text-zinc-500 font-medium">No hay solicitudes de útiles escolares registradas.</p>
             ) : (
-              materiales.map((item) => {
+              utiles.map((item) => {
                 const fechaFormateada = formatearFechaHoraMX(item.createdAt);
                 return (
                   <div key={item.id} className="p-4 flex flex-col md:flex-row md:items-center justify-between gap-4 hover:bg-white transition-colors">
@@ -370,10 +402,27 @@ export default function AdminDashboardClient({
                         <span className="font-bold text-[#E07A2B]">Emp. #{item.numeroEmpleado}</span>
                         <span className="text-zinc-400 font-medium">{fechaFormateada}</span>
                       </div>
-                      <h4 className="text-sm font-bold text-zinc-900">Inmueble: {item.domicilioInmueble}</h4>
-                      <p className="text-xs text-zinc-600 font-medium pt-1">
-                        Tepetate: <strong>{item.cantidadTepetate}</strong> | Arena: <strong>{item.cantidadArena}</strong> | Grava: <strong>{item.cantidadGrava}</strong> | P. Negra: <strong>{item.cantidadPiedraNegra}</strong> | Cantera: <strong>{item.cantidadCantera}</strong>
-                      </p>
+                      <h4 className="text-sm font-bold text-zinc-900">Hijo(a): {item.nombreHijo}</h4>
+                      <p className="text-xs text-zinc-500 font-medium">Nivel Educativo: {item.nivelEducativo}</p>
+                      
+                      <div className="flex items-center gap-3 pt-2">
+                        <button
+                          onClick={() => handleVerArchivo(item.boletaUrl, 'boleta-utiles', item.id)}
+                          disabled={cargandoArchivoId === `${item.id}-boleta-utiles`}
+                          className="inline-flex items-center gap-1.5 text-xs text-zinc-700 hover:text-[#E07A2B] bg-white px-3 py-1.5 rounded-xl border border-zinc-200 cursor-pointer shadow-sm font-medium"
+                        >
+                          {cargandoArchivoId === `${item.id}-boleta-utiles` ? <Loader2 className="h-3.5 w-3.5 animate-spin text-[#E07A2B]" /> : <FileText className="h-3.5 w-3.5 text-[#E07A2B]" />}
+                          <span>Ver Boleta</span>
+                        </button>
+                        <button
+                          onClick={() => handleVerArchivo(item.inscripcionUrl, 'inscripcion-utiles', item.id)}
+                          disabled={cargandoArchivoId === `${item.id}-inscripcion-utiles`}
+                          className="inline-flex items-center gap-1.5 text-xs text-zinc-700 hover:text-[#E07A2B] bg-white px-3 py-1.5 rounded-xl border border-zinc-200 cursor-pointer shadow-sm font-medium"
+                        >
+                          {cargandoArchivoId === `${item.id}-inscripcion-utiles` ? <Loader2 className="h-3.5 w-3.5 animate-spin text-[#E07A2B]" /> : <FileText className="h-3.5 w-3.5 text-[#E07A2B]" />}
+                          <span>Ver Inscripción</span>
+                        </button>
+                      </div>
 
                       {renderInfoAuditoria(item)}
                     </div>
@@ -392,7 +441,7 @@ export default function AdminDashboardClient({
 
                       <div className="flex items-center gap-1.5 border-l border-zinc-200 pl-3">
                         <button
-                          onClick={() => ejecutarCambioEstatus(item.id, 'materiales', 'Aprobada')}
+                          onClick={() => ejecutarCambioEstatus(item.id, 'utiles', 'Aprobada')}
                           disabled={procesandoGestion}
                           className="p-2 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 cursor-pointer shadow-sm disabled:opacity-50"
                           title="Aprobar Solicitud"
@@ -400,7 +449,7 @@ export default function AdminDashboardClient({
                           <CheckCircle2 className="h-4 w-4" />
                         </button>
                         <button
-                          onClick={() => abrirModalRechazo(item.id, 'materiales', `Materiales - Emp. #${item.numeroEmpleado}`)}
+                          onClick={() => abrirModalRechazo(item.id, 'utiles', `Útiles Escolares - ${item.nombreHijo}`)}
                           disabled={procesandoGestion}
                           className="p-2 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 cursor-pointer shadow-sm disabled:opacity-50"
                           title="Rechazar Solicitud"
@@ -417,11 +466,11 @@ export default function AdminDashboardClient({
         </div>
       )}
 
-      {/* 3. PESTAÑA REGISTRO DE NACIMIENTO DE HIJOS */}
+      {/* 3. NACIMIENTO DE HIJOS */}
       {tabActiva === 'nacimiento' && (
         <div className="bg-zinc-50/90 border border-zinc-200/80 rounded-3xl overflow-hidden shadow-sm animate-in fade-in duration-300">
           <div className="p-4 border-b border-zinc-200 font-bold text-sm text-zinc-900 bg-zinc-100/50 flex items-center justify-between">
-            <span>Listado General de Registros de Nacimiento (Alta de Hijos)</span>
+            <span>Listado General de Nacimiento de Hijos</span>
             <span className="text-xs px-3 py-1 rounded-full bg-zinc-200/80 text-zinc-700 font-bold shadow-sm">
               {nacimientos.length} Registro(s)
             </span>
@@ -477,7 +526,7 @@ export default function AdminDashboardClient({
                           <CheckCircle2 className="h-4 w-4" />
                         </button>
                         <button
-                          onClick={() => abrirModalRechazo(item.id, 'nacimiento', `Nacimiento - ${item.nombreHijo}`)}
+                          onClick={() => abrirModalRechazo(item.id, 'nacimiento', `Nacimiento de Hijos - ${item.nombreHijo}`)}
                           disabled={procesandoGestion}
                           className="p-2 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 cursor-pointer shadow-sm disabled:opacity-50"
                           title="Rechazar Solicitud"
@@ -494,11 +543,11 @@ export default function AdminDashboardClient({
         </div>
       )}
 
-      {/* 4. PESTAÑA MATRIMONIO O CONCUBINATO */}
+      {/* 4. MATRIMONIO O CONCUBINATO */}
       {tabActiva === 'matrimonio' && (
         <div className="bg-zinc-50/90 border border-zinc-200/80 rounded-3xl overflow-hidden shadow-sm animate-in fade-in duration-300">
           <div className="p-4 border-b border-zinc-200 font-bold text-sm text-zinc-900 bg-zinc-100/50 flex items-center justify-between">
-            <span>Listado General de Registros de Matrimonio / Concubinato (Alta de Cónyuge)</span>
+            <span>Listado General de Matrimonio o Concubinato</span>
             <span className="text-xs px-3 py-1 rounded-full bg-zinc-200/80 text-zinc-700 font-bold shadow-sm">
               {matrimonios.length} Registro(s)
             </span>
@@ -555,7 +604,76 @@ export default function AdminDashboardClient({
                           <CheckCircle2 className="h-4 w-4" />
                         </button>
                         <button
-                          onClick={() => abrirModalRechazo(item.id, 'matrimonio', `Matrimonio - ${item.nombreConyuge}`)}
+                          onClick={() => abrirModalRechazo(item.id, 'matrimonio', `Matrimonio o Concubinato - ${item.nombreConyuge}`)}
+                          disabled={procesandoGestion}
+                          className="p-2 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 cursor-pointer shadow-sm disabled:opacity-50"
+                          title="Rechazar Solicitud"
+                        >
+                          <XCircle className="h-4 w-4" />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* 5. AYUDA DE MATERIALES PARA CONSTRUCCIÓN */}
+      {tabActiva === 'materiales' && (
+        <div className="bg-zinc-50/90 border border-zinc-200/80 rounded-3xl overflow-hidden shadow-sm animate-in fade-in duration-300">
+          <div className="p-4 border-b border-zinc-200 font-bold text-sm text-zinc-900 bg-zinc-100/50 flex items-center justify-between">
+            <span>Listado General de Ayuda de Materiales para Construcción</span>
+            <span className="text-xs px-3 py-1 rounded-full bg-zinc-200/80 text-zinc-700 font-bold shadow-sm">
+              {materiales.length} Registro(s)
+            </span>
+          </div>
+          <div className="divide-y divide-zinc-200/80">
+            {materiales.length === 0 ? (
+              <p className="p-8 text-center text-xs text-zinc-500 font-medium">No hay solicitudes de materiales registradas.</p>
+            ) : (
+              materiales.map((item) => {
+                const fechaFormateada = formatearFechaHoraMX(item.createdAt);
+                return (
+                  <div key={item.id} className="p-4 flex flex-col md:flex-row md:items-center justify-between gap-4 hover:bg-white transition-colors">
+                    <div className="space-y-1 flex-1">
+                      <div className="flex items-center gap-2 text-xs">
+                        <span className="font-bold text-[#E07A2B]">Emp. #{item.numeroEmpleado}</span>
+                        <span className="text-zinc-400 font-medium">{fechaFormateada}</span>
+                      </div>
+                      <h4 className="text-sm font-bold text-zinc-900">Inmueble: {item.domicilioInmueble}</h4>
+                      <p className="text-xs text-zinc-600 font-medium pt-1">
+                        Tepetate: <strong>{item.cantidadTepetate}</strong> | Arena: <strong>{item.cantidadArena}</strong> | Grava: <strong>{item.cantidadGrava}</strong> | P. Negra: <strong>{item.cantidadPiedraNegra}</strong> | Cantera: <strong>{item.cantidadCantera}</strong>
+                      </p>
+
+                      {renderInfoAuditoria(item)}
+                    </div>
+
+                    <div className="flex items-center gap-3 self-start md:self-center">
+                      <span className={`px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1.5 shadow-sm ${
+                        item.estatus === 'Aprobada' ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' :
+                        item.estatus === 'Rechazada' ? 'bg-rose-50 text-rose-700 border border-rose-200' :
+                        'bg-amber-50 text-amber-700 border border-amber-200'
+                      }`}>
+                        {item.estatus === 'Aprobada' && <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600" />}
+                        {item.estatus === 'Rechazada' && <XCircle className="h-3.5 w-3.5 text-rose-600" />}
+                        {(!item.estatus || item.estatus === 'En Revisión') && <Clock className="h-3.5 w-3.5 text-amber-600" />}
+                        <span>{item.estatus || 'En Revisión'}</span>
+                      </span>
+
+                      <div className="flex items-center gap-1.5 border-l border-zinc-200 pl-3">
+                        <button
+                          onClick={() => ejecutarCambioEstatus(item.id, 'materiales', 'Aprobada')}
+                          disabled={procesandoGestion}
+                          className="p-2 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 cursor-pointer shadow-sm disabled:opacity-50"
+                          title="Aprobar Solicitud"
+                        >
+                          <CheckCircle2 className="h-4 w-4" />
+                        </button>
+                        <button
+                          onClick={() => abrirModalRechazo(item.id, 'materiales', `Ayuda de Materiales para Construcción - Emp. #${item.numeroEmpleado}`)}
                           disabled={procesandoGestion}
                           className="p-2 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 cursor-pointer shadow-sm disabled:opacity-50"
                           title="Rechazar Solicitud"
