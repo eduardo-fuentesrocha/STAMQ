@@ -4,6 +4,7 @@ import { useState, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
 import { BookOpen, Upload, CheckCircle2, AlertCircle, Clock, XCircle, Loader2, ArrowRight } from 'lucide-react';
 import { registrarSolicitudUtiles } from '@/app/actions/utiles';
+import { formatearFechaHoraMX } from '@/app/lib/fechas';
 
 export interface SolicitudUtilesInfo {
   id: string;
@@ -108,7 +109,7 @@ export default function UtilesTab({
           nivel: result.data.nivel,
           estatus: result.data.estatus || 'En Revisión',
           motivoRechazo: null,
-          fecha: new Date().toISOString().split('T')[0],
+          fecha: formatearFechaHoraMX(new Date().toISOString()),
         };
 
         setSolicitudesUtiles([nuevaUI, ...solicitudesUtiles]);
@@ -289,7 +290,7 @@ export default function UtilesTab({
                     <div className="space-y-1">
                       <div className="flex items-center gap-2">
                         <span className="text-xs font-bold text-[#E07A2B]">{item.folio}</span>
-                        <span className="text-xs text-zinc-400 font-medium">{item.fecha}</span>
+                        <span className="text-xs text-zinc-400 font-medium">{formatearFechaHoraMX(item.fecha)}</span>
                       </div>
                       <h4 className="text-sm font-bold text-zinc-900">Hijo(a): {item.hijo}</h4>
                       <p className="text-xs text-zinc-500 font-medium">Nivel: {item.nivel}</p>

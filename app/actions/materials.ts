@@ -104,7 +104,7 @@ export async function registrarSolicitudMateriales(formData: FormData) {
       cantidadPiedraNegra: nuevaSolicitud.cantidadPiedraNegra,
       cantidadCantera: nuevaSolicitud.cantidadCantera,
       estatus: nuevaSolicitud.estatus,
-      fecha: new Date(nuevaSolicitud.createdAt || Date.now()).toISOString().split('T')[0],
+      fecha: new Date(nuevaSolicitud.createdAt || Date.now()).toISOString(),
     }
 
     return {

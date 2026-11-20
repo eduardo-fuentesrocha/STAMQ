@@ -5,7 +5,6 @@ import {
   CheckCircle2, 
   XCircle, 
   FileText, 
-  LogOut, 
   Loader2, 
   Clock, 
   GraduationCap, 
@@ -21,7 +20,7 @@ import {
   actualizarEstatusNacimiento,
   actualizarEstatusMatrimonio 
 } from '@/app/actions/admin';
-
+import { formatearFechaHoraMX } from '@/app/lib/fechas';
 
 interface AuditoriaFields {
   motivoRechazo?: string | null;
@@ -37,7 +36,7 @@ interface SolicitudBecaAdmin extends AuditoriaFields {
   numeroEmpleado: string;
   actaUrl: string;
   boletaUrl: string;
-  createdAt: Date;
+  createdAt: Date | string;
 }
 
 interface SolicitudMaterialAdmin extends AuditoriaFields {
@@ -50,7 +49,7 @@ interface SolicitudMaterialAdmin extends AuditoriaFields {
   cantidadCantera: number;
   numeroEmpleado: string;
   estatus: string | null;
-  createdAt: Date;
+  createdAt: Date | string;
 }
 
 interface SolicitudNacimientoAdmin extends AuditoriaFields {
@@ -59,7 +58,7 @@ interface SolicitudNacimientoAdmin extends AuditoriaFields {
   numeroEmpleado: string;
   actaUrl: string;
   estatus: string | null;
-  createdAt: Date;
+  createdAt: Date | string;
 }
 
 interface SolicitudMatrimonioAdmin extends AuditoriaFields {
@@ -69,7 +68,7 @@ interface SolicitudMatrimonioAdmin extends AuditoriaFields {
   numeroEmpleado: string;
   actaUrl: string;
   estatus: string | null;
-  createdAt: Date;
+  createdAt: Date | string;
 }
 
 type TipoTramiteAdmin = 'becas' | 'materiales' | 'nacimiento' | 'matrimonio';
@@ -136,7 +135,7 @@ export default function AdminDashboardClient({
         estatus: nuevoEstatus,
         motivoRechazo: nuevoEstatus === 'Rechazada' ? motivo?.trim() : null,
         gestionadoPor: adminNombre,
-        fechaGestion: new Date(),
+        fechaGestion: new Date().toISOString(),
       };
 
       if (tipo === 'becas') {
@@ -277,7 +276,7 @@ export default function AdminDashboardClient({
               <p className="p-8 text-center text-xs text-zinc-500 font-medium">No hay solicitudes de becas registradas.</p>
             ) : (
               becas.map((item) => {
-                const fechaFormateada = new Date(item.createdAt).toISOString().split('T')[0];
+                const fechaFormateada = formatearFechaHoraMX(item.createdAt);
                 return (
                   <div key={item.id} className="p-4 flex flex-col md:flex-row md:items-center justify-between gap-4 hover:bg-white transition-colors">
                     <div className="space-y-1 flex-1">
@@ -363,7 +362,7 @@ export default function AdminDashboardClient({
               <p className="p-8 text-center text-xs text-zinc-500 font-medium">No hay solicitudes de materiales registradas.</p>
             ) : (
               materiales.map((item) => {
-                const fechaFormateada = new Date(item.createdAt).toISOString().split('T')[0];
+                const fechaFormateada = formatearFechaHoraMX(item.createdAt);
                 return (
                   <div key={item.id} className="p-4 flex flex-col md:flex-row md:items-center justify-between gap-4 hover:bg-white transition-colors">
                     <div className="space-y-1 flex-1">
@@ -432,7 +431,7 @@ export default function AdminDashboardClient({
               <p className="p-8 text-center text-xs text-zinc-500 font-medium">No hay solicitudes de nacimiento registradas.</p>
             ) : (
               nacimientos.map((item) => {
-                const fechaFormateada = new Date(item.createdAt).toISOString().split('T')[0];
+                const fechaFormateada = formatearFechaHoraMX(item.createdAt);
                 return (
                   <div key={item.id} className="p-4 flex flex-col md:flex-row md:items-center justify-between gap-4 hover:bg-white transition-colors">
                     <div className="space-y-1 flex-1">
@@ -509,7 +508,7 @@ export default function AdminDashboardClient({
               <p className="p-8 text-center text-xs text-zinc-500 font-medium">No hay solicitudes de matrimonio o concubinato registradas.</p>
             ) : (
               matrimonios.map((item) => {
-                const fechaFormateada = new Date(item.createdAt).toISOString().split('T')[0];
+                const fechaFormateada = formatearFechaHoraMX(item.createdAt);
                 return (
                   <div key={item.id} className="p-4 flex flex-col md:flex-row md:items-center justify-between gap-4 hover:bg-white transition-colors">
                     <div className="space-y-1 flex-1">
@@ -612,7 +611,7 @@ export default function AdminDashboardClient({
                 className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold bg-rose-600 hover:bg-rose-700 text-white transition-colors shadow-sm disabled:opacity-50 cursor-pointer"
               >
                 {procesandoGestion && <Loader2 className="h-3.5 w-3.5 animate-spin" />}
-                <span>{procesandoGestion ? 'Guardando...' : 'Confirmar Rechazo'}</span>
+                <span>Confirmar Rechazo</span>
               </button>
             </div>
           </div>

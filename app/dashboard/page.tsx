@@ -99,7 +99,7 @@ export default async function DashboardPage() {
     motivoRechazo: item.motivoRechazo ?? null,
     notificacionVista: item.notificacionVista ?? false,
     fechaGestion: item.fechaGestion ? item.fechaGestion.toISOString() : null,
-    fecha: item.createdAt.toISOString().split('T')[0],
+    fecha: item.createdAt.toISOString(),
   }));
 
   const initialNacimientos = solicitudesNacimientoRaw.map((item) => ({
@@ -110,7 +110,7 @@ export default async function DashboardPage() {
     motivoRechazo: item.motivoRechazo ?? null,
     notificacionVista: item.notificacionVista ?? false,
     fechaGestion: item.fechaGestion ? item.fechaGestion.toISOString() : null,
-    fecha: item.createdAt.toISOString().split('T')[0],
+    fecha: item.createdAt.toISOString(),
   }));
 
   const initialMatrimonios = solicitudesMatrimonioRaw.map((item) => ({
@@ -122,7 +122,7 @@ export default async function DashboardPage() {
     motivoRechazo: item.motivoRechazo ?? null,
     notificacionVista: item.notificacionVista ?? false,
     fechaGestion: item.fechaGestion ? item.fechaGestion.toISOString() : null,
-    fecha: item.createdAt.toISOString().split('T')[0],
+    fecha: item.createdAt.toISOString(),
   }));
 
   const initialUtiles = solicitudesUtilesRaw.map((item) => ({
@@ -134,7 +134,7 @@ export default async function DashboardPage() {
     motivoRechazo: item.motivoRechazo ?? null,
     notificacionVista: item.notificacionVista ?? false,
     fechaGestion: item.fechaGestion ? item.fechaGestion.toISOString() : null,
-    fecha: item.createdAt.toISOString().split('T')[0],
+    fecha: item.createdAt.toISOString(),
   }));
 
   const initialMateriales = solicitudesMaterialesRaw.map((item) => ({
@@ -150,7 +150,7 @@ export default async function DashboardPage() {
     motivoRechazo: item.motivoRechazo ?? null,
     notificacionVista: item.notificacionVista ?? false,
     fechaGestion: item.fechaGestion ? item.fechaGestion.toISOString() : null,
-    fecha: item.createdAt.toISOString().split('T')[0],
+    fecha: item.createdAt.toISOString(),
   }));
 
   return (

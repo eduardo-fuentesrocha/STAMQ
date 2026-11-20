@@ -4,6 +4,7 @@ import { useState, useEffect, useRef, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
 import { Building2, CheckCircle2, AlertCircle, Clock, XCircle, Loader2, MapPin } from 'lucide-react';
 import { registrarSolicitudMateriales, SolicitudMaterial } from '../../../actions/materials';
+import { formatearFechaHoraMX } from '@/app/lib/fechas';
 
 interface SugerenciaDireccion {
   id: string;
@@ -330,7 +331,7 @@ export default function MaterialesTab({
                     <div className="space-y-1">
                       <div className="flex items-center gap-2">
                         <span className="text-xs font-bold text-[#E07A2B]">{item.folio}</span>
-                        <span className="text-xs text-zinc-400 font-medium">{item.fecha}</span>
+                        <span className="text-xs text-zinc-400 font-medium">{formatearFechaHoraMX(item.fecha)}</span>
                       </div>
                       <h4 className="text-sm font-bold text-zinc-900">Inmueble: {item.domicilio}</h4>
                       <div className="flex flex-wrap gap-2 pt-1 text-[11px] text-zinc-600 font-medium">

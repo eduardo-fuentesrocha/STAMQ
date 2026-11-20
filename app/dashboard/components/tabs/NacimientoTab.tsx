@@ -4,6 +4,7 @@ import { useState, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
 import { Users, Upload, CheckCircle2, AlertCircle, Clock, XCircle, Loader2 } from 'lucide-react';
 import { registrarSolicitudNacimiento } from '@/app/actions/nacimiento';
+import { formatearFechaHoraMX } from '@/app/lib/fechas';
 
 export interface SolicitudNacimiento {
   id: string;
@@ -85,7 +86,7 @@ export default function NacimientoTab({
           nombreHijo: result.data.nombreHijo,
           estatus: result.data.estatus || 'En Revisión',
           motivoRechazo: null,
-          fecha: new Date().toISOString().split('T')[0],
+          fecha: formatearFechaHoraMX(new Date().toISOString()),
         };
 
         setSolicitudesNacimiento([nuevaUI, ...solicitudesNacimiento]);
@@ -202,7 +203,7 @@ export default function NacimientoTab({
                     <div className="space-y-1">
                       <div className="flex items-center gap-2">
                         <span className="text-xs font-bold text-[#E07A2B]">{item.folio}</span>
-                        <span className="text-xs text-zinc-400 font-medium">{item.fecha}</span>
+                        <span className="text-xs text-zinc-400 font-medium">{formatearFechaHoraMX(item.fecha)}</span>
                       </div>
                       <h4 className="text-sm font-bold text-zinc-900">Hijo(a): {item.nombreHijo}</h4>
                     </div>

@@ -93,7 +93,7 @@ export async function registrarSolicitudUtiles(formData: FormData) {
         hijo: nuevaSolicitud.nombreHijo,
         nivel: nuevaSolicitud.nivelEducativo,
         estatus: nuevaSolicitud.estatus,
-        fecha: new Date(nuevaSolicitud.createdAt).toISOString().split('T')[0],
+        fecha: new Date(nuevaSolicitud.createdAt).toISOString(),
       },
     }
   } catch (error) {

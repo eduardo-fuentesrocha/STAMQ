@@ -4,6 +4,7 @@ import { useState, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
 import { HeartHandshake, Upload, CheckCircle2, AlertCircle, Clock, XCircle, Loader2 } from 'lucide-react';
 import { registrarSolicitudMatrimonio } from '@/app/actions/matrimonio';
+import { formatearFechaHoraMX } from '@/app/lib/fechas';
 
 export interface SolicitudMatrimonioInfo {
   id: string;
@@ -89,7 +90,7 @@ export default function MatrimonioTab({
           tipoUnion: result.data.tipoUnion,
           estatus: result.data.estatus || 'En Revisión',
           motivoRechazo: null,
-          fecha: new Date().toISOString().split('T')[0],
+          fecha: formatearFechaHoraMX(new Date().toISOString()),
         };
 
         setSolicitudesMatrimonio([nuevaUI, ...solicitudesMatrimonio]);
@@ -219,7 +220,7 @@ export default function MatrimonioTab({
                     <div className="space-y-1">
                       <div className="flex items-center gap-2">
                         <span className="text-xs font-bold text-[#E07A2B]">{item.folio}</span>
-                        <span className="text-xs text-zinc-400 font-medium">{item.fecha}</span>
+                        <span className="text-xs text-zinc-400 font-medium">{formatearFechaHoraMX(item.fecha)}</span>
                       </div>
                       <h4 className="text-sm font-bold text-zinc-900">Cónyuge: {item.nombreConyuge}</h4>
                       <span className="text-[11px] text-zinc-500 font-medium block">Tipo: {item.tipoUnion}</span>
