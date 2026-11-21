@@ -52,10 +52,11 @@ export async function GET(request: Request) {
       return new NextResponse('Archivo no encontrado en el almacenamiento', { status: 404 });
     }
 
-    // Convertir el stream de AWS SDK a Uint8Array para NextResponse
+    // Convertir el stream de AWS SDK a Buffer compatible con NextResponse en TypeScript
     const fileBytes = await r2Response.Body.transformToByteArray();
+    const buffer = Buffer.from(fileBytes);
 
-    return new NextResponse(fileBytes, {
+    return new NextResponse(buffer, {
       headers: {
         'Content-Type': r2Response.ContentType || 'application/pdf',
         'Content-Disposition': `inline; filename="${nombreArchivo}"`,

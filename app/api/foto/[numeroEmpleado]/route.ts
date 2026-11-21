@@ -44,10 +44,11 @@ export async function GET(
     }
 
     const imageBytes = await r2Response.Body.transformToByteArray();
+    const buffer = Buffer.from(imageBytes);
     const contentType =
       r2Response.ContentType || (rutaEncontrada.endsWith('.png') ? 'image/png' : 'image/jpeg');
 
-    return new NextResponse(imageBytes, {
+    return new NextResponse(buffer, {
       headers: {
         'Content-Type': contentType,
         'Cache-Control': 'private, max-age=3600',
