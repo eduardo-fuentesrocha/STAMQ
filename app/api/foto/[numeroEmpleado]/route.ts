@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { head } from '@vercel/blob';
+import { obtenerArchivoR2 } from '@/app/lib/r2';
 
 export async function GET(
   request: Request,
@@ -8,7 +8,7 @@ export async function GET(
   try {
     const resolvedParams = await params;
     const { numeroEmpleado } = resolvedParams;
-    
+
     if (!numeroEmpleado) {
       return new NextResponse('Número de empleado no proporcionado', { status: 400 });
     }
@@ -19,52 +19,42 @@ export async function GET(
       `fotos-credencial/${numeroEmpleado}.png`,
     ];
 
-    let blobDetails = null;
-    let urlEncontrada = '';
+    let r2Response = null;
+    let rutaEncontrada = '';
 
     for (const path of posiblesRutas) {
       try {
-        const details = await head(path, {
-          token: process.env.BLOB_READ_WRITE_TOKEN,
-        });
-        
-        if (details && details.url) {
-          blobDetails = details;
-          urlEncontrada = details.url;
-          break; 
+        const res = await obtenerArchivoR2(path);
+
+        if (res && res.Body) {
+          r2Response = res;
+          rutaEncontrada = path;
+          break;
         }
-      } catch (e) {
-        // Ignora si no existe con esta extensión y continúa probando la siguiente
+      } catch (e: any) {
+        // Si el objeto no existe con esta extensión (NoSuchKey), continúa con la siguiente
+        if (e?.name !== 'NoSuchKey' && e?.$metadata?.httpStatusCode !== 404) {
+          console.error(`Error inesperado consultando ${path} en R2:`, e);
+        }
       }
     }
 
-    if (!urlEncontrada || !blobDetails) {
+    if (!r2Response || !r2Response.Body) {
       return new NextResponse('Fotografía no encontrada', { status: 404 });
     }
 
-    // Descarga segura del Blob privado con autorización y { cache: 'no-store' }
-    const imageRes = await fetch(urlEncontrada, {
-      cache: 'no-store',
-      headers: {
-        authorization: `Bearer ${process.env.BLOB_READ_WRITE_TOKEN}`,
-      },
-    });
+    const imageBytes = await r2Response.Body.transformToByteArray();
+    const contentType =
+      r2Response.ContentType || (rutaEncontrada.endsWith('.png') ? 'image/png' : 'image/jpeg');
 
-    if (!imageRes.ok) {
-      return new NextResponse('Error al descargar la imagen de Vercel Blob', { status: 500 });
-    }
-
-    const imageBuffer = await imageRes.arrayBuffer();
-    const contentType = blobDetails.contentType || (urlEncontrada.endsWith('.png') ? 'image/png' : 'image/jpeg');
-
-    return new NextResponse(imageBuffer, {
+    return new NextResponse(imageBytes, {
       headers: {
         'Content-Type': contentType,
         'Cache-Control': 'private, max-age=3600',
       },
     });
   } catch (error) {
-    console.error('Error al procesar la fotografía privada:', error);
+    console.error('Error al procesar la fotografía privada desde R2:', error);
     return new NextResponse('Error al cargar la imagen', { status: 500 });
   }
 }

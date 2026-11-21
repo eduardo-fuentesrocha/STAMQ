@@ -4,9 +4,9 @@ import { PrismaClient } from '@prisma/client'
 import { PrismaPg } from '@prisma/adapter-pg'
 import { Pool } from 'pg'
 import { cookies } from 'next/headers'
-import { put } from '@vercel/blob'
 import { revalidatePath } from 'next/cache'
 import { enviarNotificacionAdmin } from '../lib/mailer'
+import { subirArchivoR2 } from '@/app/lib/r2'
 
 const connectionString = process.env.DATABASE_URL
 const pool = new Pool({ connectionString })
@@ -33,20 +33,19 @@ export async function registrarSolicitudNacimiento(formData: FormData) {
       return { success: false, error: 'El acta de nacimiento en PDF es obligatoria.' }
     }
 
-    // 🏷️ Usar directamente el nombre renombrado desde NacimientoTab y permitir sobrescritura
-    const blob = await put(`nacimientos/${archivoActa.name}`, archivoActa, {
-      access: 'private',
-      allowOverwrite: true,
-    })
+    // Convertir archivo a Buffer y subirlo a Cloudflare R2 con el nombre renombrado desde NacimientoTab
+    const bufferActa = Buffer.from(await archivoActa.arrayBuffer())
+    const keyActa = `nacimientos/${archivoActa.name}`
+    const contentTypeActa = archivoActa.type || 'application/pdf'
 
-    const actaUrl = blob.url
+    await subirArchivoR2(keyActa, bufferActa, contentTypeActa)
 
-    // Guardar en la base de datos con la URL real de Vercel Blob
+    // Guardar en la base de datos con la clave (key) del objeto en R2
     const nuevaSolicitud = await prisma.solicitudNacimiento.create({
       data: {
         numeroEmpleado,
         nombreHijo,
-        actaUrl,
+        actaUrl: keyActa,
         estatus: 'En Revisión',
       },
     })
@@ -60,15 +59,19 @@ export async function registrarSolicitudNacimiento(formData: FormData) {
     const nombreTrabajador =
       (usuario as { nombreCompleto?: string } | null)?.nombreCompleto || numeroEmpleado
 
-    await enviarNotificacionAdmin({
-      nombreTrabajador,
-      numeroEmpleado,
-      tipoTramite: 'Nacimiento de Hijos',
-      folio: folioCorto,
-      detalles: {
-        'Hijo(a)': nombreHijo,
-      },
-    })
+    try {
+      await enviarNotificacionAdmin({
+        nombreTrabajador,
+        numeroEmpleado,
+        tipoTramite: 'Nacimiento de Hijos',
+        folio: folioCorto,
+        detalles: {
+          'Hijo(a)': nombreHijo,
+        },
+      })
+    } catch (mailErr) {
+      console.error('Error no bloqueante al enviar correo:', mailErr)
+    }
 
     revalidatePath('/dashboard')
 

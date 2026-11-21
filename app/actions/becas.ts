@@ -1,12 +1,12 @@
 'use server'
 
-import { put } from '@vercel/blob'
 import { PrismaClient } from '@prisma/client'
 import { PrismaPg } from '@prisma/adapter-pg'
 import { Pool } from 'pg'
 import { cookies } from 'next/headers'
 import { revalidatePath } from 'next/cache'
-import { enviarNotificacionAdmin } from '../lib/mailer';
+import { enviarNotificacionAdmin } from '../lib/mailer'
+import { subirArchivoR2 } from '@/app/lib/r2'
 
 const connectionString = process.env.DATABASE_URL
 const pool = new Pool({ connectionString })
@@ -37,21 +37,32 @@ export async function registrarSolicitudBeca(formData: FormData) {
       return { success: false, error: 'Todos los campos y documentos son obligatorios.' }
     }
 
-    // 🏷️ USAR DIRECTAMENTE EL NOMBRE RENOMBRADO QUE VIENE DEL CLIENTE CON allowOverwrite: true
-    const [blobActa, blobBoleta] = await Promise.all([
-      put(`becas/${archivoActa.name}`, archivoActa, { access: 'private', allowOverwrite: true }),
-      put(`becas/${archivoBoleta.name}`, archivoBoleta, { access: 'private', allowOverwrite: true })
+    // Convertir archivos a Buffer y subirlos a Cloudflare R2 con el nombre renombrado del cliente
+    const [bufferActa, bufferBoleta] = await Promise.all([
+      archivoActa.arrayBuffer().then((ab) => Buffer.from(ab)),
+      archivoBoleta.arrayBuffer().then((ab) => Buffer.from(ab)),
     ])
 
-    // Guardar en la base de datos incluyendo las URLs y el número de empleado asociado
+    const keyActa = `becas/${archivoActa.name}`
+    const keyBoleta = `becas/${archivoBoleta.name}`
+
+    const contentTypeActa = archivoActa.type || 'application/pdf'
+    const contentTypeBoleta = archivoBoleta.type || 'application/pdf'
+
+    await Promise.all([
+      subirArchivoR2(keyActa, bufferActa, contentTypeActa),
+      subirArchivoR2(keyBoleta, bufferBoleta, contentTypeBoleta),
+    ])
+
+    // Guardar en la base de datos las claves (keys) del objeto en R2 y el número de empleado asociado
     const nuevaSolicitud = await prisma.solicitudBeca.create({
       data: {
         nombreHijo,
         nivelEducativo,
         numeroEmpleado,
         estatus: 'En Revisión',
-        actaUrl: blobActa.url,
-        boletaUrl: blobBoleta.url,
+        actaUrl: keyActa,
+        boletaUrl: keyBoleta,
       },
     })
 

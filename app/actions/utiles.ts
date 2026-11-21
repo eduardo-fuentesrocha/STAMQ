@@ -4,9 +4,9 @@ import { PrismaClient } from '@prisma/client'
 import { PrismaPg } from '@prisma/adapter-pg'
 import { Pool } from 'pg'
 import { cookies } from 'next/headers'
-import { put } from '@vercel/blob'
 import { revalidatePath } from 'next/cache'
-import { enviarNotificacionAdmin } from '../lib/mailer';
+import { enviarNotificacionAdmin } from '../lib/mailer'
+import { subirArchivoR2 } from '@/app/lib/r2'
 
 const connectionString = process.env.DATABASE_URL
 const pool = new Pool({ connectionString })
@@ -39,26 +39,31 @@ export async function registrarSolicitudUtiles(formData: FormData) {
       return { success: false, error: 'El recibo de inscripción es obligatorio.' }
     }
 
-    // 🏷️ Usar directamente los nombres renombrados desde UtilesTab y permitir sobrescritura
-    const [blobBoleta, blobInscripcion] = await Promise.all([
-      put(`utiles/${archivoBoleta.name}`, archivoBoleta, {
-        access: 'private',
-        allowOverwrite: true,
-      }),
-      put(`utiles/${archivoInscripcion.name}`, archivoInscripcion, {
-        access: 'private',
-        allowOverwrite: true,
-      }),
+    // Convertir archivos a Buffer y subirlos a Cloudflare R2 con los nombres renombrados desde UtilesTab
+    const [bufferBoleta, bufferInscripcion] = await Promise.all([
+      archivoBoleta.arrayBuffer().then((ab) => Buffer.from(ab)),
+      archivoInscripcion.arrayBuffer().then((ab) => Buffer.from(ab)),
     ])
 
-    // Guardar en la base de datos
+    const keyBoleta = `utiles/${archivoBoleta.name}`
+    const keyInscripcion = `utiles/${archivoInscripcion.name}`
+
+    const contentTypeBoleta = archivoBoleta.type || 'application/pdf'
+    const contentTypeInscripcion = archivoInscripcion.type || 'application/pdf'
+
+    await Promise.all([
+      subirArchivoR2(keyBoleta, bufferBoleta, contentTypeBoleta),
+      subirArchivoR2(keyInscripcion, bufferInscripcion, contentTypeInscripcion),
+    ])
+
+    // Guardar en la base de datos las claves (keys) de los objetos en R2
     const nuevaSolicitud = await prisma.solicitudUtiles.create({
       data: {
         numeroEmpleado,
         nombreHijo,
         nivelEducativo,
-        boletaUrl: blobBoleta.url,
-        inscripcionUrl: blobInscripcion.url,
+        boletaUrl: keyBoleta,
+        inscripcionUrl: keyInscripcion,
         estatus: 'En Revisión',
       },
     })
@@ -72,16 +77,20 @@ export async function registrarSolicitudUtiles(formData: FormData) {
     const nombreTrabajador =
       (usuario as { nombreCompleto?: string } | null)?.nombreCompleto || numeroEmpleado
 
-    await enviarNotificacionAdmin({
-      nombreTrabajador,
-      numeroEmpleado,
-      tipoTramite: 'Útiles Escolares',
-      folio: folioCorto,
-      detalles: {
-        'Hijo(a)': nombreHijo,
-        'Nivel Educativo': nivelEducativo,
-      },
-    })
+    try {
+      await enviarNotificacionAdmin({
+        nombreTrabajador,
+        numeroEmpleado,
+        tipoTramite: 'Útiles Escolares',
+        folio: folioCorto,
+        detalles: {
+          'Hijo(a)': nombreHijo,
+          'Nivel Educativo': nivelEducativo,
+        },
+      })
+    } catch (mailErr) {
+      console.error('Error no bloqueante al enviar correo:', mailErr)
+    }
 
     revalidatePath('/dashboard')
 

@@ -4,9 +4,9 @@ import { PrismaClient } from '@prisma/client'
 import { PrismaPg } from '@prisma/adapter-pg'
 import { Pool } from 'pg'
 import { cookies } from 'next/headers'
-import { put } from '@vercel/blob'
 import { revalidatePath } from 'next/cache'
-import { enviarNotificacionAdmin } from '../lib/mailer' // <-- ajusta esta ruta a tu archivo de correos
+import { enviarNotificacionAdmin } from '../lib/mailer'
+import { subirArchivoR2 } from '@/app/lib/r2'
 
 const connectionString = process.env.DATABASE_URL
 const pool = new Pool({ connectionString })
@@ -34,21 +34,20 @@ export async function registrarSolicitudMatrimonio(formData: FormData) {
       return { success: false, error: 'El acta o constancia en PDF es obligatoria.' }
     }
 
-    // 🏷️ Usar directamente el nombre renombrado desde MatrimonioTab y permitir sobrescritura
-    const blob = await put(`matrimonios/${archivoActa.name}`, archivoActa, {
-      access: 'private',
-      allowOverwrite: true,
-    })
+    // Convertir archivo a Buffer y subirlo a Cloudflare R2 con el nombre renombrado desde MatrimonioTab
+    const bufferActa = Buffer.from(await archivoActa.arrayBuffer())
+    const keyActa = `matrimonios/${archivoActa.name}`
+    const contentTypeActa = archivoActa.type || 'application/pdf'
 
-    const actaUrl = blob.url
+    await subirArchivoR2(keyActa, bufferActa, contentTypeActa)
 
-    // Guardar en la base de datos con la URL real de Vercel Blob
+    // Guardar en la base de datos con la clave (key) del objeto en R2
     const nuevaSolicitud = await prisma.solicitudMatrimonio.create({
       data: {
         numeroEmpleado,
         nombreConyuge,
         tipoUnion,
-        actaUrl,
+        actaUrl: keyActa,
         estatus: 'En Revisión',
       },
     })
@@ -62,16 +61,20 @@ export async function registrarSolicitudMatrimonio(formData: FormData) {
     const nombreTrabajador =
       (usuario as { nombreCompleto?: string } | null)?.nombreCompleto || numeroEmpleado
 
-    await enviarNotificacionAdmin({
-      nombreTrabajador,
-      numeroEmpleado,
-      tipoTramite: 'Matrimonio',
-      folio: folioCorto,
-      detalles: {
-        'Cónyuge / Pareja': nombreConyuge,
-        'Tipo de Unión': tipoUnion,
-      },
-    })
+    try {
+      await enviarNotificacionAdmin({
+        nombreTrabajador,
+        numeroEmpleado,
+        tipoTramite: 'Matrimonio',
+        folio: folioCorto,
+        detalles: {
+          'Cónyuge / Pareja': nombreConyuge,
+          'Tipo de Unión': tipoUnion,
+        },
+      })
+    } catch (mailErr) {
+      console.error('Error no bloqueante al enviar correo:', mailErr)
+    }
 
     revalidatePath('/dashboard')
 

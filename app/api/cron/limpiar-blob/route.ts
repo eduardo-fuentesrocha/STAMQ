@@ -1,9 +1,10 @@
 import { NextResponse } from 'next/server'
-import { list, del, type ListBlobResult } from '@vercel/blob'
+import { listarArchivosR2, eliminarMultiplesArchivosR2 } from '@/app/lib/r2'
 
-const DIAS_RETENCION = 15
+const DIAS_RETENCION = 30 // 1 mes
 const MS_POR_DIA = 24 * 60 * 60 * 1000
 const CARPETA_EXCLUIDA = 'fotos-credencial/'
+const LOTE_ELIMINACION = 1000
 
 export async function GET(request: Request) {
   try {
@@ -16,46 +17,42 @@ export async function GET(request: Request) {
     }
 
     const limiteAntiguedad = Date.now() - DIAS_RETENCION * MS_POR_DIA
-    const urlsAEliminar: string[] = []
-    let cursor: string | undefined = undefined
-    let hayMas = false
+    const keysAEliminar: string[] = []
 
-    do {
-      const pagina: ListBlobResult = await list({
-        ...(cursor ? { cursor } : {}),
-        limit: 1000,
-      })
+    const objetos = await listarArchivosR2()
 
-      for (const blob of pagina.blobs) {
-        if (blob.pathname.startsWith(CARPETA_EXCLUIDA)) {
-          continue
-        }
+    for (const objeto of objetos) {
+      const key = objeto.Key
+      if (!key) continue
 
-        const fechaSubida = new Date(blob.uploadedAt).getTime()
-        if (fechaSubida <= limiteAntiguedad) {
-          urlsAEliminar.push(blob.url)
-        }
+      if (key.startsWith(CARPETA_EXCLUIDA)) {
+        continue
       }
 
-      hayMas = pagina.hasMore
-      cursor = pagina.cursor
-    } while (hayMas)
+      if (objeto.LastModified) {
+        const fechaSubida = new Date(objeto.LastModified).getTime()
+        if (fechaSubida <= limiteAntiguedad) {
+          keysAEliminar.push(key)
+        }
+      }
+    }
 
-    if (urlsAEliminar.length > 0) {
-      await del(urlsAEliminar)
+    for (let i = 0; i < keysAEliminar.length; i += LOTE_ELIMINACION) {
+      const lote = keysAEliminar.slice(i, i + LOTE_ELIMINACION)
+      await eliminarMultiplesArchivosR2(lote)
     }
 
     return NextResponse.json({
       ok: true,
       carpetaExcluida: CARPETA_EXCLUIDA,
       diasRetencion: DIAS_RETENCION,
-      eliminados: urlsAEliminar.length,
-      archivos: urlsAEliminar,
+      eliminados: keysAEliminar.length,
+      archivos: keysAEliminar,
     })
   } catch (error) {
-    console.error('Error al ejecutar limpieza de Vercel Blob:', error)
+    console.error('Error al ejecutar limpieza de Cloudflare R2:', error)
     return NextResponse.json(
-      { ok: false, error: 'Error al limpiar archivos de Blob' },
+      { ok: false, error: 'Error al limpiar archivos de R2' },
       { status: 500 }
     )
   }

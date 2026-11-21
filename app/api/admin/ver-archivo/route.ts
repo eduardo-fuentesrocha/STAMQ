@@ -3,6 +3,7 @@ import { cookies } from 'next/headers';
 import { PrismaClient } from '@prisma/client';
 import { PrismaPg } from '@prisma/adapter-pg';
 import { Pool } from 'pg';
+import { obtenerArchivoR2 } from '@/app/lib/r2';
 
 const connectionString = process.env.DATABASE_URL;
 const pool = new Pool({ connectionString });
@@ -15,49 +16,57 @@ export async function GET(request: Request) {
     const numEmpleado = cookieStore.get('usuario_num')?.value;
 
     // Validar que sea administrador
+    if (!numEmpleado) {
+      return new NextResponse('No autorizado', { status: 401 });
+    }
+
     const admin = await prisma.usuario.findUnique({ where: { numeroEmpleado: numEmpleado } });
     if (!admin || (admin as any).rol !== 'admin') {
       return new NextResponse('No autorizado', { status: 401 });
     }
 
     const { searchParams } = new URL(request.url);
-    const fileUrl = searchParams.get('url');
+    const fileParam = searchParams.get('url');
 
-    if (!fileUrl) {
-      return new NextResponse('URL no proporcionada', { status: 400 });
+    if (!fileParam) {
+      return new NextResponse('Ruta de archivo no proporcionada', { status: 400 });
     }
 
-    // 🏷️ Extraer el nombre real y limpio del archivo desde la URL de Vercel Blob
-    // Ejemplo de URL: .../actas/45892_Eduardo_Fuentes_Rocha_Eduardo_Acta.pdf -> Extrae "45892_Eduardo_Fuentes_Rocha_Eduardo_Acta.pdf"
-    const urlSinQuery = fileUrl.split('?')[0];
-    const nombreArchivo = urlSinQuery.split('/').pop() || 'documento.pdf';
-
-    // Realizar fetch al archivo privado utilizando el token secreto del servidor
-    const response = await fetch(fileUrl, {
-      cache: 'no-store',
-      headers: {
-        Authorization: `Bearer ${process.env.BLOB_READ_WRITE_TOKEN}`,
-      },
-    });
-
-    if (!response.ok) {
-      return new NextResponse('No se pudo obtener el archivo desde el almacenamiento', { status: response.status });
+    // Normalizar la clave (key) en R2:
+    // Soporta tanto una clave directa ("actas/45892_...pdf") como una URL si llegara con dominio
+    let key = fileParam.split('?')[0];
+    if (key.startsWith('http://') || key.startsWith('https://')) {
+      const parsedUrl = new URL(key);
+      key = parsedUrl.pathname.replace(/^\/+/, '');
+    } else {
+      key = key.replace(/^\/+/, '');
     }
 
-    const blobData = await response.blob();
-    
-    // Retornar el archivo forzando el nombre estructurado en el navegador sin caché
-    return new NextResponse(blobData, {
+    // Extraer el nombre limpio del archivo para el encabezado Content-Disposition
+    const nombreArchivo = key.split('/').pop() || 'documento.pdf';
+
+    // Obtener el objeto desde Cloudflare R2
+    const r2Response = await obtenerArchivoR2(key);
+
+    if (!r2Response.Body) {
+      return new NextResponse('Archivo no encontrado en el almacenamiento', { status: 404 });
+    }
+
+    // Convertir el stream de AWS SDK a Uint8Array para NextResponse
+    const fileBytes = await r2Response.Body.transformToByteArray();
+
+    return new NextResponse(fileBytes, {
       headers: {
-        'Content-Type': response.headers.get('Content-Type') || 'application/pdf',
-        // 'inline' permite abrirlo en el visor, pero agregando filename="..." los navegadores modernos
-        // ya sugieren este nombre al guardarlo. Si prefieres forzar la descarga directa usa 'attachment'.
+        'Content-Type': r2Response.ContentType || 'application/pdf',
         'Content-Disposition': `inline; filename="${nombreArchivo}"`,
         'Cache-Control': 'no-store, no-cache, must-revalidate, max-age=0',
       },
     });
-  } catch (error) {
-    console.error('Error al servir archivo privado:', error);
+  } catch (error: any) {
+    if (error?.name === 'NoSuchKey') {
+      return new NextResponse('El archivo no existe en R2', { status: 404 });
+    }
+    console.error('Error al servir archivo privado desde R2:', error);
     return new NextResponse('Error interno del servidor', { status: 500 });
   }
 }
